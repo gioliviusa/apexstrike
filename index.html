@@ -40,6 +40,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-y: scroll;
         }
 
         .cyber-grid {
@@ -153,6 +154,7 @@
         .section-heading {
             background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-top: 100px;
             margin-bottom: 3rem;
@@ -381,6 +383,10 @@
             .hamburger {
                 display: block;
             }
+
+            #testimonials h2 {
+                margin-bottom: 20px; /* Adjusted margin to increase spacing between title and content */
+            }
         }
 
         @media (min-width: 769px) {
@@ -502,6 +508,97 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
+        #team {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 255, 0.1));
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #team:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 243, 255, 0.5);
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(255, 0, 255, 0.2));
+        }
+
+        #team h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-pink);
+        }
+
+        #team p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        #team p:last-child {
+            margin-bottom: 0;
+        }
+
+        .vision-card {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .vision-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 243, 255, 0.5);
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(255, 0, 255, 0.2));
+        }
+
+        .small-card {
+            padding: 10px;
+            margin: 5px auto;
+            max-width: 80%;
+            font-size: 0.8rem;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 80%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 243, 255, 0.5);
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(255, 0, 255, 0.2));
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-pink);
+        }
+
+        .contact-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .contact-card a {
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -545,30 +642,22 @@
 
         <section id="services" class="section-3">
             <h2 class="neon-header glow text-5xl mb-6">Our Services</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Web Development</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="service-card p-6">
+                    <h3 class="text-xl mb-3">Web Development</h3>
                     <p class="opacity-90">Custom websites and applications tailored to your business needs.</p>
                 </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">AI Solutions</h3>
+                <div class="service-card p-6">
+                    <h3 class="text-xl mb-3">AI Solutions</h3>
                     <p class="opacity-90">Leverage artificial intelligence to automate and innovate.</p>
                 </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Cloud Computing</h3>
+                <div class="service-card p-6">
+                    <h3 class="text-xl mb-3">Cloud Computing</h3>
                     <p class="opacity-90">Scalable and secure cloud solutions for your enterprise.</p>
                 </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Cybersecurity</h3>
+                <div class="service-card p-6">
+                    <h3 class="text-xl mb-3">Cybersecurity</h3>
                     <p class="opacity-90">Protect your digital assets with our advanced security services.</p>
-                </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Digital Marketing</h3>
-                    <p class="opacity-90">Boost your online presence with our marketing strategies.</p>
-                </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Data Analytics</h3>
-                    <p class="opacity-90">Turn data into actionable insights for better decision-making.</p>
                 </div>
             </div>
         </section>
@@ -596,48 +685,40 @@
                     <p class="opacity-90">A next-gen cloud computing platform.</p>
                     <a href="https://example.com/project-delta" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
                 </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Project Epsilon</h3>
-                    <p class="opacity-90">AI-powered tools for creative professionals.</p>
-                    <a href="https://example.com/project-epsilon" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
-                </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Project Zeta</h3>
-                    <p class="opacity-90">A revolutionary approach to cybersecurity.</p>
-                    <a href="https://example.com/project-zeta" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
-                </div>
             </div>
         </section>
 
         <section id="testimonials" class="section-4">
-            <h2 class="neon-header glow text-5xl mb-6">Testimonials</h2>
+            <h2 class="neon-header glow text-5xl mb-6">Our Achievements</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="service-card p-8">
-                    <p class="opacity-90">"ApexStryke transformed our business with their innovative solutions. Highly recommend!"</p>
-                    <h4 class="text-xl mt-4">- Jane Doe, CEO of TechCorp</h4>
+                    <h3 class="text-2xl mb-4">Award-Winning Designs</h3>
+                    <p class="opacity-90">Recognized globally for our innovative and user-friendly designs.</p>
                 </div>
                 <div class="service-card p-8">
-                    <p class="opacity-90">"Their team is incredibly talented and professional. Our project was a huge success!"</p>
-                    <h4 class="text-xl mt-4">- John Smith, Founder of InnovateX</h4>
+                    <h3 class="text-2xl mb-4">Top Industry Certifications</h3>
+                    <p class="opacity-90">Certified by leading organizations for excellence in technology solutions.</p>
+                </div>
+                <div class="service-card p-8">
+                    <h3 class="text-2xl mb-4">Global Clientele</h3>
+                    <p class="opacity-90">Trusted by businesses across 50+ countries worldwide.</p>
+                </div>
+                <div class="service-card p-8">
+                    <h3 class="text-2xl mb-4">Sustainability Initiatives</h3>
+                    <p class="opacity-90">Committed to eco-friendly practices in all our projects.</p>
                 </div>
             </div>
         </section>
 
         <section id="team" class="py-20 px-4">
             <div class="parallax parallax-6"></div>
-            <h2 class="neon-header glow text-5xl mb-6">Our Team</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Alice Johnson</h3>
-                    <p class="opacity-90">Chief Technology Officer</p>
+            <h2 class="neon-header glow text-5xl mb-6">Our Vision</h2>
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="vision-card small-card">
+                    <p class="text-base mb-4">At ApexStryke, we envision a future where technology seamlessly integrates with human creativity to solve the world's most pressing challenges. Our mission is to empower businesses and individuals with cutting-edge solutions that drive innovation and sustainability.</p>
                 </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Bob Williams</h3>
-                    <p class="opacity-90">Lead Developer</p>
-                </div>
-                <div class="service-card p-8">
-                    <h3 class="text-2xl mb-4">Catherine Lee</h3>
-                    <p class="opacity-90">Head of Design</p>
+                <div class="vision-card small-card">
+                    <p class="text-base">Join us on this journey to redefine the boundaries of what's possible and create a brighter, more connected future for all.</p>
                 </div>
             </div>
         </section>
@@ -646,24 +727,18 @@
             <div class="parallax parallax-3"></div>
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="neon-header glow text-5xl mb-6">Get in Touch</h2>
-                <p class="text-lg mb-6">We are here to help you. Fill out the form below or use our direct contact details to reach us.</p>
-                <form class="space-y-6 bg-dark-bg p-8 rounded-lg shadow-lg">
-                    <div>
-                        <input type="text" placeholder="Your Name" class="input-field w-full rounded-md" required>
-                    </div>
-                    <div>
-                        <input type="email" placeholder="Your Email" class="input-field w-full rounded-md" required>
-                    </div>
-                    <div>
-                        <textarea placeholder="Your Message" class="input-field w-full rounded-md" rows="5" required></textarea>
-                    </div>
-                    <button class="cyber-button w-full text-lg py-3">Send Message</button>
-                </form>
-                <div class="mt-10">
+                <!-- <p class="text-lg mb-6">We are here to help you. Direct contact details to reach us.</p> -->
+                <div class="contact-card">
+                    <h3 class="text-lg font-semibold mb-4">Reach Out to Us</h3>
+                    <p class="text-base mb-4">We are here to help you with any inquiries or support you need. Feel free to contact us through the details below or send us a message directly.</p>
+                    <p class="text-base mb-2">Email: <a href="mailto:gioliviusa@gmail.com" class="text-neon-blue hover:text-neon-pink">gioliviusa@gmail.com</a></p>
+                    <p class="text-base">Phone: <a href="tel:+12392048113" class="text-neon-blue hover:text-neon-pink">+1 (239) 204-8113</a></p>
+                </div>
+                <!-- <div class="mt-10">
                     <p class="text-xl font-semibold">Or contact us directly:</p>
                     <p class="text-neon-blue text-lg">Email: <a href="mailto:gioliviusa@gmail.com" class="hover:text-neon-pink">gioliviusa@gmail.com</a></p>
                     <p class="text-neon-blue text-lg">Phone: <a href="tel:+12392048113" class="hover:text-neon-pink">+1 (239) 204-8113</a></p>
-                </div>
+                </div> -->
             </div>
         </section>
     </main>
