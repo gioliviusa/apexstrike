@@ -614,8 +614,8 @@
             <div class="nav-menu">
                 <a href="#services" class="text-white hover:text-neon-blue mx-4">Services</a>
                 <a href="#portfolio" class="text-white hover:text-neon-pink mx-4">Portfolio</a>
-                <a href="#testimonials" class="text-white hover:text-neon-blue mx-4">Testimonials</a>
-                <a href="#team" class="text-white hover:text-neon-pink mx-4">Team</a>
+                <a href="#testimonials" class="text-white hover:text-neon-blue mx-4">Our Achievements</a>
+                <a href="#team" class="text-white hover:text-neon-pink mx-4">Our Vision</a>
                 <a href="#contact" class="cyber-button">Contact</a>
             </div>
             <div class="hamburger text-neon-blue">
@@ -625,8 +625,8 @@
         <div class="mobile-menu">
             <a href="#services" class="text-white py-3 px-4 hover:bg-cyber-purple">Services</a>
             <a href="#portfolio" class="text-white py-3 px-4 hover:bg-cyber-purple">Portfolio</a>
-            <a href="#testimonials" class="text-white py-3 px-4 hover:bg-cyber-purple">Testimonials</a>
-            <a href="#team" class="text-white py-3 px-4 hover:bg-cyber-purple">Team</a>
+            <a href="#testimonials" class="text-white py-3 px-4 hover:bg-cyber-purple">Our Achievements</a>
+            <a href="#team" class="text-white py-3 px-4 hover:bg-cyber-purple">Our Vision</a>
             <a href="#contact" class="cyber-button my-2 mx-4">Contact</a>
         </div>
     </nav>
@@ -772,6 +772,20 @@
                 }, 500);
             });
 
+            // Theme Toggle Initialization
+            const themeToggle = document.querySelector('.theme-toggle');
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeToggle.innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+
             // Mobile Menu
             const hamburger = document.querySelector('.hamburger');
             const mobileMenu = document.querySelector('.mobile-menu');
@@ -841,34 +855,18 @@
                 // Add form validation logic
             });
 
-            // Theme Toggle
-            const themeToggle = document.querySelector('.theme-toggle');
-            const currentTheme = localStorage.getItem('theme') || 'dark';
+            // Intersection Observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
 
-            document.documentElement.setAttribute('data-theme', currentTheme);
-
-            themeToggle.innerHTML = currentTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-
-            themeToggle.addEventListener('click', () => {
-                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            document.querySelectorAll('.service-card, .section-heading').forEach((el) => {
+                observer.observe(el);
             });
-
-        });
-
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.service-card, .section-heading').forEach((el) => {
-            observer.observe(el);
         });
     </script>
 </body>
