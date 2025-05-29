@@ -877,6 +877,147 @@
                 min-height: 60vh;
             }
         }
+
+        /* FAQ Section Styles */
+        .faq-section-custom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+            min-height: 40vh;
+            width: 100%;
+        }
+        .faq-section-custom h2.section-heading {
+            margin-bottom: 1.5rem;
+            margin-top: 0;
+            font-size: 2.2rem;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        .faq-list {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: linear-gradient(135deg, rgba(0,243,255,0.07), rgba(255,0,255,0.04));
+            border: 1.5px solid var(--neon-blue);
+            border-radius: 10px;
+            margin-bottom: 1.2rem;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,243,255,0.07);
+        }
+        .faq-item h3 {
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .faq-item p {
+            color: var(--text-color);
+            font-size: 1rem;
+            opacity: 0.93;
+        }
+
+        .faq-slider { width: 100%; max-width: 700px; margin: 0 auto; position: relative; }
+        .faq-list {
+            position: relative;
+            min-height: 170px;
+        }
+        .faq-item {
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            opacity: 0;
+            transform: scale(0.98) translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 0;
+            background: linear-gradient(135deg, rgba(0,243,255,0.07), rgba(255,0,255,0.04));
+            border: 1.5px solid var(--neon-blue);
+            border-radius: 10px;
+            margin-bottom: 1.2rem;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,243,255,0.07);
+        }
+        .faq-item.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            z-index: 1;
+        }
+        .faq-item.leaving {
+            opacity: 0;
+            transform: scale(0.98) translateY(-20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .faq-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+        }
+        .faq-nav .cyber-button {
+            min-width: 48px;
+            font-size: 1.3rem;
+            padding: 8px 0;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .faq-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .faq-dot {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: rgba(0,243,255,0.18);
+            border: 2px solid var(--neon-blue);
+            display: inline-block;
+            cursor: pointer;
+            transition: background 0.2s, border 0.2s;
+        }
+        .faq-dot.active {
+            background: var(--neon-blue);
+            border-color: var(--neon-pink);
+        }
+        @media (max-width: 768px) {
+            .faq-slider { max-width: 98vw; }
+            .faq-list { min-height: 180px; }
+            .faq-item {
+                padding: 0.8rem 0.7rem;
+                font-size: 0.92rem;
+                position: absolute;
+                left: 0; right: 0; top: 0;
+                width: 100%;
+            }
+            .faq-item h3 { font-size: 0.97rem; }
+            .faq-item p { font-size: 0.89rem; }
+            .faq-nav .cyber-button {
+                min-width: 38px;
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+                padding: 0;
+            }
+            .faq-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+        /* ...existing styles... */
     </style>
 </head>
 <body>
@@ -895,6 +1036,7 @@
                 <a href="#testimonials" class="text-white hover:text-neon-blue mx-4">Our Achievements</a>
                 <a href="#team" class="text-white hover:text-neon-pink mx-4">Our Vision</a>
                 <a href="#buy-services" class="text-white hover:text-cyber-purple mx-4">Buy</a>
+                <a href="#faq" class="text-white hover:text-cyber-purple mx-4">FAQ</a>
                 <a href="#contact" class="cyber-button">Contact</a>
             </div>
             <div class="hamburger text-neon-blue">
@@ -907,6 +1049,7 @@
             <a href="#testimonials" class="text-white py-3 px-4 hover:bg-cyber-purple">Our Achievements</a>
             <a href="#team" class="text-white py-3 px-4 hover:bg-cyber-purple">Our Vision</a>
             <a href="#buy-services" class="text-white py-3 px-4 hover:bg-cyber-purple">Buy</a>
+            <a href="#faq" class="text-white py-3 px-4 hover:bg-cyber-purple">FAQ</a>
             <a href="#contact" class="cyber-button my-2 mx-4">Contact</a>
         </div>
     </nav>
@@ -947,8 +1090,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="service-card p-8">
                     <h3 class="text-2xl mb-4">Project Alpha</h3>
-                    <p class="opacity-90">A cutting-edge AI-driven platform for predictive analytics.</p>
-                    <a href="https://example.com/project-alpha" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
+                    <p class="opacity-90">A cutting-edge AI-driven platform WEB portfolio.</p>
+                    <a href="https://gioliviusa.github.io/webportfolio/" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
                 </div>
                 <div class="service-card p-8">
                     <h3 class="text-2xl mb-4">Project Beta</h3>
@@ -1051,6 +1194,94 @@
                 </div>
             </div>
         </section>
+        
+        <!-- FAQ Section -->
+        <section id="faq" class="section-3 faq-section-custom">
+            <h2 class="neon-header glow text-5xl mb-4 section-heading">Frequently Asked Questions</h2>
+            <div class="faq-slider">
+                <div class="faq-list">
+                    <div class="faq-item active">
+                        <h3>What services do you offer?</h3>
+                        <p>We provide web development, AI solutions, cloud computing, cybersecurity, and custom enterprise platforms. Our packages range from starter websites to fully custom AI-powered platforms.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How long does it take to build a website or platform?</h3>
+                        <p>Project timelines vary by complexity. Starter sites can be delivered in 1-2 weeks, business suites in 3-5 weeks, and custom enterprise solutions are scoped individually.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do you provide ongoing support?</h3>
+                        <p>Yes! All packages include support. Starter plans get 24/7 email support, business and enterprise plans include priority or premium support with fast response times.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can you integrate AI or automation into my existing business?</h3>
+                        <p>Absolutely. We specialize in integrating AI-driven analytics, chatbots, and automation into new or existing systems.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Is my data secure with you?</h3>
+                        <p>Yes. We follow industry best practices for cybersecurity, offer cloud hosting with robust security, and can provide compliance solutions for sensitive industries.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How do payments work?</h3>
+                        <p>Payments are securely processed via Stripe. For custom projects, we offer milestone-based payments and contracts.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I request a custom solution not listed?</h3>
+                        <p>Yes! Contact us with your requirements and we’ll provide a tailored proposal.</p>
+                    </div>
+                </div>
+                <div class="faq-nav">
+                    <button class="faq-prev cyber-button" aria-label="Previous FAQ">&#8592;</button>
+                    <div class="faq-dots"></div>
+                    <button class="faq-next cyber-button" aria-label="Next FAQ">&#8594;</button>
+                </div>
+            </div>
+        </section>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-list .faq-item');
+            const prevBtn = document.querySelector('.faq-prev');
+            const nextBtn = document.querySelector('.faq-next');
+            const dotsContainer = document.querySelector('.faq-dots');
+            let current = 0;
+            // Create dots
+            dotsContainer.innerHTML = '';
+            faqItems.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.className = 'faq-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => { showFaq(i); });
+                dotsContainer.appendChild(dot);
+            });
+            const dots = dotsContainer.querySelectorAll('.faq-dot');
+            function showFaq(idx) {
+                faqItems.forEach((item, i) => {
+                    if (i === idx) {
+                        item.classList.add('active');
+                        item.classList.remove('leaving');
+                    } else {
+                        item.classList.remove('active');
+                        item.classList.remove('leaving');
+                    }
+                });
+                dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+                prevBtn.disabled = idx === 0;
+                nextBtn.disabled = idx === faqItems.length-1;
+                current = idx;
+            }
+            prevBtn.addEventListener('click', () => {
+                if (current > 0) {
+                    faqItems[current].classList.add('leaving');
+                    setTimeout(() => showFaq(current-1), 200);
+                }
+            });
+            nextBtn.addEventListener('click', () => {
+                if (current < faqItems.length-1) {
+                    faqItems[current].classList.add('leaving');
+                    setTimeout(() => showFaq(current+1), 200);
+                }
+            });
+            showFaq(current);
+        });
+        </script>
         
         <section id="contact" class="py-20 px-4 bg-gradient-to-r from-cyber-purple to-neon-blue text-white">
             <div class="parallax parallax-3"></div>
