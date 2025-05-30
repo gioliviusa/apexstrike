@@ -1,0 +1,34 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="faviconglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.95"/>
+      <stop offset="60%" stop-color="#00f3ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#ff5ecb" stop-opacity="0.5"/>
+    </radialGradient>
+    <linearGradient id="favicongrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00f3ff"/>
+      <stop offset="0.5" stop-color="#ff5ecb"/>
+      <stop offset="1" stop-color="#ffe680"/>
+    </linearGradient>
+    <filter id="faviconglowfilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#faviconglowfilter)">
+    <!-- Neon triangle (apex) -->
+    <polygon points="32,10 54,54 10,54" fill="url(#favicongrad)" stroke="#fff" stroke-width="2"/>
+    <!-- Palm tree trunk -->
+    <rect x="30" y="32" width="4" height="16" rx="2" fill="#00f3ff"/>
+    <!-- Palm leaves -->
+    <path d="M32 32 Q28 28 20 36" stroke="#00f3ff" stroke-width="2" fill="none"/>
+    <path d="M32 32 Q36 28 44 36" stroke="#00f3ff" stroke-width="2" fill="none"/>
+    <path d="M32 32 Q30 24 24 28" stroke="#00f3ff" stroke-width="1.2" fill="none"/>
+    <path d="M32 32 Q34 24 40 28" stroke="#00f3ff" stroke-width="1.2" fill="none"/>
+    <!-- Sun -->
+    <circle cx="32" cy="24" r="7" fill="url(#faviconglow)" opacity="0.7"/>
+  </g>
+</svg>
