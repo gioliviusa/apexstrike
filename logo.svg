@@ -1,0 +1,51 @@
+<svg width="340" height="100" viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vice-neon" x1="0" y1="0" x2="340" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00f3ff"/>
+      <stop offset="0.3" stop-color="#ffb6ff"/>
+      <stop offset="0.7" stop-color="#ff5ecb"/>
+      <stop offset="1" stop-color="#ffe680"/>
+    </linearGradient>
+    <linearGradient id="vice-pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff5ecb"/>
+      <stop offset="100%" stop-color="#ffe680"/>
+    </linearGradient>
+    <linearGradient id="vice-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f3ff"/>
+      <stop offset="100%" stop-color="#00ffb6"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <!-- Sun -->
+    <circle cx="70" cy="50" r="28" fill="url(#vice-pink)" opacity="0.85"/>
+    <!-- Grid lines -->
+    <g opacity="0.5">
+      <rect x="20" y="70" width="100" height="18" fill="none"/>
+      <path d="M20 80 H120" stroke="#00f3ff" stroke-width="1.2"/>
+      <path d="M25 85 H115" stroke="#00f3ff" stroke-width="0.8"/>
+      <path d="M30 90 H110" stroke="#00f3ff" stroke-width="0.6"/>
+      <path d="M40 70 L60 98" stroke="#00f3ff" stroke-width="0.7"/>
+      <path d="M60 70 L80 98" stroke="#00f3ff" stroke-width="0.7"/>
+      <path d="M80 70 L100 98" stroke="#00f3ff" stroke-width="0.7"/>
+    </g>
+    <!-- Palm tree silhouette -->
+    <g>
+      <path d="M70 50 Q68 60 72 80" stroke="#00f3ff" stroke-width="2.5" fill="none"/>
+      <path d="M70 55 Q65 53 60 60" stroke="#00f3ff" stroke-width="2" fill="none"/>
+      <path d="M70 55 Q75 53 80 60" stroke="#00f3ff" stroke-width="2" fill="none"/>
+      <path d="M70 55 Q67 50 62 52" stroke="#00f3ff" stroke-width="1.5" fill="none"/>
+      <path d="M70 55 Q73 50 78 52" stroke="#00f3ff" stroke-width="1.5" fill="none"/>
+    </g>
+    <!-- Apex (script style) -->
+    <text x="120" y="60" font-family="'Pacifico', 'Brush Script MT', cursive" font-size="48" font-weight="bold" fill="url(#vice-pink)" stroke="#fff" stroke-width="1.2" paint-order="stroke" letter-spacing="1">Apex</text>
+    <!-- Stryke (bold sans) -->
+    <text x="220" y="62" font-family="Orbitron, Exo 2, Arial, sans-serif" font-size="38" font-weight="bold" fill="url(#vice-blue)" stroke="#fff" stroke-width="1.2" paint-order="stroke" letter-spacing="2">Stryke</text>
+  </g>
+</svg>
