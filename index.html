@@ -1170,6 +1170,13 @@
     </style>
 </head>
 <body>
+    <!-- Cookies Consent Banner -->
+    <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:rgba(10,10,18,0.98); color:#fff; z-index:2000; box-shadow:0 -2px 16px var(--neon-blue); padding:18px 10px 18px 10px; text-align:center; font-size:1rem;">
+        <span style="font-family:'Exo 2',sans-serif; font-size:1.08rem;">This website uses cookies to ensure you get the best experience. <a href="privacy-policy.html" style="color:var(--neon-blue); text-decoration:underline;">Learn more</a></span>
+        <button id="accept-cookies" class="cyber-button" style="margin-left:18px; font-size:1rem; padding:7px 22px;">Accept</button>
+    </div>
+    <!-- End Cookies Consent Banner -->
+
     <div class="preloader">
         <div class="loader"></div>
     </div>
@@ -1619,6 +1626,17 @@
 
             document.querySelectorAll('.service-card, .section-heading').forEach((el) => {
                 observer.observe(el);
+            });
+
+            // Cookies Consent Banner
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptCookies = document.getElementById('accept-cookies');
+            if (!localStorage.getItem('cookiesAccepted')) {
+                cookieBanner.style.display = 'block';
+            }
+            acceptCookies.addEventListener('click', function() {
+                localStorage.setItem('cookiesAccepted', 'true');
+                cookieBanner.style.display = 'none';
             });
         });
     </script>
