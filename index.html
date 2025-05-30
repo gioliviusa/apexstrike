@@ -1073,7 +1073,100 @@
                 height: 10px;
             }
         }
-        /* ...existing styles... */
+        /* Button Showcase Section */
+        #button-showcase {
+            padding-top: 2.5rem;
+        }
+        #button-showcase .section-heading {
+            margin-bottom: 1.5rem;
+            margin-top: 0;
+            font-size: 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        #button-showcase .buy-services-grid {
+            gap: 2.2rem;
+        }
+        #button-showcase .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 260px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        #button-showcase .service-card p {
+            width: 100%;
+            box-sizing: border-box;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0.2em;
+            padding-right: 0.2em;
+        }
+        #button-showcase .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 243, 255, 0.5);
+            border-color: var(--neon-blue);
+        }
+        #button-showcase .service-card h3 {
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: 1;
+        }
+        #button-showcase .service-card h3::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            z-index: -1;
+        }
+        #button-showcase .cyber-button {
+            margin-bottom: 10px;
+            min-width: 160px;
+            font-size: 1.08rem;
+            padding: 10px 0;
+            border-radius: 6px;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        #button-showcase .cyber-button:hover {
+            transform: scale(1.05);
+        }
+        #button-showcase code {
+            color: #00f3ff;
+            font-size: 0.93rem;
+        }
+        @media (max-width: 768px) {
+            #button-showcase .service-card {
+                min-height: 220px;
+                padding: 1rem;
+            }
+            #button-showcase .cyber-button {
+                font-size: 0.97rem;
+                padding: 8px 0;
+            }
+            #button-showcase .service-card p {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                padding-left: 0.5em !important;
+                padding-right: 0.5em !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1094,6 +1187,7 @@
                 <a href="#team" class="text-white hover:text-neon-pink mx-4">Our Vision</a>
                 <a href="#buy-services" class="text-white hover:text-cyber-purple mx-4">Buy</a>
                 <a href="#faq" class="text-white hover:text-cyber-purple mx-4">FAQ</a>
+                <a href="#button-showcase" class="text-white hover:text-cyber-purple mx-4">Button Showcase</a>
                 <a href="#contact" class="cyber-button">Contact</a>
             </div>
             <div class="hamburger text-neon-blue">
@@ -1108,6 +1202,7 @@
             <a href="#team" class="text-white py-3 px-4 hover:bg-cyber-purple">Our Vision</a>
             <a href="#buy-services" class="text-white py-3 px-4 hover:bg-cyber-purple">Buy</a>
             <a href="#faq" class="text-white py-3 px-4 hover:bg-cyber-purple">FAQ</a>
+            <a href="#button-showcase" class="text-white py-3 px-4 hover:bg-cyber-purple">Button Showcase</a>
             <a href="#contact" class="cyber-button my-2 mx-4">Contact</a>
         </div>
     </nav>
@@ -1340,6 +1435,42 @@
             showFaq(current);
         });
         </script>
+        
+        <!-- Button Showcase Section -->
+        <section id="button-showcase" class="section-3 buy-section-custom" style="padding-top:2.5rem;">
+            <h2 class="neon-header glow text-5xl mb-4 section-heading">Button Showcase</h2>
+            <div class="scroll-indicator"></div>
+            <div class="buy-services-grid" style="gap:2.2rem;">
+                <div class="service-card p-6" style="display:flex; flex-direction:column; align-items:center; min-height:260px;">
+                    <h3 class="text-xl mb-2" style="color:var(--neon-blue); letter-spacing:0.01em;">Neon Primary</h3>
+                    <button class="cyber-button" style="margin-bottom:10px; min-width:160px; font-size:1.08rem;">Neon Primary</button>
+                    <div style="width:100%; background:rgba(0,243,255,0.07); border-radius:6px; padding:6px 10px; margin-top:auto;">
+                        <code style="color:#00f3ff; font-size:0.93rem;">&lt;button class=&quot;cyber-button&quot;&gt;Neon Primary&lt;/button&gt;</code>
+                    </div>
+                </div>
+                <div class="service-card p-6" style="display:flex; flex-direction:column; align-items:center; min-height:260px;">
+                    <h3 class="text-xl mb-2" style="color:var(--neon-pink); letter-spacing:0.01em;">Pink Glow</h3>
+                    <button class="cyber-button" style="background:var(--neon-pink); color:#fff; border-color:var(--neon-pink); margin-bottom:10px; min-width:160px; font-size:1.08rem; box-shadow:0 0 12px 2px var(--neon-pink);">Pink Glow</button>
+                    <div style="width:100%; background:rgba(255,0,255,0.07); border-radius:6px; padding:6px 10px; margin-top:auto;">
+                        <code style="color:#ff00ff; font-size:0.93rem;">&lt;button class=&quot;cyber-button&quot; style=&quot;background:var(--neon-pink); color:#fff; border-color:var(--neon-pink);&quot;&gt;Pink Glow&lt;/button&gt;</code>
+                    </div>
+                </div>
+                <div class="service-card p-6" style="display:flex; flex-direction:column; align-items:center; min-height:260px;">
+                    <h3 class="text-xl mb-2" style="color:var(--cyber-teal); letter-spacing:0.01em;">Teal Action</h3>
+                    <button class="cyber-button" style="background:var(--cyber-teal); color:#181828; border-color:var(--cyber-teal); margin-bottom:10px; min-width:160px; font-size:1.08rem; box-shadow:0 0 12px 2px var(--cyber-teal);">Teal Action</button>
+                    <div style="width:100%; background:rgba(0,255,200,0.07); border-radius:6px; padding:6px 10px; margin-top:auto;">
+                        <code style="color:#00ffc8; font-size:0.93rem;">&lt;button class=&quot;cyber-button&quot; style=&quot;background:var(--cyber-teal); color:#181828; border-color:var(--cyber-teal);&quot;&gt;Teal Action&lt;/button&gt;</code>
+                    </div>
+                </div>
+                <div class="service-card p-6" style="display:flex; flex-direction:column; align-items:center; min-height:260px;">
+                    <h3 class="text-xl mb-2" style="background:linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-fill-color:transparent; letter-spacing:0.01em;">Gradient Pulse</h3>
+                    <button class="cyber-button" style="background:linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); color:#fff; border:none; margin-bottom:10px; min-width:160px; font-size:1.08rem; box-shadow:0 0 16px 2px var(--neon-blue), 0 0 16px 2px var(--neon-pink);">Gradient Pulse</button>
+                    <div style="width:100%; background:rgba(255,182,255,0.07); border-radius:6px; padding:6px 10px; margin-top:auto;">
+                        <code style="color:#ffb6ff; font-size:0.93rem;">&lt;button class=&quot;cyber-button&quot; style=&quot;background:linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); color:#fff; border:none;&quot;&gt;Gradient Pulse&lt;/button&gt;</code>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <section id="contact" class="py-20 px-4 bg-gradient-to-r from-cyber-purple to-neon-blue text-white">
             <div class="parallax parallax-3"></div>
