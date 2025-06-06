@@ -924,6 +924,12 @@
             <p class="copyright">© 2025 Giovanni. All rights reserved. Built with passion and coffee.</p>
         </div>
     </footer>
+
+    <!-- Cookies Consent Banner -->
+    <div id="cookies-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:rgba(10,10,20,0.98); color:#00f7ff; z-index:2000; box-shadow:0 0 20px #00f7ff44; border-top:2px solid #ff00e4; font-family:'Orbitron',sans-serif; padding:18px 10px; text-align:center; letter-spacing:1px;">
+        <span style="font-size:1rem;">This site uses cookies to enhance your experience. See our <a href="privacy-policy.html" style="color:#ff00e4; text-decoration:underline;">Privacy Policy</a>.</span>
+        <button id="accept-cookies" style="margin-left:18px; padding:8px 22px; background:linear-gradient(90deg,#00f7ff,#7700ff); color:#0a0a14; border:none; border-radius:20px; font-family:'Orbitron',sans-serif; font-weight:700; cursor:pointer; box-shadow:0 0 10px #00f7ff88; transition:background 0.3s;">Accept</button>
+    </div>
     
     <script>
         // Mobile Menu Toggle
@@ -1053,6 +1059,19 @@
         
         // Start typing effect after a short delay
         setTimeout(typeWriter, 500);
+
+        // Cookies Consent Banner Logic
+        (function() {
+            const banner = document.getElementById('cookies-banner');
+            const acceptBtn = document.getElementById('accept-cookies');
+            if (!localStorage.getItem('cookiesAccepted')) {
+                banner.style.display = 'block';
+            }
+            acceptBtn && acceptBtn.addEventListener('click', function() {
+                localStorage.setItem('cookiesAccepted', 'true');
+                banner.style.display = 'none';
+            });
+        })();
     </script>
 </body>
 </html>
