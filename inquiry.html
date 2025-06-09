@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Strike - Landing Page Inquiry</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ...existing styles from your provided code... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #f97316;
+            --text: #2d3748;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --gray: #cbd5e0;
+            --success: #10b981;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--white);
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--gray);
+        }
+        .language-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+        .flag {
+            font-size: 1.8rem;
+        }
+        .content {
+            display: flex;
+            gap: 30px;
+        }
+        .info-panel {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .info-panel h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .info-panel h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        .info-panel h2 i {
+            color: var(--primary);
+        }
+        .benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .benefit {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+        .benefit:hover {
+            background: rgba(37, 99, 235, 0.05);
+            transform: translateX(5px);
+        }
+        .benefit i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            min-width: 30px;
+            padding-top: 5px;
+        }
+        .benefit-content h3 {
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+        .benefit-content p {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        .testimonial {
+            background: linear-gradient(to right, rgba(37, 99, 235, 0.1), rgba(30, 64, 175, 0.05));
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 4px solid var(--primary);
+        }
+        .testimonial p {
+            font-style: italic;
+            color: var(--primary-dark);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .client {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .client img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        .form-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+        .form-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        .form-container h2 i {
+            color: var(--primary);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        label i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            background: var(--white);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px 0;
+        }
+        .radio-group label,
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: normal;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        .radio-group label:hover,
+        .checkbox-group label:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+        .radio-group input,
+        .checkbox-group input {
+            margin: 0;
+        }
+        button {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 16px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(25deg);
+            transition: var(--transition);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+        }
+        button:hover::after {
+            left: 120%;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--white);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            .logo {
+                justify-content: center;
+            }
+            .info-panel h2::after,
+            .form-container h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        /* Language-specific styles */
+        .lang-en .es-text,
+        .lang-es .en-text {
+            display: none;
+        }
+    </style>
+</head>
+<body class="lang-en">
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <div class="logo-text">Apex Strike</div>
+            </div>
+            <div class="language-toggle" id="languageToggle">
+                <div class="flag">🇪🇸</div>
+                <div class="language-text es-text">Español</div>
+                <div class="language-text en-text">English</div>
+            </div>
+        </header>
+        <div class="content">
+            <div class="info-panel">
+                <h2><i class="fas fa-star"></i> <span class="en-text">Why Choose Us?</span><span class="es-text">¿Por Qué Elegirnos?</span></h2>
+                <div class="benefits">
+                    <div class="benefit">
+                        <i class="fas fa-rocket"></i>
+                        <div class="benefit-content">
+                            <h3 class="en-text">Lightning-Fast Delivery</h3>
+                            <h3 class="es-text">Entrega Rápida</h3>
+                            <p class="en-text">Get your landing page live in under 72 hours with our optimized development process.</p>
+                            <p class="es-text">Obtenga su página de destino en menos de 72 horas con nuestro proceso optimizado.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div class="benefit-content">
+                            <h3 class="en-text">Fully Responsive</h3>
+                            <h3 class="es-text">Totalmente Responsive</h3>
+                            <p class="en-text">Perfect display on all devices - from smartphones to desktops.</p>
+                            <p class="es-text">Visualización perfecta en todos los dispositivos, desde móviles hasta ordenadores.</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="benefit-content">
+                            <h3 class="en-text">Conversion Optimized</h3>
+                            <h3 class="es-text">Optimizado para Conversiones</h3>
+                            <p class="en-text">Strategically designed layouts that maximize visitor conversions.</p>
+                            <p class="es-text">Diseños estratégicos que maximizan las conversiones de los visitantes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p class="en-text">"Apex Strike delivered our landing page in just 48 hours! The design exceeded our expectations and increased our conversion rate by 35%."</p>
+                    <p class="es-text">"Apex Strike entregó nuestra página de destino en solo 48 horas. El diseño superó nuestras expectativas y aumentó nuestra tasa de conversión en un 35%."</p>
+                    <div class="client">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Client">
+                        <div>
+                            <strong>María Rodríguez</strong>
+                            <div class="en-text">Marketing Director, TechStart</div>
+                            <div class="es-text">Directora de Marketing, TechStart</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-container">
+                <h2><i class="fas fa-file-alt"></i> <span class="en-text">Landing Page Inquiry</span><span class="es-text">Solicitud de Página de Destino</span></h2>
+                <form id="inquiryForm">
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> <span class="en-text">Your Name*</span><span class="es-text">Tu Nombre*</span></label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> <span class="en-text">Email*</span><span class="es-text">Correo Electrónico*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal"><i class="fas fa-bullseye"></i> <span class="en-text">1. What's the main goal of your landing page?*</span><span class="es-text">1. ¿Cuál es el objetivo principal de su página de destino?*</span></label>
+                        <select id="goal" name="goal" required>
+                            <option value="" class="en-text">Select...</option>
+                            <option value="" class="es-text">Seleccionar...</option>
+                            <option value="leads" class="en-text">Collect leads/emails</option>
+                            <option value="leads" class="es-text">Captar leads/correos electrónicos</option>
+                            <option value="sales" class="en-text">Sell a product</option>
+                            <option value="sales" class="es-text">Vender un producto</option>
+                            <option value="signups" class="en-text">Drive registrations</option>
+                            <option value="signups" class="es-text">Generar registros</option>
+                            <option value="promotion" class="en-text">Promote an event/offer</option>
+                            <option value="promotion" class="es-text">Promocionar un evento/oferta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-palette"></i> <span class="en-text">2. Do you have existing brand assets?*</span><span class="es-text">2. ¿Tiene branding existente?*</span></label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="branding" value="yes" required>
+                                <span class="en-text">Yes (logo/colors/fonts)</span>
+                                <span class="es-text">Sí (logo/colores/fuentes)</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="branding" value="no">
+                                <span class="en-text">Need new design</span>
+                                <span class="es-text">Necesito nuevo diseño</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="audience"><i class="fas fa-users"></i> <span class="en-text">3. Describe your target audience:</span><span class="es-text">3. Describa su público objetivo:</span></label>
+                        <textarea id="audience" name="audience" class="en-text" placeholder="e.g. 'Small business owners aged 30-50'"></textarea>
+                        <textarea id="audience-es" name="audience" class="es-text" placeholder="ej. 'Propietarios de pequeñas empresas de 30-50 años'" style="display: none;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-file-contract"></i> <span class="en-text">4. What content do you have ready?</span><span class="es-text">4. ¿Qué contenido tiene listo?</span></label>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" name="content" value="text">
+                                <span class="en-text">Text copy</span>
+                                <span class="es-text">Texto</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="content" value="images">
+                                <span class="en-text">Images</span>
+                                <span class="es-text">Imágenes</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="content" value="videos">
+                                <span class="en-text">Videos</span>
+                                <span class="es-text">Videos</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="content" value="testimonials">
+                                <span class="en-text">Testimonials</span>
+                                <span class="es-text">Testimonios</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cta"><i class="fas fa-mouse-pointer"></i> <span class="en-text">5. What action should visitors take?*</span><span class="es-text">5. ¿Qué acción deben realizar los visitantes?*</span></label>
+                        <input type="text" id="cta" name="cta" required class="en-text" placeholder="e.g. 'Sign Up Now'">
+                        <input type="text" id="cta-es" name="cta" required class="es-text" placeholder="ej. 'Registrarse ahora'" style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeline"><i class="fas fa-calendar-alt"></i> <span class="en-text">6. When do you need this launched?</span><span class="es-text">6. ¿Cuándo necesita lanzar esto?</span></label>
+                        <input type="text" id="timeline" name="timeline" class="en-text" placeholder="e.g. 'Within 2 weeks'">
+                        <input type="text" id="timeline-es" name="timeline" class="es-text" placeholder="ej. 'En 2 semanas'" style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="budget"><i class="fas fa-money-bill-wave"></i> <span class="en-text">7. What's your budget range?*</span><span class="es-text">7. ¿En qué rango de presupuesto se encuentra?*</span></label>
+                        <select id="budget" name="budget" required>
+                            <option value="" class="en-text">Select...</option>
+                            <option value="" class="es-text">Seleccionar...</option>
+                            <option value="500-1000" class="en-text">$500 - $1000</option>
+                            <option value="500-1000" class="es-text">$500 - $1000</option>
+                            <option value="1000-1500" class="en-text">$1000 - $1500</option>
+                            <option value="1000-1500" class="es-text">$1000 - $1500</option>
+                            <option value="1500-2000" class="en-text">$1500 - $2000</option>
+                            <option value="1500-2000" class="es-text">$1500 - $2000</option>
+                            <option value="2000+" class="en-text">$2000+</option>
+                            <option value="2000+" class="es-text">$2000+</option>
+                        </select>
+                    </div>
+                    <button type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                        <span class="en-text">Get My Proposal</span>
+                        <span class="es-text">Obtener mi propuesta</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p class="en-text">© 2023 Apex Strike Web Development. All rights reserved.</p>
+            <p class="es-text">© 2023 Apex Strike Desarrollo Web. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageToggle = document.getElementById('languageToggle');
+            const flagElement = languageToggle.querySelector('.flag');
+            let isEnglish = true;
+            updateLanguage();
+            languageToggle.addEventListener('click', function() {
+                isEnglish = !isEnglish;
+                updateLanguage();
+            });
+            function updateLanguage() {
+                document.body.className = isEnglish ? 'lang-en' : 'lang-es';
+                flagElement.textContent = isEnglish ? '🇪🇸' : '🇬🇧';
+                document.getElementById('audience').style.display = isEnglish ? 'block' : 'none';
+                document.getElementById('audience-es').style.display = isEnglish ? 'none' : 'block';
+                document.getElementById('cta').style.display = isEnglish ? 'block' : 'none';
+                document.getElementById('cta-es').style.display = isEnglish ? 'none' : 'block';
+                document.getElementById('timeline').style.display = isEnglish ? 'block' : 'none';
+                document.getElementById('timeline-es').style.display = isEnglish ? 'none' : 'block';
+                updateSelectOptions();
+            }
+            function updateSelectOptions() {
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    for (let i = 0; i < select.options.length; i++) {
+                        const option = select.options[i];
+                        if (option.classList.contains('en-text')) {
+                            option.style.display = isEnglish ? 'block' : 'none';
+                        } else if (option.classList.contains('es-text')) {
+                            option.style.display = isEnglish ? 'none' : 'block';
+                        }
+                    }
+                    if (select.selectedIndex >= 0) {
+                        const selectedOption = select.options[select.selectedIndex];
+                        if (selectedOption.style.display === 'none') {
+                            for (let i = 0; i < select.options.length; i++) {
+                                if (select.options[i].style.display !== 'none') {
+                                    select.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            const form = document.getElementById('inquiryForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    goal: document.getElementById('goal').value,
+                    branding: document.querySelector('input[name="branding"]:checked')?.value,
+                    audience: isEnglish ? 
+                        document.getElementById('audience').value : 
+                        document.getElementById('audience-es').value,
+                    content: Array.from(document.querySelectorAll('input[name="content"]:checked'))
+                        .map(input => input.value),
+                    cta: isEnglish ? 
+                        document.getElementById('cta').value : 
+                        document.getElementById('cta-es').value,
+                    timeline: isEnglish ? 
+                        document.getElementById('timeline').value : 
+                        document.getElementById('timeline-es').value,
+                    budget: document.getElementById('budget').value
+                };
+                if (isEnglish) {
+                    alert('Thank you for your inquiry! We will contact you within 24 hours.');
+                } else {
+                    alert('¡Gracias por su consulta! Nos pondremos en contacto con usted en 24 horas.');
+                }
+                form.reset();
+                updateSelectOptions();
+            });
+            updateSelectOptions();
+        });
+    </script>
+</body>
+</html>
