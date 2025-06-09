@@ -350,6 +350,25 @@
         .lang-es .en-text {
             display: none;
         }
+        .go-home-btn {
+            margin-left: auto;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 0 10px #2563eb55;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .go-home-btn:hover {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 0 18px #2563eb99;
+        }
     </style>
 </head>
 <body class="lang-en">
@@ -364,6 +383,9 @@
                 <div class="language-text es-text">Español</div>
                 <div class="language-text en-text">English</div>
             </div>
+            <a href="index.html" class="go-home-btn">
+                <i class="fas fa-arrow-left"></i> <span class="en-text">Back to Home</span><span class="es-text">Volver al Inicio</span>
+            </a>
         </header>
         <div class="content">
             <div class="info-panel">
@@ -483,8 +505,26 @@
                     </div>
                     <div class="form-group">
                         <label for="cta"><i class="fas fa-mouse-pointer"></i> <span class="en-text">5. What action should visitors take?*</span><span class="es-text">5. ¿Qué acción deben realizar los visitantes?*</span></label>
-                        <input type="text" id="cta" name="cta" required class="en-text" placeholder="e.g. 'Sign Up Now'">
-                        <input type="text" id="cta-es" name="cta" required class="es-text" placeholder="ej. 'Registrarse ahora'" style="display: none;">
+                        <select id="cta" name="cta" required class="en-text">
+                            <option value="" class="en-text">Select...</option>
+                            <option value="signup" class="en-text">Sign Up</option>
+                            <option value="contact" class="en-text">Contact Us</option>
+                            <option value="buy" class="en-text">Buy Now</option>
+                            <option value="download" class="en-text">Download</option>
+                            <option value="book" class="en-text">Book a Call</option>
+                            <option value="custom" class="en-text">Other (please specify below)</option>
+                        </select>
+                        <select id="cta-es" name="cta" required class="es-text" style="display:none;">
+                            <option value="" class="es-text">Seleccionar...</option>
+                            <option value="signup" class="es-text">Registrarse</option>
+                            <option value="contact" class="es-text">Contáctanos</option>
+                            <option value="buy" class="es-text">Comprar ahora</option>
+                            <option value="download" class="es-text">Descargar</option>
+                            <option value="book" class="es-text">Reservar una llamada</option>
+                            <option value="custom" class="es-text">Otro (especifique abajo)</option>
+                        </select>
+                        <input type="text" id="cta-custom" name="cta-custom" placeholder="Please specify..." style="display:none; margin-top:10px;" class="en-text">
+                        <input type="text" id="cta-custom-es" name="cta-custom" placeholder="Por favor especifique..." style="display:none; margin-top:10px;" class="es-text">
                     </div>
                     <div class="form-group">
                         <label for="timeline"><i class="fas fa-calendar-alt"></i> <span class="en-text">6. When do you need this launched?</span><span class="es-text">6. ¿Cuándo necesita lanzar esto?</span></label>
@@ -536,6 +576,8 @@
                 document.getElementById('audience-es').style.display = isEnglish ? 'none' : 'block';
                 document.getElementById('cta').style.display = isEnglish ? 'block' : 'none';
                 document.getElementById('cta-es').style.display = isEnglish ? 'none' : 'block';
+                document.getElementById('cta-custom').style.display = 'none';
+                document.getElementById('cta-custom-es').style.display = 'none';
                 document.getElementById('timeline').style.display = isEnglish ? 'block' : 'none';
                 document.getElementById('timeline-es').style.display = isEnglish ? 'none' : 'block';
                 updateSelectOptions();
@@ -564,9 +606,22 @@
                     }
                 });
             }
+            // CTA custom input logic
+            const ctaSelect = document.getElementById('cta');
+            const ctaSelectEs = document.getElementById('cta-es');
+            const ctaCustom = document.getElementById('cta-custom');
+            const ctaCustomEs = document.getElementById('cta-custom-es');
+            ctaSelect.addEventListener('change', function() {
+                ctaCustom.style.display = ctaSelect.value === 'custom' ? 'block' : 'none';
+            });
+            ctaSelectEs.addEventListener('change', function() {
+                ctaCustomEs.style.display = ctaSelectEs.value === 'custom' ? 'block' : 'none';
+            });
             const form = document.getElementById('inquiryForm');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                const ctaValue = isEnglish ? ctaSelect.value : ctaSelectEs.value;
+                const ctaCustomValue = isEnglish ? ctaCustom.value : ctaCustomEs.value;
                 const formData = {
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
@@ -577,9 +632,7 @@
                         document.getElementById('audience-es').value,
                     content: Array.from(document.querySelectorAll('input[name="content"]:checked'))
                         .map(input => input.value),
-                    cta: isEnglish ? 
-                        document.getElementById('cta').value : 
-                        document.getElementById('cta-es').value,
+                    cta: ctaValue === 'custom' ? ctaCustomValue : ctaValue,
                     timeline: isEnglish ? 
                         document.getElementById('timeline').value : 
                         document.getElementById('timeline-es').value,
