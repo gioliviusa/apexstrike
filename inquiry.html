@@ -638,13 +638,34 @@
                         document.getElementById('timeline-es').value,
                     budget: document.getElementById('budget').value
                 };
-                if (isEnglish) {
-                    alert('Thank you for your inquiry! We will contact you within 24 hours.');
-                } else {
-                    alert('¡Gracias por su consulta! Nos pondremos en contacto con usted en 24 horas.');
-                }
-                form.reset();
-                updateSelectOptions();
+                // Send form data to email via Formspree
+                fetch('https://formspree.io/f/xdoqzqzq', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ...formData,
+                        _replyto: formData.email,
+                        _subject: 'New Landing Page Inquiry',
+                        to: 'support@apexstryke.com'
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        if (isEnglish) {
+                            alert('Thank you for your inquiry! We will contact you within 24 hours.');
+                        } else {
+                            alert('¡Gracias por su consulta! Nos pondremos en contacto con usted en 24 horas.');
+                        }
+                        form.reset();
+                        updateSelectOptions();
+                    } else {
+                        alert('There was an error sending your inquiry. Please try again later.');
+                    }
+                }).catch(() => {
+                    alert('There was an error sending your inquiry. Please try again later.');
+                });
             });
             updateSelectOptions();
         });
