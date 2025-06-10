@@ -639,18 +639,13 @@
                     budget: document.getElementById('budget').value
                 };
                 // Send form data to email via Formspree
-                fetch('https://formspree.io/f/xdoqzqzq', {
+                fetch('http://localhost:3001/api/inquiry', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        ...formData,
-                        _replyto: formData.email,
-                        _subject: 'New Landing Page Inquiry',
-                        to: 'support@apexstryke.com'
-                    })
+                    body: JSON.stringify(formData)
                 }).then(response => {
                     if (response.ok) {
                         if (isEnglish) {
