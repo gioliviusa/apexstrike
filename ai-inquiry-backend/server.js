@@ -1,4 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
+console.log('ENV DUMP:', process.env);
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '[LOADED]' : '[NOT FOUND]');
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
