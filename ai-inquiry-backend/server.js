@@ -51,5 +51,11 @@ app.post('/api/inquiry', async (req, res) => {
   }
 });
 
+const contactForm = document.querySelector('.contact-form');
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  // ...fetch code...
+});
+
 app.listen(3001, () => console.log('Server running on port 3001'));
 
