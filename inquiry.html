@@ -648,11 +648,21 @@
                     body: JSON.stringify(formData)
                 }).then(response => {
                     if (response.ok) {
-                        if (isEnglish) {
-                            alert('Thank you for your inquiry! We will contact you within 24 hours.');
-                        } else {
-                            alert('¡Gracias por su consulta! Nos pondremos en contacto con usted en 24 horas.');
-                        }
+                        // Show a confirmation message to assure the user
+                        const confirmationMsg = document.createElement('div');
+                        confirmationMsg.textContent = isEnglish 
+                            ? 'Your inquiry has been submitted! We have received your request and will contact you within 24 hours.' 
+                            : '¡Su consulta ha sido enviada! Hemos recibido su solicitud y nos pondremos en contacto con usted en 24 horas.';
+                        confirmationMsg.style.background = '#10b981';
+                        confirmationMsg.style.color = '#fff';
+                        confirmationMsg.style.padding = '18px';
+                        confirmationMsg.style.borderRadius = '8px';
+                        confirmationMsg.style.margin = '20px 0';
+                        confirmationMsg.style.textAlign = 'center';
+                        confirmationMsg.style.fontWeight = 'bold';
+                        confirmationMsg.style.fontSize = '1.1rem';
+                        form.parentNode.insertBefore(confirmationMsg, form);
+                        setTimeout(() => confirmationMsg.remove(), 7000);
                         form.reset();
                         updateSelectOptions();
                     } else {
