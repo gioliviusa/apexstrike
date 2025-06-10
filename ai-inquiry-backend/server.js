@@ -12,24 +12,26 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY && process.env.OP
 
 app.post('/api/inquiry', async (req, res) => {
   const formData = req.body;
-  console.log('Received inquiry:', formData);
+  console.log('--- Inquiry Received ---');
+  console.log('Form Data:', formData);
 
   try {
-    // 1. Ask OpenAI to summarize the inquiry
+    console.log('Calling OpenAI...');
     const aiResponse = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // changed from gpt-4 for compatibility
+      model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: 'You are a helpful assistant for a web agency.' },
         { role: 'user', content: `A new inquiry was received: ${JSON.stringify(formData)}` }
       ]
     });
+    console.log('OpenAI response received.');
 
-    // 2. Send an email with the summary
+    console.log('Sending email...');
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER, // your Gmail address
-        pass: process.env.EMAIL_PASS  // your Gmail app password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
       }
     });
 
@@ -39,11 +41,12 @@ app.post('/api/inquiry', async (req, res) => {
       subject: 'New Landing Page Inquiry',
       text: `Inquiry details:\n${JSON.stringify(formData, null, 2)}\n\nAI Summary:\n${aiResponse.choices[0].message.content}`
     });
-    console.log('Email sent for inquiry:', formData);
+    console.log('Email sent for inquiry: { ... }');
 
     res.json({ success: true, message: 'Inquiry received and processed by AI.' });
   } catch (err) {
     console.error('Error processing inquiry:', err);
+    if (err && err.stack) console.error(err.stack);
     res.status(500).json({ success: false, message: 'Error processing inquiry.' });
   }
 });
