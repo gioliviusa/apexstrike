@@ -648,8 +648,11 @@
                     body: JSON.stringify(formData)
                 }).then(response => {
                     if (response.ok) {
-                        // Show a confirmation message to assure the user
+                        // Remove any previous confirmation message
+                        const prevMsg = document.getElementById('confirmationMsg');
+                        if (prevMsg) prevMsg.remove();
                         const confirmationMsg = document.createElement('div');
+                        confirmationMsg.id = 'confirmationMsg';
                         confirmationMsg.textContent = isEnglish 
                             ? 'Your inquiry has been submitted! We have received your request and will contact you within 24 hours.' 
                             : '¡Su consulta ha sido enviada! Hemos recibido su solicitud y nos pondremos en contacto con usted en 24 horas.';
@@ -661,7 +664,9 @@
                         confirmationMsg.style.textAlign = 'center';
                         confirmationMsg.style.fontWeight = 'bold';
                         confirmationMsg.style.fontSize = '1.1rem';
-                        form.parentNode.insertBefore(confirmationMsg, form);
+                        // Insert message inside the form-container, above the form
+                        const formContainer = form.closest('.form-container');
+                        formContainer.insertBefore(confirmationMsg, form);
                         setTimeout(() => confirmationMsg.remove(), 7000);
                         form.reset();
                         updateSelectOptions();

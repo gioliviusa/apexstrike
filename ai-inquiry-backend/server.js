@@ -15,7 +15,7 @@ app.post('/api/inquiry', async (req, res) => {
 
   // 1. Ask OpenAI to summarize the inquiry
   const aiResponse = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-3.5-turbo', // changed from gpt-4 for compatibility
     messages: [
       { role: 'system', content: 'You are a helpful assistant for a web agency.' },
       { role: 'user', content: `A new inquiry was received: ${JSON.stringify(formData)}` }
