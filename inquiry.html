@@ -383,6 +383,7 @@
         #nav {
             display: flex;
             align-items: center;
+            transition: transform 0.3s cubic-bezier(.77,0,.18,1), opacity 0.3s;
         }
 
         #nav ul {
@@ -405,35 +406,114 @@
             color: #22d3ee;
         }
 
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 2rem;
+            color: #fff;
+            margin-left: 20px;
+            z-index: 1101;
+            background: none;
+            border: none;
+            outline: none;
+            transition: color 0.3s;
+        }
+        .menu-toggle .bar {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 6px auto;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(.77,0,.18,1);
+        }
+        .menu-toggle.active .bar:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        .menu-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active .bar:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* Overlay for mobile menu */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.7);
+            z-index: 1100;
+            transition: opacity 0.3s;
+        }
+        .menu-overlay.active {
+            display: block;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .section-header h1 {
                 font-size: 2.5rem;
             }
-            
             .agent-cards {
                 grid-template-columns: 1fr;
             }
-            
             .stats-container {
                 grid-template-columns: 1fr;
             }
-            
             .chart-wrapper {
                 height: 300px;
             }
-
             #nav {
-                display: none;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 80vw;
+                max-width: 340px;
+                height: 100vh;
+                background: rgba(10, 10, 20, 0.98);
+                box-shadow: -2px 0 20px rgba(0, 247, 255, 0.08);
+                transform: translateX(100%);
+                opacity: 0;
+                pointer-events: none;
+                padding: 90px 30px 30px 30px;
+                z-index: 1102;
+                transition: transform 0.3s cubic-bezier(.77,0,.18,1), opacity 0.3s;
+            }
+            #nav.active {
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            #nav ul {
+                flex-direction: column;
+                gap: 28px;
+                width: 100%;
+            }
+            #nav ul li {
+                margin: 0;
+            }
+            .menu-toggle {
+                display: block;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header/Menu Section -->
+    <div class="menu-overlay" id="menuOverlay"></div>
     <header id="header">
         <div class="container header-container">
             <a href="index.html" class="logo"><i class="fas fa-code"></i>Apex<span>Stryke</span></a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
             <nav id="nav">
                 <ul>
                     <li><a href="index.html#home">Home</a></li>
@@ -733,6 +813,44 @@
                 });
             });
         });
+
+        // Mobile Menu Toggle & Overlay
+        const menuToggle = document.getElementById('menuToggle');
+        const nav = document.getElementById('nav');
+        const overlay = document.getElementById('menuOverlay');
+        function openMenu() {
+            nav.classList.add('active');
+            menuToggle.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            menuToggle.setAttribute('aria-expanded', 'true');
+        }
+        function closeMenu() {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+        if(menuToggle && nav && overlay) {
+            menuToggle.addEventListener('click', () => {
+                if(nav.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+            overlay.addEventListener('click', closeMenu);
+            // Close mobile menu when clicking on a nav link
+            const navLinks = document.querySelectorAll('#nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (nav.classList.contains('active')) {
+                        closeMenu();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
