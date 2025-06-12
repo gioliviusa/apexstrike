@@ -349,105 +349,105 @@
             color: transparent;
         }
 
-        /* Header/Menu Styles */
-        #header {
-            background: rgba(15, 23, 42, 0.9);
-            padding: 15px 0;
-            position: relative;
+        /* Header/Menu Styles (match index.html) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            transition: all 0.3s ease;
         }
-
+        header.scrolled {
+            background-color: rgba(10, 10, 20, 0.9);
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.7);
+            padding: 10px 0;
+        }
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
-
         .logo {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
             font-weight: 700;
-            color: #4ade80;
+            color: #00f7ff;
             text-decoration: none;
-        }
-
-        .logo i {
-            color: #22d3ee;
-            margin-right: 8px;
-        }
-
-        #nav {
             display: flex;
             align-items: center;
-            transition: transform 0.3s cubic-bezier(.77,0,.18,1), opacity 0.3s;
         }
-
+        .logo span {
+            color: #ff00e4;
+        }
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
         #nav ul {
             display: flex;
             list-style: none;
         }
-
         #nav ul li {
-            margin: 0 15px;
+            margin-left: 30px;
         }
-
         #nav ul li a {
-            color: #f1f5f9;
+            color: #f0f0f0;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
         }
-
         #nav ul li a:hover {
-            color: #22d3ee;
+            color: #00f7ff;
         }
-
+        #nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #00f7ff;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        #nav ul li a:hover::after {
+            width: 100%;
+        }
         .menu-toggle {
             display: none;
             cursor: pointer;
-            font-size: 2rem;
-            color: #fff;
-            margin-left: 20px;
-            z-index: 1101;
-            background: none;
-            border: none;
-            outline: none;
-            transition: color 0.3s;
+            font-size: 1.5rem;
+            color: #f0f0f0;
         }
-        .menu-toggle .bar {
-            display: block;
-            width: 28px;
-            height: 3px;
-            margin: 6px auto;
-            background: #fff;
-            border-radius: 2px;
-            transition: all 0.3s cubic-bezier(.77,0,.18,1);
-        }
-        .menu-toggle.active .bar:nth-child(1) {
-            transform: translateY(9px) rotate(45deg);
-        }
-        .menu-toggle.active .bar:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.active .bar:nth-child(3) {
-            transform: translateY(-9px) rotate(-45deg);
-        }
-
-        /* Overlay for mobile menu */
-        .menu-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15,23,42,0.7);
-            z-index: 1100;
-            transition: opacity 0.3s;
-        }
-        .menu-overlay.active {
-            display: block;
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            #nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background: rgba(10, 10, 20, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                transition: all 0.3s ease;
+                z-index: 999;
+            }
+            #nav.active {
+                left: 0;
+            }
+            #nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+            #nav ul li {
+                margin: 15px 0;
+            }
         }
 
         /* Responsive Design */
@@ -509,11 +509,9 @@
     <header id="header">
         <div class="container header-container">
             <a href="index.html" class="logo"><i class="fas fa-code"></i>Apex<span>Stryke</span></a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
             <nav id="nav">
                 <ul>
                     <li><a href="index.html#home">Home</a></li>
@@ -814,43 +812,21 @@
             });
         });
 
-        // Mobile Menu Toggle & Overlay
+        // Mobile Menu Toggle (match index.html)
         const menuToggle = document.getElementById('menuToggle');
         const nav = document.getElementById('nav');
-        const overlay = document.getElementById('menuOverlay');
-        function openMenu() {
-            nav.classList.add('active');
-            menuToggle.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            menuToggle.setAttribute('aria-expanded', 'true');
-        }
-        function closeMenu() {
-            nav.classList.remove('active');
-            menuToggle.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-            menuToggle.setAttribute('aria-expanded', 'false');
-        }
-        if(menuToggle && nav && overlay) {
-            menuToggle.addEventListener('click', () => {
-                if(nav.classList.contains('active')) {
-                    closeMenu();
-                } else {
-                    openMenu();
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        // Activate nav links
+        const navLinks = document.querySelectorAll('#nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    nav.classList.remove('active');
                 }
             });
-            overlay.addEventListener('click', closeMenu);
-            // Close mobile menu when clicking on a nav link
-            const navLinks = document.querySelectorAll('#nav ul li a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (nav.classList.contains('active')) {
-                        closeMenu();
-                    }
-                });
-            });
-        }
+        });
     </script>
 </body>
 </html>
