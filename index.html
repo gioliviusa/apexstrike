@@ -484,14 +484,14 @@
             box-shadow: var(--glow);
         }
         
-        /* Contact Section */
-        .contact {
+        /* AI Chat Section */
+        .ai-chat {
             padding: 100px 0;
-            background: linear-gradient(to bottom, var(--dark), rgba(10, 10, 20, 0.9));
+            background: linear-gradient(to bottom, rgba(10, 10, 20, 0.7), var(--dark));
             position: relative;
         }
         
-        .contact-form {
+        .ai-chat-box {
             max-width: 600px;
             margin: 0 auto;
             background: rgba(20, 20, 30, 0.7);
@@ -501,59 +501,37 @@
             border: 1px solid rgba(0, 247, 255, 0.1);
         }
         
-        .form-group {
+        #ai-messages {
+            min-height: 120px;
             margin-bottom: 20px;
+            color: #00f7ff;
+            font-family: 'Roboto', monospace;
         }
         
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: var(--primary);
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
+        #ai-user-input {
+            flex: 1;
             padding: 12px 15px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(0, 247, 255, 0.3);
             border-radius: 5px;
-            color: var(--light);
+            color: #f0f0f0;
             font-family: 'Roboto', sans-serif;
-            transition: all 0.3s ease;
         }
         
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--glow);
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
+        #ai-send-btn {
+            padding: 12px 30px;
             background: linear-gradient(45deg, var(--primary), var(--accent));
             color: var(--dark);
             border: none;
             border-radius: 5px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
         }
         
-        .submit-btn:hover {
+        #ai-send-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 247, 255, 0.4);
         }
@@ -884,34 +862,21 @@
         </div>
     </section>
     
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <!-- AI Chat Section -->
+    <section class="ai-chat" id="ai-chat">
         <div class="container">
             <div class="section-title">
-                <h2>Get In Touch</h2>
+                <h2>Talk to the AI</h2>
             </div>
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+            <div class="ai-chat-box" style="max-width:600px;margin:0 auto;background:rgba(20,20,30,0.7);padding:40px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.3);border:1px solid rgba(0,247,255,0.1);">
+                <div id="ai-messages" style="min-height:120px;margin-bottom:20px;color:#00f7ff;font-family:'Roboto',monospace;"></div>
+                <div style="display:flex;gap:10px;">
+                    <input type="text" id="ai-user-input" placeholder="Type your message..." style="flex:1;padding:12px 15px;background:rgba(0,0,0,0.3);border:1px solid rgba(0,247,255,0.3);border-radius:5px;color:#f0f0f0;font-family:'Roboto',sans-serif;" />
+                    <button id="ai-send-btn" style="padding:12px 30px;background:linear-gradient(45deg,#00f7ff,#7700ff);color:#0a0a14;border:none;border-radius:5px;font-family:'Orbitron',sans-serif;font-weight:700;cursor:pointer;box-shadow:0 5px 15px rgba(0,247,255,0.3);transition:all 0.3s;">Send</button>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
+            </div>
         </div>
     </section>
-    
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -1089,6 +1054,42 @@
                 banner.style.display = 'none';
             });
         })();
+
+        // AI Chat Section Logic
+        const aiSendBtn = document.getElementById('ai-send-btn');
+        const aiUserInput = document.getElementById('ai-user-input');
+        const aiMessages = document.getElementById('ai-messages');
+
+        if (aiSendBtn && aiUserInput && aiMessages) {
+            aiSendBtn.addEventListener('click', async () => {
+                const userMsg = aiUserInput.value.trim();
+                if (!userMsg) return;
+                aiMessages.innerHTML += `<div style='margin-bottom:8px;'><b>You:</b> ${userMsg}</div>`;
+                aiUserInput.value = '';
+                aiSendBtn.disabled = true;
+                aiSendBtn.textContent = 'Thinking...';
+                try {
+                    const response = await fetch('/api/inquiry', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: 'AI Chat', email: 'ai@apexstryke.com', subject: 'AI Chat', message: userMsg })
+                    });
+                    const data = await response.json();
+                    if (data && data.message) {
+                        aiMessages.innerHTML += `<div style='margin-bottom:16px;'><b>AI:</b> ${data.message}</div>`;
+                    } else {
+                        aiMessages.innerHTML += `<div style='color:#ff00e4;'>AI did not respond. Try again.</div>`;
+                    }
+                } catch (err) {
+                    aiMessages.innerHTML += `<div style='color:#ff00e4;'>Error talking to AI.</div>`;
+                }
+                aiSendBtn.disabled = false;
+                aiSendBtn.textContent = 'Send';
+            });
+            aiUserInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') aiSendBtn.click();
+            });
+        }
     </script>
 </body>
 </html>
