@@ -66,6 +66,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            order: 1;
         }
 
         .logo span {
@@ -80,6 +81,7 @@
         #nav ul {
             display: flex;
             list-style: none;
+            order: 3;
         }
 
         #nav ul li {
@@ -119,6 +121,8 @@
             cursor: pointer;
             font-size: 1.5rem;
             color: var(--light);
+            order: 2;
+            margin-left: 20px;
         }
 
         .btn {
@@ -147,13 +151,17 @@
             }
             .header-container {
                 padding: 0 10px;
+                flex-direction: row;
             }
             .logo {
                 font-size: 1.3rem;
+                order: 1;
             }
             .menu-toggle {
                 display: block;
                 z-index: 1101;
+                order: 2;
+                margin-left: auto;
             }
             #nav {
                 position: fixed;
@@ -168,6 +176,7 @@
                 transition: left 0.3s cubic-bezier(.77,0,.18,1);
                 z-index: 1102;
                 padding: 40px 20px 20px 20px;
+                order: 3;
             }
             #nav.active {
                 left: 0;
@@ -479,25 +488,6 @@
 <body>
     <!-- Overlay for mobile menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
-    <!-- Header -->
-    <header id="header">
-        <div class="container header-container">
-            <a href="index.html" class="logo"><i class="fas fa-code"></i>Apex<span>Stryke</span></a>
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav id="nav">
-                <ul>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#projects">Projects</a></li>
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="inquiry.html" target="_blank" style="color:var(--secondary); font-weight:700;">Landing Page Inquiry</a></li>
-                    <li><a href="ai-chat.html" target="_blank" style="color:#4a00e0; font-weight:700;">AI Chat Assistant</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
     
     <div class="container">
         <div class="header">
@@ -639,7 +629,7 @@
                     fetch('http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: "Hello AI" })
+                        body: JSON.stringify({ message })
                     })
                     .then(res => res.json())
                     .then(data => {
