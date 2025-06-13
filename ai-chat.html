@@ -593,22 +593,6 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
             
-            // Function to simulate AI response
-            function getAIResponse(userMessage) {
-                // In a real implementation, this would call your n8n webhook
-                // For demonstration, we'll simulate responses
-                const responses = [
-                    "I understand your question about integrating with n8n. The process involves setting up a webhook trigger and connecting it to an AI agent.",
-                    "For apexstryke, I recommend using a REST API endpoint to connect with n8n. You can find documentation on our developer portal.",
-                    "That's an interesting question! Based on my knowledge, the best approach would be to use n8n's HTTP Request node to communicate with your AI service.",
-                    "I can help you troubleshoot n8n workflows. Could you provide more details about the issue you're facing?",
-                    "The AI integration process typically takes 1-2 hours to set up initially. Would you like me to guide you through the steps?"
-                ];
-                
-                // Return a random response for demo purposes
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-            
             // Function to show typing indicator
             function showTyping() {
                 typingIndicator.style.display = 'block';
@@ -627,16 +611,31 @@
                     // Add user message
                     addMessage(message, true);
                     userInput.value = '';
-                    
+
                     // Show typing indicator
                     showTyping();
-                    
-                    // Simulate API call to n8n (in real implementation, use fetch to your webhook)
-                    setTimeout(() => {
+
+                    // Real API call to n8n webhook
+                    fetch('http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: "Hello AI" })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
                         hideTyping();
-                        const response = getAIResponse(message);
-                        addMessage(response);
-                    }, 1500);
+                        if (data && data.response) {
+                            addMessage(data.response);
+                        } else if (typeof data === 'string') {
+                            addMessage(data);
+                        } else {
+                            addMessage('AI did not return a valid response.');
+                        }
+                    })
+                    .catch(() => {
+                        hideTyping();
+                        addMessage('Sorry, there was a problem connecting to the AI agent.');
+                    });
                 }
             }
             
