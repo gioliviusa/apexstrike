@@ -142,10 +142,19 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 12px 0 12px 0;
+            }
+            .header-container {
+                padding: 0 10px;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
             .menu-toggle {
                 display: block;
+                z-index: 1101;
             }
-
             #nav {
                 position: fixed;
                 top: 60px;
@@ -160,21 +169,30 @@
                 z-index: 1102;
                 padding: 40px 20px 20px 20px;
             }
-
             #nav.active {
                 left: 0;
             }
-
             #nav ul {
                 flex-direction: column;
                 padding: 0;
                 gap: 24px;
                 width: 100%;
             }
-
             #nav ul li {
                 margin: 0;
             }
+        }
+        /* Overlay for mobile menu */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.7);
+            z-index: 1100;
+            transition: opacity 0.3s;
+        }
+        .menu-overlay.active {
+            display: block;
         }
 
         .container {
@@ -459,6 +477,8 @@
     </style>
 </head>
 <body>
+    <!-- Overlay for mobile menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
     <!-- Header -->
     <header id="header">
         <div class="container header-container">
@@ -654,21 +674,43 @@
             }, 3000);
         });
         
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle & Overlay
         const menuToggle = document.getElementById('menuToggle');
         const nav = document.getElementById('nav');
-        menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('active');
-        });
-        // Activate nav links
-        const navLinks = document.querySelectorAll('#nav ul li a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    nav.classList.remove('active');
+        const overlay = document.getElementById('menuOverlay');
+        function openMenu() {
+            nav.classList.add('active');
+            menuToggle.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            menuToggle.setAttribute('aria-expanded', 'true');
+        }
+        function closeMenu() {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+        if(menuToggle && nav && overlay) {
+            menuToggle.addEventListener('click', () => {
+                if(nav.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
                 }
             });
-        });
+            overlay.addEventListener('click', closeMenu);
+            // Close mobile menu when clicking on a nav link
+            const navLinks = document.querySelectorAll('#nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (nav.classList.contains('active')) {
+                        closeMenu();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
