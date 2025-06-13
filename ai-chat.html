@@ -615,7 +615,7 @@
             }
             
             // Send message function
-            function sendMessage() {
+            async function sendMessage() {
                 const message = userInput.value.trim();
                 if (message) {
                     // Add user message
@@ -626,26 +626,21 @@
                     showTyping();
 
                     // Real API call to n8n webhook
-                    fetch('http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat', {
+                    const res = await fetch('https://n8n-latest-zqre.onrender.com/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ message })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        hideTyping();
-                        if (data && data.response) {
-                            addMessage(data.response);
-                        } else if (typeof data === 'string') {
-                            addMessage(data);
-                        } else {
-                            addMessage('AI did not return a valid response.');
-                        }
-                    })
-                    .catch(() => {
-                        hideTyping();
-                        addMessage('Sorry, there was a problem connecting to the AI agent.');
                     });
+                    const data = await res.json();
+                    
+                    hideTyping();
+                    if (data && data.response) {
+                        addMessage(data.response);
+                    } else if (typeof data === 'string') {
+                        addMessage(data);
+                    } else {
+                        addMessage('AI did not return a valid response.');
+                    }
                 }
             }
             
