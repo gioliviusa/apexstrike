@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>apexstryke AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.8;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .widget-container {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            animation: scaleIn 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            height: 650px;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.7s ease;
+            display: flex;
+            flex-direction: column;
+            height: 650px;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .chat-header {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-header i {
+            font-size: 1.5rem;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .chat-header .status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            background: rgba(30, 41, 59, 0.8);
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: rgba(30, 41, 59, 0.8);
+            color: #e2e8f0;
+            padding: 15px 20px;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #8b5cf6;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 1s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .chat-input {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(30, 41, 59, 0.8);
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .chat-input input::placeholder {
+            color: rgba(226, 232, 240, 0.5);
+        }
+        
+        .chat-input input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        
+        .chat-input button {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chat-input button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+        
+        .info-panel h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #8b5cf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-panel h3 i {
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .config-box {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .config-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #8b5cf6;
+        }
+        
+        .config-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .config-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #60a5fa;
+        }
+        
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #60a5fa;
+        }
+        
+        .features {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .features h4 {
+            color: #8b5cf6;
+            margin: 20px 0 15px;
+            font-size: 1.2rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .feature-card {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #8b5cf6;
+        }
+        
+        .feature-card i {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #8b5cf6;
+        }
+        
+        .feature-card h5 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+        
+        .feature-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .widget-container, .info-panel {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>apexstryke AI Assistant</h1>
+            <p>Powered by n8n integration for intelligent, automated responses</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="widget-container">
+                <div class="chat-header">
+                    <i class="fas fa-robot"></i>
+                    <h2>AI Assistant</h2>
+                    <div class="status">
+                        <div class="status-dot"></div>
+                        <span>Connected</span>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai-message">
+                        Hello! I'm your apexstryke AI assistant. I'm connected to your n8n workflow and ready to help.
+                    </div>
+                    <div class="message ai-message">
+                        You can ask me anything about your projects, integrations, or technical questions. How can I assist you today?
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Type your message here...">
+                    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <h3><i class="fas fa-cogs"></i> n8n Integration</h3>
+                
+                <div class="config-box">
+                    <div class="config-header">
+                        <i class="fas fa-link"></i>
+                        <h4>Connected Webhook</h4>
+                    </div>
+                    <div class="config-content">
+                        <p>This chat widget is connected to your n8n AI agent via the following webhook URL:</p>
+                        <div class="url-display">
+                            http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat
+                        </div>
+                        <p>All messages are sent to this endpoint for processing by your AI agent.</p>
+                    </div>
+                </div>
+                
+                <div class="features">
+                    <h4>Key Features</h4>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-bolt"></i>
+                            <h5>Real-time Responses</h5>
+                            <p>Get AI-powered answers instantly with low latency processing</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-cog"></i>
+                            <h5>n8n Integration</h5>
+                            <p>Seamless connection with your n8n workflows and AI agents</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h5>Secure Communication</h5>
+                            <p>All data is encrypted and processed securely</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-history"></i>
+                            <h5>Conversation History</h5>
+                            <p>Maintain context throughout your conversation</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h5>Fully Responsive</h5>
+                            <p>Works perfectly on all device sizes</p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-brain"></i>
+                            <h5>Intelligent AI</h5>
+                            <p>Powered by advanced language models via n8n</p>
+                        </div>
+                    </div>
+                    
+                    <h4>How It Works</h4>
+                    <div class="feature-card">
+                        <p>1. Your message is sent to the n8n webhook URL</p>
+                        <p>2. n8n processes the request through your AI workflow</p>
+                        <p>3. The AI generates a response based on your instructions</p>
+                        <p>4. The response is returned to this chat interface</p>
+                    </div>
+                    
+                    <h4>Tips for Best Results</h4>
+                    <div class="feature-card">
+                        <p><i class="fas fa-lightbulb"></i> Be specific with your questions</p>
+                        <p><i class="fas fa-lightbulb"></i> Provide context when needed</p>
+                        <p><i class="fas fa-lightbulb"></i> Break complex requests into steps</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+            const typingIndicator = document.getElementById('typing-indicator');
+            
+            // n8n configuration
+            const n8nConfig = {
+                webhookUrl: 'http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat'
+            };
+            
+            // Add a message to the chat
+            function addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Show typing indicator
+            function showTyping() {
+                typingIndicator.style.display = 'block';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Hide typing indicator
+            function hideTyping() {
+                typingIndicator.style.display = 'none';
+            }
+            
+            // Send message to n8n
+            async function sendToN8n(message) {
+                try {
+                    const response = await fetch(n8nConfig.webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    return data.response || data.message || "I got your message but didn't receive a response from the AI agent.";
+                } catch (error) {
+                    console.error('Error sending to n8n:', error);
+                    return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+                }
+            }
+            
+            // Send message function
+            async function sendMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    // Add user message
+                    addMessage(message, true);
+                    userInput.value = '';
+                    userInput.focus();
+                    
+                    // Show typing indicator
+                    showTyping();
+                    
+                    try {
+                        // Send to n8n and get response
+                        const aiResponse = await sendToN8n(message);
+                        
+                        // Hide typing indicator
+                        hideTyping();
+                        
+                        if (aiResponse) {
+                            addMessage(aiResponse);
+                        }
+                    } catch (error) {
+                        hideTyping();
+                        addMessage(`Error: ${error.message}`);
+                    }
+                }
+            }
+            
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Demo message after 2 seconds
+            setTimeout(() => {
+                addMessage("Try asking: 'What can you help me with?' or 'Explain how the n8n integration works'");
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
