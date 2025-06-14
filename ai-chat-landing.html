@@ -386,14 +386,88 @@
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
+                gap: 16px;
             }
-            
             .header h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
-            
             .widget-container, .info-panel {
                 min-width: 100%;
+                height: auto;
+                border-radius: 12px;
+                padding: 0;
+            }
+            .widget-container {
+                height: 480px;
+                min-width: 0;
+            }
+            .info-panel {
+                padding: 16px;
+                height: auto;
+            }
+            .chat-header {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            .chat-messages {
+                padding: 10px;
+                font-size: 0.98rem;
+                min-height: 180px;
+                max-height: 220px;
+            }
+            .chat-input {
+                padding: 10px;
+            }
+            .chat-input input {
+                padding: 10px 14px;
+                font-size: 0.98rem;
+            }
+            .chat-input button {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            .features {
+                padding-right: 0;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 0;
+            }
+            .header {
+                padding: 10px 4px 10px 4px;
+            }
+            .main-content {
+                gap: 8px;
+            }
+            .widget-container, .info-panel {
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .chat-header {
+                padding: 8px;
+            }
+            .chat-messages {
+                padding: 6px;
+                font-size: 0.95rem;
+                min-height: 120px;
+                max-height: 160px;
+            }
+            .chat-input {
+                padding: 6px;
+            }
+            .chat-input input {
+                padding: 7px 10px;
+                font-size: 0.95rem;
+            }
+            .chat-input button {
+                width: 32px;
+                height: 32px;
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -401,7 +475,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>apexstryke AI Assistant</h1>
+            <h1>ApexStryke AI Assistant</h1>
             <p>Powered by n8n integration for intelligent, automated responses</p>
         </div>
         
@@ -448,7 +522,7 @@
                     <div class="config-content">
                         <p>This chat widget is connected to your n8n AI agent via the following webhook URL:</p>
                         <div class="url-display">
-                            http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat
+                            http://localhost:5678/webhook/
                         </div>
                         <p>All messages are sent to this endpoint for processing by your AI agent.</p>
                     </div>
