@@ -451,31 +451,32 @@
         }
         @media (max-width: 600px) {
             .chat-section {
-                width: 98vw;
-                height: 92vh;
-                margin: 1vw auto;
-                border-radius: 14px;
+                width: 99vw;
+                height: 98vh;
+                margin: 0 auto;
+                border-radius: 10px;
                 box-shadow: 0 2px 12px rgba(0,0,0,0.13);
-                padding: 10px 0 10px 0;
+                padding: 4px 0 4px 0;
             }
             .chat-container {
+                flex: 1;
                 padding: 0 0 0 0;
-                width: 98vw;
-                height: 92vh;
-                margin: 1vw auto;
-                border-radius: 14px;
+                min-height: 85vh;
+                max-height: 92vh;
+                display: flex;
+                flex-direction: column;
             }
             .chat-messages {
-                min-height: 60vh;
-                max-height: 68vh;
-                font-size: 1.08rem;
+                min-height: 70vh;
+                max-height: 80vh;
+                font-size: 1.12rem;
                 padding: 4px 2px;
                 gap: 10px;
                 overflow-y: auto;
             }
             .message {
-                padding: 10px 10px;
-                font-size: 1.01em;
+                padding: 12px 12px;
+                font-size: 1.08em;
                 border-radius: 13px;
             }
         }
