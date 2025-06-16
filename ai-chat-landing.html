@@ -438,6 +438,10 @@
             .chat-section, .workflow-section {
                 min-width: 100%;
             }
+            .chat-section {
+                height: 80vh;
+                max-height: 90vh;
+            }
             .chat-messages {
                 min-height: 45vh;
                 max-height: 60vh;
@@ -446,9 +450,13 @@
             }
         }
         @media (max-width: 600px) {
+            .chat-section {
+                height: 90vh;
+                max-height: 98vh;
+            }
             .chat-messages {
-                min-height: 55vh;
-                max-height: 70vh;
+                min-height: 65vh;
+                max-height: 80vh;
                 font-size: 1.12rem;
                 padding: 18px 4px;
             }
