@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>apexstryke AI Assistant</title>
+    <title>apexstrike AI Assistant - GitHub Pages Deployment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -13,116 +13,89 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        :root {
+            --apex-purple: #8b5cf6;
+            --apex-purple-dark: #7c3aed;
+            --apex-indigo: #6366f1;
+            --apex-bg-dark: #0f172a;
+            --apex-bg-medium: #1e293b;
+            --apex-bg-light: #334155;
+            --apex-text-light: #e2e8f0;
+            --apex-text-muted: #94a3b8;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+        
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: linear-gradient(135deg, var(--apex-bg-dark), var(--apex-bg-medium));
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
-            color: #e2e8f0;
+            color: var(--apex-text-light);
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            margin: 0 auto;
         }
         
-        .header {
+        header {
             text-align: center;
-            padding: 20px;
-            animation: fadeInDown 0.8s ease;
+            padding: 30px 0;
+            margin-bottom: 30px;
         }
         
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--apex-indigo), var(--apex-purple));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
-        .header p {
+        .subtitle {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto;
-            opacity: 0.8;
+            opacity: 0.85;
+            line-height: 1.6;
         }
         
-        .main-content {
+        .github-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 8px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .content {
             display: flex;
             gap: 30px;
             flex-wrap: wrap;
+            margin-bottom: 40px;
         }
         
-        .widget-container {
+        .chat-section {
             flex: 1;
-            min-width: 350px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
+            min-width: 400px;
+            background: rgba(30, 41, 59, 0.8);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             border: 1px solid rgba(99, 102, 241, 0.3);
-            animation: scaleIn 0.6s ease;
             display: flex;
             flex-direction: column;
-            height: 650px;
-        }
-        
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .info-panel {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: slideInRight 0.7s ease;
-            display: flex;
-            flex-direction: column;
-            height: 650px;
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            height: 700px;
         }
         
         .chat-header {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            background: linear-gradient(90deg, var(--apex-indigo), var(--apex-purple));
             color: white;
             padding: 20px;
             display: flex;
@@ -131,45 +104,54 @@
         }
         
         .chat-header i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
         
         .chat-header h2 {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 600;
         }
         
-        .chat-header .status {
+        .status-indicator {
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 15px;
+            border-radius: 20px;
             font-size: 0.9rem;
         }
         
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: #10b981;
+            background: var(--success);
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.5);
         }
         
         .chat-messages {
             flex: 1;
-            overflow-y: auto;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background: rgba(15, 23, 42, 0.5);
         }
         
         .message {
             max-width: 85%;
             padding: 15px 20px;
             border-radius: 18px;
-            line-height: 1.5;
-            position: relative;
+            line-height: 1.6;
             animation: fadeIn 0.3s ease;
         }
         
@@ -179,35 +161,35 @@
         }
         
         .user-message {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            background: linear-gradient(90deg, var(--apex-indigo), var(--apex-purple));
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 5px;
         }
         
         .ai-message {
-            background: rgba(30, 41, 59, 0.8);
-            color: #e2e8f0;
+            background: rgba(30, 41, 59, 0.95);
+            color: var(--apex-text-light);
             align-self: flex-start;
             border-bottom-left-radius: 5px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.25);
         }
         
         .typing-indicator {
             display: none;
             align-self: flex-start;
-            background: rgba(30, 41, 59, 0.8);
-            color: #e2e8f0;
+            background: rgba(30, 41, 59, 0.95);
+            color: var(--apex-text-light);
             padding: 15px 20px;
             border-radius: 18px;
             border-bottom-left-radius: 5px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.25);
         }
         
         .typing-indicator span {
             height: 8px;
             width: 8px;
-            background: #8b5cf6;
+            background: var(--apex-purple);
             border-radius: 50%;
             display: inline-block;
             margin-right: 5px;
@@ -227,41 +209,41 @@
             50% { opacity: 1; transform: scale(1); }
         }
         
-        .chat-input {
+        .chat-input-area {
             padding: 20px;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             display: flex;
             gap: 15px;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            border-top: 1px solid rgba(99, 102, 241, 0.15);
         }
         
-        .chat-input input {
+        .chat-input {
             flex: 1;
             padding: 15px 20px;
             border: none;
             border-radius: 50px;
-            background: rgba(30, 41, 59, 0.8);
-            color: #e2e8f0;
+            background: rgba(30, 41, 59, 0.95);
+            color: var(--apex-text-light);
             font-size: 1rem;
             outline: none;
             border: 1px solid rgba(99, 102, 241, 0.3);
         }
         
-        .chat-input input::placeholder {
+        .chat-input::placeholder {
             color: rgba(226, 232, 240, 0.5);
         }
         
-        .chat-input input:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        .chat-input:focus {
+            border-color: var(--apex-indigo);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
         }
         
-        .chat-input button {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        .send-btn {
+            background: linear-gradient(90deg, var(--apex-indigo), var(--apex-purple));
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.2rem;
@@ -271,334 +253,342 @@
             justify-content: center;
         }
         
-        .chat-input button:hover {
+        .send-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
         
-        .info-panel h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: #8b5cf6;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .info-panel h3 i {
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .config-box {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+        .workflow-section {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(99, 102, 241, 0.3);
         }
         
-        .config-header {
+        .workflow-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--apex-purple);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .workflow-details {
+            background: rgba(30, 41, 59, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.35);
+        }
+        
+        .github-url {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 18px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            margin: 25px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            color: #60a5fa;
+            word-break: break-all;
+        }
+        
+        .connection-test {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .test-btn {
+            background: linear-gradient(90deg, var(--apex-indigo), var(--apex-purple));
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .test-result {
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .test-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .test-failure {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--error);
+            color: #fecaca;
+        }
+        
+        .troubleshooting {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border-left: 5px solid var(--warning);
+        }
+        
+        .troubleshooting h4 {
+            color: var(--warning);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
-            color: #8b5cf6;
         }
         
-        .config-content {
-            font-size: 0.95rem;
+        .troubleshooting ul {
+            padding-left: 25px;
+        }
+        
+        .troubleshooting li {
+            margin-bottom: 12px;
             line-height: 1.6;
         }
         
-        .config-content code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #60a5fa;
+        .troubleshooting li strong {
+            color: var(--apex-purple);
         }
         
-        .url-display {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin: 15px 0;
-            overflow-x: auto;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #60a5fa;
-        }
-        
-        .features {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        .features h4 {
-            color: #8b5cf6;
-            margin: 20px 0 15px;
-            font-size: 1.2rem;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 10px;
-        }
-        
-        .feature-card {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 20px;
+        .github-setup {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 25px;
             border-radius: 15px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            transition: transform 0.3s, border-color 0.3s;
+            margin-top: 30px;
+            border-left: 5px solid var(--success);
         }
         
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: #8b5cf6;
-        }
-        
-        .feature-card i {
-            font-size: 1.8rem;
+        .github-setup h4 {
+            color: var(--success);
             margin-bottom: 15px;
-            color: #8b5cf6;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .feature-card h5 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #e2e8f0;
+        .github-setup ol {
+            padding-left: 25px;
+            counter-reset: step-counter;
         }
         
-        .feature-card p {
+        .github-setup li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .github-setup li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--apex-purple);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.9rem;
-            opacity: 0.8;
-            line-height: 1.5;
+            font-weight: bold;
         }
         
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .widget-container, .info-panel {
-                min-width: 100%;
-                height: auto;
-                border-radius: 12px;
-                padding: 0;
-            }
-            .widget-container {
-                height: 70vh;
-                min-width: 0;
-                max-height: 80vh;
-            }
-            .chat-messages {
-                min-height: 40vh;
-                max-height: 55vh;
-                font-size: 1.08rem;
-            }
-            .chat-header {
-                padding: 12px;
-                font-size: 1rem;
-            }
-            .chat-input {
-                padding: 10px;
-            }
-            .chat-input input {
-                padding: 14px 16px;
-                font-size: 1.08rem;
-            }
-            .chat-input button {
-                width: 44px;
-                height: 44px;
-                font-size: 1.1rem;
-            }
-            .features {
-                padding-right: 0;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--apex-text-muted);
+            font-size: 1rem;
         }
-        @media (max-width: 480px) {
-            .container {
-                padding: 0;
+        
+        @media (max-width: 900px) {
+            .content {
+                flex-direction: column;
             }
-            .header {
-                padding: 10px 4px 10px 4px;
+            
+            h1 {
+                font-size: 2.3rem;
             }
-            .main-content {
-                gap: 8px;
-            }
-            .widget-container, .info-panel {
-                border-radius: 0;
-                box-shadow: none;
-            }
-            .widget-container {
-                height: 85vh;
-                max-height: 95vh;
-            }
-            .chat-header {
-                padding: 8px;
-            }
-            .chat-messages {
-                min-height: 55vh;
-                max-height: 70vh;
-                font-size: 1.05rem;
-                padding: 8px;
-            }
-            .chat-input {
-                padding: 6px;
-            }
-            .chat-input input {
-                padding: 12px 10px;
-                font-size: 1.05rem;
-            }
-            .chat-input button {
-                width: 38px;
-                height: 38px;
-                font-size: 1.05rem;
+            
+            .chat-section, .workflow-section {
+                min-width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>ApexStryke AI Assistant</h1>
-            <p>Powered by n8n integration for intelligent, automated responses</p>
-        </div>
+        <header>
+            <h1>apexstrike AI Assistant</h1>
+            <p class="subtitle">Now deployed on GitHub Pages for reliable AI-powered responses</p>
+            <div class="github-badge">
+                <i class="fab fa-github"></i> Hosted on GitHub Pages - apexstryke.com
+            </div>
+        </header>
         
-        <div class="main-content">
-            <div class="widget-container">
+        <div class="content">
+            <div class="chat-section">
                 <div class="chat-header">
                     <i class="fas fa-robot"></i>
-                    <h2>AI Assistant</h2>
-                    <div class="status">
-                        <div class="status-dot"></div>
-                        <span>Connected</span>
+                    <h2>AI Chat Assistant</h2>
+                    <div class="status-indicator">
+                        <div class="status-dot" id="status-dot"></div>
+                        <span id="status-text">Connected</span>
                     </div>
                 </div>
                 
-                <div class="chat-messages" id="chat-messages">
-                    <div class="message ai-message">
-                        Hello! I'm your apexstryke AI assistant. I'm connected to your n8n workflow and ready to help.
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message ai-message">
+                            Hello! I'm your apexstrike AI assistant, now deployed on GitHub Pages.
+                        </div>
+                        <div class="message ai-message">
+                            This deployment method provides fast, reliable access to users worldwide.
+                        </div>
+                        <div class="message ai-message">
+                            Try asking me something like: "What is apexstrike?" or "How does this deployment work?"
+                        </div>
                     </div>
-                    <div class="message ai-message">
-                        You can ask me anything about your projects, integrations, or technical questions. How can I assist you today?
+                    
+                    <div class="typing-indicator" id="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
                 </div>
                 
-                <div class="typing-indicator" id="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                
-                <div class="chat-input">
-                    <input type="text" id="user-input" placeholder="Type your message here...">
-                    <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                <div class="chat-input-area">
+                    <input type="text" id="user-input" class="chat-input" placeholder="Type your message here...">
+                    <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
             
-            <div class="info-panel">
-                <h3><i class="fas fa-cogs"></i> n8n Integration</h3>
+            <div class="workflow-section">
+                <h3><i class="fas fa-cogs"></i> GitHub Pages Deployment</h3>
                 
-                <div class="config-box">
-                    <div class="config-header">
-                        <i class="fas fa-link"></i>
-                        <h4>Connected Webhook</h4>
+                <div class="workflow-details">
+                    <p>Your site is deployed at:</p>
+                    <div class="github-url" id="github-url">
+                        https://apexstryke.com
                     </div>
-                    <div class="config-content">
-                        <p>This chat widget is connected to your n8n AI agent via the following webhook URL:</p>
-                        <div class="url-display">
-                            http://localhost:5678/webhook/
-                        </div>
-                        <p>All messages are sent to this endpoint for processing by your AI agent.</p>
-                    </div>
-                </div>
-                
-                <div class="features">
-                    <h4>Key Features</h4>
-                    <div class="feature-grid">
-                        <div class="feature-card">
-                            <i class="fas fa-bolt"></i>
-                            <h5>Real-time Responses</h5>
-                            <p>Get AI-powered answers instantly with low latency processing</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fas fa-cog"></i>
-                            <h5>n8n Integration</h5>
-                            <p>Seamless connection with your n8n workflows and AI agents</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fas fa-shield-alt"></i>
-                            <h5>Secure Communication</h5>
-                            <p>All data is encrypted and processed securely</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fas fa-history"></i>
-                            <h5>Conversation History</h5>
-                            <p>Maintain context throughout your conversation</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fas fa-mobile-alt"></i>
-                            <h5>Fully Responsive</h5>
-                            <p>Works perfectly on all device sizes</p>
-                        </div>
-                        <div class="feature-card">
-                            <i class="fas fa-brain"></i>
-                            <h5>Intelligent AI</h5>
-                            <p>Powered by advanced language models via n8n</p>
+                    
+                    <div class="connection-test">
+                        <button class="test-btn" id="test-btn">
+                            <i class="fas fa-vial"></i> Test GitHub Pages Connection
+                        </button>
+                        
+                        <div class="test-result" id="test-result">
+                            <!-- Results will appear here -->
                         </div>
                     </div>
                     
-                    <h4>How It Works</h4>
-                    <div class="feature-card">
-                        <p>1. Your message is sent to the n8n webhook URL</p>
-                        <p>2. n8n processes the request through your AI workflow</p>
-                        <p>3. The AI generates a response based on your instructions</p>
-                        <p>4. The response is returned to this chat interface</p>
+                    <div class="github-setup">
+                        <h4><i class="fab fa-github"></i> Deployment Steps</h4>
+                        <ol>
+                            <li>Create a GitHub repository named <strong>apexstryke.github.io</strong></li>
+                            <li>Upload this HTML file as <strong>index.html</strong> to the main branch</li>
+                            <li>Go to repository Settings → Pages → Select source branch</li>
+                            <li>Set custom domain to <strong>apexstryke.com</strong> in GitHub Pages settings</li>
+                            <li>Configure DNS settings with your domain provider to point to GitHub Pages</li>
+                            <li>Wait for DNS propagation (up to 24 hours)</li>
+                        </ol>
                     </div>
                     
-                    <h4>Tips for Best Results</h4>
-                    <div class="feature-card">
-                        <p><i class="fas fa-lightbulb"></i> Be specific with your questions</p>
-                        <p><i class="fas fa-lightbulb"></i> Provide context when needed</p>
-                        <p><i class="fas fa-lightbulb"></i> Break complex requests into steps</p>
+                    <div class="troubleshooting">
+                        <h4><i class="fas fa-tools"></i> Troubleshooting Tips</h4>
+                        <ul>
+                            <li><strong>DNS Propagation</strong> - Changes may take up to 24 hours to take effect</li>
+                            <li><strong>Custom Domain</strong> - Verify domain is set in GitHub Pages settings</li>
+                            <li><strong>HTTPS</strong> - GitHub Pages provides automatic HTTPS for custom domains</li>
+                            <li><strong>Repository Name</strong> - Must be exactly <code>username.github.io</code></li>
+                            <li><strong>Test Deployment</strong>:
+                                <div class="github-url" style="margin-top: 10px; font-size: 0.85rem;">
+                                    curl -I https://apexstryke.com
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <footer>
+            <p>apexstrike AI Assistant &copy; 2023 | Powered by GitHub Pages</p>
+        </footer>
     </div>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatMessages = document.getElementById('chat-messages');
             const userInput = document.getElementById('user-input');
             const sendBtn = document.getElementById('send-btn');
             const typingIndicator = document.getElementById('typing-indicator');
+            const testBtn = document.getElementById('test-btn');
+            const testResult = document.getElementById('test-result');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
             
-            // n8n configuration
-            const n8nConfig = {
-                webhookUrl: 'http://localhost:5678/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat'
-            };
+            // Deployment URL
+            const deploymentUrl = 'https://apexstryke.com';
+            
+            // Update status indicator
+            function updateStatus(status, message) {
+                statusDot.className = 'status-dot';
+                
+                if (status === 'connected') {
+                    statusDot.style.background = 'var(--success)';
+                    statusText.textContent = 'Connected';
+                } else if (status === 'error') {
+                    statusDot.style.background = 'var(--error)';
+                    statusText.textContent = message || 'Connection Failed';
+                } else if (status === 'testing') {
+                    statusDot.style.background = 'var(--warning)';
+                    statusText.textContent = message || 'Testing...';
+                } else {
+                    statusText.textContent = message;
+                }
+            }
             
             // Add a message to the chat
-            function addMessage(message, isUser = false) {
+            function addMessage(message, isUser = false, isError = false) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message');
-                messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+                
+                if (isError) {
+                    messageDiv.classList.add('error-message');
+                } else if (isUser) {
+                    messageDiv.classList.add('user-message');
+                } else {
+                    messageDiv.classList.add('ai-message');
+                }
+                
                 messageDiv.textContent = message;
                 chatMessages.appendChild(messageDiv);
                 
@@ -617,29 +607,68 @@
                 typingIndicator.style.display = 'none';
             }
             
-            // Send message to n8n
-            async function sendToN8n(message) {
+            // Test connection to GitHub Pages deployment
+            async function testConnection() {
+                updateStatus('testing', 'Testing...');
+                testResult.style.display = 'block';
+                testResult.className = 'test-result';
+                testResult.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing connection to GitHub Pages...';
+                
                 try {
-                    const response = await fetch(n8nConfig.webhookUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            timestamp: new Date().toISOString()
-                        })
+                    // Test if the site is reachable
+                    const response = await fetch(deploymentUrl, {
+                        method: 'HEAD',
+                        mode: 'cors',
+                        cache: 'no-cache'
                     });
                     
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     
-                    const data = await response.json();
-                    return data.response || data.message || "I got your message but didn't receive a response from the AI agent.";
+                    testResult.className = 'test-result test-success';
+                    testResult.innerHTML = `
+                        <i class="fas fa-check-circle"></i> Connection successful!
+                        <div style="margin-top: 15px;">
+                            <p>GitHub Pages responded with status: ${response.status}</p>
+                            <p>Your site is live and accessible to users worldwide.</p>
+                        </div>
+                    `;
+                    
+                    updateStatus('connected', 'Connected');
+                    addMessage("✅ Connection to GitHub Pages successful! Site is live.");
                 } catch (error) {
-                    console.error('Error sending to n8n:', error);
-                    return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+                    testResult.className = 'test-result test-failure';
+                    testResult.innerHTML = `
+                        <i class="fas fa-exclamation-circle"></i> Connection failed: ${error.message}
+                        <div style="margin-top: 15px; text-align: left;">
+                            <p>Possible solutions:</p>
+                            <ul style="padding-left: 20px; margin-top: 10px;">
+                                <li>Verify your repository name is correct</li>
+                                <li>Check DNS configuration for apexstryke.com</li>
+                                <li>Ensure index.html is in the root of your repository</li>
+                                <li>Wait for DNS propagation (can take up to 24 hours)</li>
+                            </ul>
+                        </div>
+                    `;
+                    
+                    updateStatus('error', 'Connection Failed');
+                    addMessage(`Connection test failed: ${error.message}`, false, true);
+                }
+            }
+            
+            // Replace with your n8n webhook URL
+            async function getAIResponse(message) {
+                try {
+                    const response = await fetch('https://n8n-latest-zqre.onrender.com/webhook/2bbdef3c-5eae-4fe2-8fa7-61e6cc47edcb/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message })
+                    });
+                    const data = await response.json();
+                    return data.response || data.message || "No response from AI agent.";
+                } catch (error) {
+                    return "Error contacting AI agent: " + error.message;
                 }
             }
             
@@ -651,24 +680,13 @@
                     addMessage(message, true);
                     userInput.value = '';
                     userInput.focus();
-                    
                     // Show typing indicator
                     showTyping();
-                    
-                    try {
-                        // Send to n8n and get response
-                        const aiResponse = await sendToN8n(message);
-                        
-                        // Hide typing indicator
-                        hideTyping();
-                        
-                        if (aiResponse) {
-                            addMessage(aiResponse);
-                        }
-                    } catch (error) {
-                        hideTyping();
-                        addMessage(`Error: ${error.message}`);
-                    }
+                    // Get AI response from n8n
+                    const aiResponse = await getAIResponse(message);
+                    // Add AI response
+                    addMessage(aiResponse);
+                    hideTyping();
                 }
             }
             
@@ -681,10 +699,12 @@
                 }
             });
             
-            // Demo message after 2 seconds
+            testBtn.addEventListener('click', testConnection);
+            
+            // Initial connection test
             setTimeout(() => {
-                addMessage("Try asking: 'What can you help me with?' or 'Explain how the n8n integration works'");
-            }, 2000);
+                testConnection();
+            }, 1000);
         });
     </script>
 </body>
