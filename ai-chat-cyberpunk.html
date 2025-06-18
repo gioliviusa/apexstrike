@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk AI Chat</title>
+    <style>
+        /* Cyberpunk color palette */
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --dark-bg: #0d0221;
+            --darker-bg: #050110;
+            --grid-color: rgba(5, 217, 232, 0.1);
+        }
+        
+        body {
+            background-color: var(--darker-bg);
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Cyberpunk chat icon */
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background-color: var(--dark-bg);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-purple),
+                inset 0 0 10px var(--neon-pink);
+            border: 2px solid var(--neon-blue);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 
+                    0 0 10px var(--neon-blue),
+                    0 0 20px var(--neon-purple),
+                    inset 0 0 10px var(--neon-pink);
+            }
+            100% {
+                box-shadow: 
+                    0 0 15px var(--neon-blue),
+                    0 0 30px var(--neon-purple),
+                    inset 0 0 15px var(--neon-pink);
+            }
+        }
+        
+        .chat-icon:hover {
+            transform: scale(1.1);
+            animation: none;
+            box-shadow: 
+                0 0 20px var(--neon-blue),
+                0 0 40px var(--neon-purple),
+                inset 0 0 20px var(--neon-pink);
+        }
+        
+        .chat-icon img {
+            width: 35px;
+            height: 35px;
+            filter: drop-shadow(0 0 5px var(--neon-blue));
+        }
+        
+        /* Cyberpunk chat container */
+        .chat-container {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background-color: var(--dark-bg);
+            border-radius: 8px;
+            box-shadow: 
+                0 0 15px var(--neon-blue),
+                inset 0 0 10px var(--neon-purple);
+            border: 1px solid var(--neon-blue);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .chat-container.visible {
+            display: flex;
+        }
+        
+        /* Cyberpunk header */
+        .chat-header {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px var(--neon-blue);
+            border-bottom: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+        
+        .chat-header h3 {
+            margin: 0;
+            font-size: 18px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            text-shadow: 0 0 5px var(--neon-blue);
+            transition: transform 0.2s;
+        }
+        
+        .close-chat:hover {
+            transform: rotate(90deg);
+            color: var(--neon-pink);
+        }
+        
+        /* Cyberpunk messages */
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: rgba(13, 2, 33, 0.7);
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 8px;
+            line-height: 1.4;
+            font-size: 14px;
+            position: relative;
+            border: 1px solid transparent;
+            box-shadow: 0 0 5px transparent;
+            transition: all 0.3s;
+        }
+        
+        .message:hover {
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        .user-message {
+            background-color: rgba(255, 42, 109, 0.15);
+            color: var(--neon-pink);
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 8px rgba(255, 42, 109, 0.5);
+        }
+        
+        .ai-message {
+            background-color: rgba(5, 217, 232, 0.15);
+            color: var(--neon-blue);
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 8px rgba(5, 217, 232, 0.5);
+        }
+        
+        /* Cyberpunk input */
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--neon-purple);
+            background-color: rgba(5, 1, 16, 0.8);
+            box-shadow: 0 -5px 15px rgba(211, 0, 197, 0.2);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            background-color: rgba(13, 2, 33, 0.8);
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+            color: var(--neon-blue);
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px var(--neon-blue);
+            box-shadow: inset 0 0 10px rgba(5, 217, 232, 0.3);
+        }
+        
+        .chat-input input::placeholder {
+            color: rgba(5, 217, 232, 0.6);
+        }
+        
+        .chat-input input:focus {
+            border-color: var(--neon-pink);
+            box-shadow: 
+                inset 0 0 15px rgba(255, 42, 109, 0.3),
+                0 0 10px var(--neon-pink);
+        }
+        
+        .chat-input button {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+            text-shadow: 0 0 5px black;
+            box-shadow: 0 0 10px var(--neon-purple);
+            transition: all 0.3s;
+        }
+        
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+        
+        /* Cyberpunk typing indicator */
+        .typing-indicator {
+            display: flex;
+            padding: 12px 15px;
+            background-color: rgba(5, 217, 232, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: fit-content;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 8px rgba(5, 217, 232, 0.3);
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: var(--neon-blue);
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 3px;
+            opacity: 0.4;
+            box-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .typing-indicator span:nth-child(1) {
+            animation: cyber-bounce 1s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation: cyber-bounce 1s infinite 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation: cyber-bounce 1s infinite 0.4s;
+        }
+        
+        @keyframes cyber-bounce {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-5px);
+                opacity: 1;
+                background-color: var(--neon-pink);
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(5, 217, 232, 0.1);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-blue), var(--neon-purple));
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-pink);
+        }
+        
+        /* Glitch effect on hover */
+        .glitch-effect {
+            position: relative;
+        }
+        
+        .glitch-effect:hover::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            background: var(--dark-bg);
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch-effect:hover::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            background: var(--dark-bg);
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            20% { clip: rect(15px, 9999px, 100px, 0); }
+            40% { clip: rect(50px, 9999px, 30px, 0); }
+            60% { clip: rect(2px, 9999px, 70px, 0); }
+            80% { clip: rect(90px, 9999px, 10px, 0); }
+            100% { clip: rect(70px, 9999px, 50px, 0); }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(80px, 9999px, 80px, 0); }
+            20% { clip: rect(65px, 9999px, 5px, 0); }
+            40% { clip: rect(79px, 9999px, 99px, 0); }
+            60% { clip: rect(92px, 9999px, 5px, 0); }
+            80% { clip: rect(1px, 9999px, 98px, 0); }
+            100% { clip: rect(90px, 9999px, 10px, 0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cyberpunk Chat Icon -->
+    <div class="chat-icon" id="chatIcon">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xOS4wMDIgM2gtMTRjLTEuMTAzIDAtMiAuODk3LTIgMnYxMGMwIDEuMTAzLjg5NyAyIDIgMmgxNGMxLjEwMyAwIDItLjg5NyAyLTJ2LTEwYzAtMS4xMDMtLjg5Ny0yLTItMnptLTcgMTJoLTR2LTJoNHYyem0yLTdoLTEydjJoMTJ2LTJ6Ii8+PC9zdmc+" alt="Chat Icon">
+    </div>
+    
+    <!-- Cyberpunk Chat Container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header glitch-effect" data-text="AI ASSISTANT">
+            <h3>AI ASSISTANT</h3>
+            <button class="close-chat" id="closeChat">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                [SYSTEM INITIALIZED] Hello, runner. How can I assist you in the neon jungle tonight?
+            </div>
+            <div class="message ai-message">
+                [USER PROTOCOLS ACTIVE] I'm your cybernetic assistant. Ask me anything about the digital frontier.
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Transmit message...">
+            <button id="sendButton">SEND</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatIcon = document.getElementById('chatIcon');
+        const chatContainer = document.getElementById('chatContainer');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // Toggle chat visibility
+        chatIcon.addEventListener('click', () => {
+            chatContainer.classList.toggle('visible');
+            // Play sound effect
+            playSound('activate');
+        });
+        
+        closeChat.addEventListener('click', () => {
+            chatContainer.classList.remove('visible');
+            playSound('deactivate');
+        });
+        
+        // Cyberpunk sound effects
+        function playSound(type) {
+            // In a real implementation, you would play actual sound files
+            console.log(`Playing ${type} sound effect`);
+        }
+        
+        // Send message function
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            userInput.value = '';
+            playSound('send');
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Get AI response from n8n webhook
+            const aiResponse = await getAIResponse(message);
+            removeTypingIndicator();
+            addMessage(aiResponse, 'ai');
+            playSound('receive');
+        }
+        
+        // Get AI response from n8n webhook
+        async function getAIResponse(message) {
+            try {
+                const response = await fetch('https://n8n-latest-zqre.onrender.com/webhook/ae463e4d-1718-40f2-b65a-bba8e548f3f1/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await response.json();
+                return data.response || data.message || "No response from AI agent.";
+            } catch (error) {
+                return "Error contacting AI agent: " + error.message;
+            }
+        }
+        
+        // Add message to chat with cyberpunk effects
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+            
+            // Add glitch effect on hover
+            if (sender === 'ai') {
+                messageDiv.classList.add('glitch-effect');
+                messageDiv.setAttribute('data-text', text);
+            }
+            
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom with smooth animation
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.classList.add('typing-indicator');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        // Event listeners for sending messages
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Cyberpunk terminal effect for input focus
+        userInput.addEventListener('focus', () => {
+            chatContainer.style.boxShadow = 
+                `0 0 20px var(--neon-blue),
+                inset 0 0 15px var(--neon-purple)`;
+        });
+        
+        userInput.addEventListener('blur', () => {
+            chatContainer.style.boxShadow = 
+                `0 0 15px var(--neon-blue),
+                inset 0 0 10px var(--neon-purple)`;
+        });
+    </script>
+</body>
+</html>
