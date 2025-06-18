@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyberpunk AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Cyberpunk color palette */
         :root {
@@ -348,6 +349,81 @@
             80% { clip: rect(1px, 9999px, 98px, 0); }
             100% { clip: rect(90px, 9999px, 10px, 0); }
         }
+        
+        @media (max-width: 600px) {
+            .chat-icon {
+                width: 48px;
+                height: 48px;
+                bottom: 14px;
+                right: 14px;
+            }
+            .chat-icon img {
+                width: 22px;
+                height: 22px;
+            }
+            .chat-container {
+                width: 88vw;
+                max-width: 92vw;
+                height: 62vh;
+                min-height: 48vh;
+                right: 6vw;
+                left: 6vw;
+                bottom: 70px;
+                border-radius: 12px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            .chat-header {
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+            .chat-header h3 {
+                font-size: 1rem;
+            }
+            .chat-messages {
+                padding: 8px 8px;
+                font-size: 0.98rem;
+            }
+            .chat-input {
+                padding: 8px 8px;
+            }
+            .chat-input input {
+                font-size: 0.95rem;
+                padding: 8px 6px;
+            }
+            .chat-input button {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+            .typing-indicator {
+                padding: 6px 8px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        .go-home-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white !important;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 14px;
+            font-size: 15px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 0 8px var(--neon-blue);
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+        }
+        .go-home-btn:hover {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+            color: var(--neon-blue) !important;
+            box-shadow: 0 0 16px var(--neon-pink);
+        }
     </style>
 </head>
 <body>
@@ -360,6 +436,7 @@
     <div class="chat-container" id="chatContainer">
         <div class="chat-header glitch-effect" data-text="AI ASSISTANT">
             <h3>AI ASSISTANT</h3>
+            <a href="index.html" class="go-home-btn"><i class="fas fa-home"></i> Home</a>
             <button class="close-chat" id="closeChat">×</button>
         </div>
         <div class="chat-messages" id="chatMessages">
