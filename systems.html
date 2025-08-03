@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systems</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+        }
+        
+        #scene-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeIn 8s ease-out;
+            text-transform: uppercase;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            text-align: center;
+            letter-spacing: 1px;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeIn 12s ease-out;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease;
+        }
+        
+        .loading-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .loading-stars {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .loading-star {
+            width: 25px;
+            height: 25px;
+            background: #4facfe;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .loading-star:nth-child(1) { animation-delay: 0s; background: #ff9966; }
+        .loading-star:nth-child(2) { animation-delay: 0.2s; background: #00f2fe; }
+        .loading-star:nth-child(3) { animation-delay: 0.4s; background: #cc66ff; }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .system-label {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 10;
+            animation: fadeIn 8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" style="position: absolute; top: 20px; left: 20px; z-index: 20; color: #fff; background: rgba(0,0,0,0.4); padding: 8px 18px; border-radius: 22px; text-decoration: none; font-size: 1.1rem; font-weight: 400; letter-spacing: 1px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">← Back to Home</a>
+    <div class="loading">
+        <div class="loading-text">INITIALIZING TRIPLE SYSTEMS</div>
+        <div class="loading-stars">
+            <div class="loading-star"></div>
+            <div class="loading-star"></div>
+            <div class="loading-star"></div>
+        </div>
+    </div>
+    
+    <div class="title">Systems</div>
+    
+    <div class="instructions">Drag to explore • Scroll to zoom • Double-click to reset</div>
+    
+    <div id="scene-container"></div>
+
+    <script>
+        // Hide loading screen after a delay
+        setTimeout(() => {
+            document.querySelector('.loading').style.opacity = '0';
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+            }, 1000);
+        }, 3000);
+        
+        // Set up Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3000);
+        const renderer = new THREE.WebGLRenderer({ 
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('scene-container').appendChild(renderer.domElement);
+        
+        // Add fog for depth effect
+        scene.fog = new THREE.FogExp2(0x000022, 0.001);
+        
+        // Add orbit controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 30;
+        controls.maxDistance = 1000;
+        
+        // Position camera
+        camera.position.set(0, 100, 200);
+        controls.update();
+        
+        // Create stars background
+        function createStars() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.15,
+                sizeAttenuation: true,
+                transparent: true
+            });
+            
+            const starVertices = [];
+            for (let i = 0; i < 20000; i++) {
+                const x = THREE.MathUtils.randFloatSpread(3000);
+                const y = THREE.MathUtils.randFloatSpread(3000);
+                const z = THREE.MathUtils.randFloatSpread(3000);
+                starVertices.push(x, y, z);
+            }
+            
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+        
+        createStars();
+        
+        // Create our solar system (yellow star)
+        function createSolarSystem(position) {
+            // Create sun
+            const sunGeometry = new THREE.SphereGeometry(5, 64, 64);
+            const sunMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xffff00,
+                emissive: 0xffff33,
+                emissiveIntensity: 2
+            });
+            const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+            sun.position.copy(position);
+            scene.add(sun);
+            
+            // Sun glow
+            const sunGlowGeometry = new THREE.SphereGeometry(5.5, 32, 32);
+            const sunGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff9900,
+                transparent: true,
+                opacity: 0.3
+            });
+            const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
+            sunGlow.position.copy(position);
+            scene.add(sunGlow);
+            
+            // Create point light for sun
+            const sunLight = new THREE.PointLight(0xffffff, 1.5, 500);
+            sunLight.position.copy(position);
+            scene.add(sunLight);
+            
+            // Add system label
+            const label = document.createElement('div');
+            label.className = 'system-label';
+            label.textContent = '';
+            label.style.left = `${50 + (position.x / 15)}%`;
+            label.style.top = `${50 + (position.z / 15)}%`;
+            document.body.appendChild(label);
+            
+            // Planet data for our solar system
+            const planetsData = [
+                { name: 'mercury', radius: 1.5, distance: 15, color: 0x8a8a8a, speed: 0.01 },
+                { name: 'venus', radius: 2.3, distance: 22, color: 0xe39e1c, speed: 0.007 },
+                { name: 'earth', radius: 2.5, distance: 30, color: 0x1e90ff, speed: 0.005 },
+                { name: 'mars', radius: 1.8, distance: 37, color: 0xff4500, speed: 0.004 },
+                { name: 'jupiter', radius: 5.5, distance: 55, color: 0xd4a373, speed: 0.002 },
+                { name: 'saturn', radius: 4.8, distance: 70, color: 0xe6dba0, speed: 0.0015 },
+            ];
+            
+            // Create planets
+            const planets = [];
+            
+            planetsData.forEach(planetData => {
+                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const planetMaterial = new THREE.MeshPhongMaterial({
+                    color: planetData.color,
+                    shininess: 10
+                });
+                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                
+                planet.position.copy(position);
+                planet.position.x += planetData.distance;
+                scene.add(planet);
+                
+                planets.push({
+                    mesh: planet,
+                    data: planetData,
+                    angle: Math.random() * Math.PI * 2,
+                    systemPosition: position.clone()
+                });
+                
+                // Add ring for Saturn
+                if (planetData.name === 'saturn') {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 1.5, planetData.radius + 4, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xf0e68c,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.7
+                    });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 3;
+                    planet.add(ring);
+                }
+            });
+            
+            // Return objects to animate
+            return { sun, sunGlow, planets, sunLight };
+        }
+        
+        // Create a blue star system
+        function createBlueSystem(position) {
+            // Create blue star
+            const starGeometry = new THREE.SphereGeometry(4.5, 64, 64);
+            const starMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x00aaff,
+                emissive: 0x0088ff,
+                emissiveIntensity: 1.8
+            });
+            const star = new THREE.Mesh(starGeometry, starMaterial);
+            star.position.copy(position);
+            scene.add(star);
+            
+            // Star glow
+            const starGlowGeometry = new THREE.SphereGeometry(4.9, 32, 32);
+            const starGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x0088ff,
+                transparent: true,
+                opacity: 0.3
+            });
+            const starGlow = new THREE.Mesh(starGlowGeometry, starGlowMaterial);
+            starGlow.position.copy(position);
+            scene.add(starGlow);
+            
+            // Create point light for blue star
+            const starLight = new THREE.PointLight(0x88ccff, 1.2, 400);
+            starLight.position.copy(position);
+            scene.add(starLight);
+            
+            // Add system label
+            const label = document.createElement('div');
+            label.className = 'system-label';
+            label.textContent = '';
+            label.style.left = `${50 + (position.x / 15)}%`;
+            label.style.top = `${50 + (position.z / 15)}%`;
+            document.body.appendChild(label);
+            
+            // Planet data for blue system
+            const planetsData = [
+                { name: 'aqua', radius: 2.2, distance: 18, color: 0x33ccff, speed: -0.012 },
+                { name: 'crimson', radius: 3.0, distance: 28, color: 0xff3366, speed: -0.008 },
+                { name: 'emerald', radius: 3.8, distance: 45, color: 0x33ff99, speed: -0.005 },
+                { name: 'violet', radius: 4.5, distance: 65, color: 0xcc66ff, speed: -0.003 },
+            ];
+            
+            // Create planets for blue system
+            const planets = [];
+            
+            planetsData.forEach(planetData => {
+                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const planetMaterial = new THREE.MeshPhongMaterial({
+                    color: planetData.color,
+                    shininess: 10
+                });
+                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                
+                // Position relative to the blue star
+                planet.position.copy(position);
+                planet.position.x += planetData.distance;
+                scene.add(planet);
+                
+                planets.push({
+                    mesh: planet,
+                    data: planetData,
+                    angle: Math.random() * Math.PI * 2,
+                    systemPosition: position.clone()
+                });
+                
+                // Add rings to the violet planet
+                if (planetData.name === 'violet') {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 1.2, planetData.radius + 3.5, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xcc99ff,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.7
+                    });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 3;
+                    planet.add(ring);
+                }
+            });
+            
+            // Return objects to animate
+            return { star, starGlow, planets, starLight };
+        }
+        
+        // Create a red star system
+        function createRedSystem(position) {
+            // Create red star
+            const starGeometry = new THREE.SphereGeometry(6, 64, 64);
+            const starMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xff3300,
+                emissive: 0xff5522,
+                emissiveIntensity: 1.7
+            });
+            const star = new THREE.Mesh(starGeometry, starMaterial);
+            star.position.copy(position);
+            scene.add(star);
+            
+            // Star glow
+            const starGlowGeometry = new THREE.SphereGeometry(6.5, 32, 32);
+            const starGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff5522,
+                transparent: true,
+                opacity: 0.3
+            });
+            const starGlow = new THREE.Mesh(starGlowGeometry, starGlowMaterial);
+            starGlow.position.copy(position);
+            scene.add(starGlow);
+            
+            // Create point light for red star
+            const starLight = new THREE.PointLight(0xff8866, 1.3, 500);
+            starLight.position.copy(position);
+            scene.add(starLight);
+            
+            // Add system label
+            const label = document.createElement('div');
+            label.className = 'system-label';
+            label.textContent = '';
+            label.style.left = `${50 + (position.x / 15)}%`;
+            label.style.top = `${50 + (position.z / 15)}%`;
+            document.body.appendChild(label);
+            
+            // Planet data for red system
+            const planetsData = [
+                { name: 'charred', radius: 3.0, distance: 22, color: 0x664422, speed: 0.009 },
+                { name: 'magma', radius: 4.0, distance: 35, color: 0xff5500, speed: 0.006 },
+                { name: 'cinder', radius: 5.0, distance: 50, color: 0xff3366, speed: 0.004 },
+                { name: 'ember', radius: 4.5, distance: 70, color: 0xff66aa, speed: 0.0025 },
+                { name: 'inferno', radius: 7.0, distance: 90, color: 0xff0000, speed: 0.0015 },
+            ];
+            
+            // Create planets for red system
+            const planets = [];
+            
+            planetsData.forEach(planetData => {
+                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const planetMaterial = new THREE.MeshPhongMaterial({
+                    color: planetData.color,
+                    shininess: 10
+                });
+                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                
+                // Position relative to the red star
+                planet.position.copy(position);
+                planet.position.x += planetData.distance;
+                scene.add(planet);
+                
+                planets.push({
+                    mesh: planet,
+                    data: planetData,
+                    angle: Math.random() * Math.PI * 2,
+                    systemPosition: position.clone()
+                });
+                
+                // Add rings to the inferno planet
+                if (planetData.name === 'inferno') {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 2.0, planetData.radius + 5.0, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xff6666,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.7
+                    });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 3;
+                    planet.add(ring);
+                }
+            });
+            
+            // Return objects to animate
+            return { star, starGlow, planets, starLight };
+        }
+        
+        // Create comets
+        function createComets() {
+            const comets = [];
+            
+            function createComet(color, speedFactor) {
+                // Comet nucleus
+                const nucleusGeometry = new THREE.SphereGeometry(0.6, 8, 8);
+                const nucleusMaterial = new THREE.MeshBasicMaterial({ color: color });
+                const nucleus = new THREE.Mesh(nucleusGeometry, nucleusMaterial);
+                
+                // Comet tail particles
+                const tailParticles = new THREE.BufferGeometry();
+                const tailCount = 200;
+                const tailPositions = new Float32Array(tailCount * 3);
+                
+                for (let i = 0; i < tailCount; i++) {
+                    const i3 = i * 3;
+                    tailPositions[i3] = -i * 0.1;
+                    tailPositions[i3 + 1] = (Math.random() - 0.5) * 0.1;
+                    tailPositions[i3 + 2] = (Math.random() - 0.5) * 0.1;
+                }
+                
+                tailParticles.setAttribute('position', new THREE.BufferAttribute(tailPositions, 3));
+                
+                const tailMaterial = new THREE.PointsMaterial({
+                    color: color,
+                    size: 0.2,
+                    transparent: true,
+                    opacity: 0.7,
+                    sizeAttenuation: true
+                });
+                
+                const tail = new THREE.Points(tailParticles, tailMaterial);
+                nucleus.add(tail);
+                
+                // Orbit parameters
+                const semiMajorAxis = 300 + Math.random() * 100;
+                const eccentricity = 0.85 + Math.random() * 0.14;
+                const inclination = Math.random() * Math.PI;
+                const perihelion = 20 + Math.random() * 30;
+                
+                const comet = {
+                    mesh: nucleus,
+                    semiMajorAxis: semiMajorAxis,
+                    eccentricity: eccentricity,
+                    inclination: inclination,
+                    perihelion: perihelion,
+                    angle: Math.random() * Math.PI * 2,
+                    speed: (0.0005 + Math.random() * 0.0003) * speedFactor,
+                    color: color
+                };
+                
+                scene.add(nucleus);
+                comets.push(comet);
+            }
+            
+            // Create several comets with different colors
+            createComet(0x66ccff, 1); // Blue comet
+            createComet(0xff9966, -1.2); // Orange comet
+            createComet(0x99ff99, 1.5); // Green comet
+            createComet(0xcc66ff, -0.8); // Purple comet
+            
+            return comets;
+        }
+        
+        // Create all three solar systems
+        const solarSystem = createSolarSystem(new THREE.Vector3(0, 0, 0));
+        const blueSystem = createBlueSystem(new THREE.Vector3(-200, 50, 150));
+        const redSystem = createRedSystem(new THREE.Vector3(180, -30, -120));
+        const comets = createComets();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Double-click to reset view
+        renderer.domElement.addEventListener('dblclick', () => {
+            camera.position.set(0, 100, 200);
+            controls.reset();
+        });
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate our sun
+            solarSystem.sun.rotation.y += 0.001;
+            solarSystem.sunGlow.rotation.y += 0.001;
+            
+            // Rotate planets in our solar system
+            solarSystem.planets.forEach(planet => {
+                planet.angle += planet.data.speed;
+                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
+                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
+                planet.mesh.position.set(x, planet.systemPosition.y, z);
+                planet.mesh.rotation.y += 0.01;
+                
+                // Rotate Saturn's rings
+                if (planet.data.name === 'saturn' && planet.mesh.children[0]) {
+                    planet.mesh.children[0].rotation.y += 0.005;
+                }
+            });
+            
+            // Rotate blue star
+            blueSystem.star.rotation.y += 0.001;
+            blueSystem.starGlow.rotation.y += 0.001;
+            
+            // Rotate planets in blue system
+            blueSystem.planets.forEach(planet => {
+                planet.angle += planet.data.speed;
+                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
+                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
+                planet.mesh.position.set(x, planet.systemPosition.y, z);
+                planet.mesh.rotation.y += 0.015;
+                
+                // Rotate violet planet's rings
+                if (planet.data.name === 'violet' && planet.mesh.children[0]) {
+                    planet.mesh.children[0].rotation.y += 0.006;
+                }
+            });
+            
+            // Rotate red star
+            redSystem.star.rotation.y += 0.001;
+            redSystem.starGlow.rotation.y += 0.001;
+            
+            // Rotate planets in red system
+            redSystem.planets.forEach(planet => {
+                planet.angle += planet.data.speed;
+                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
+                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
+                planet.mesh.position.set(x, planet.systemPosition.y, z);
+                planet.mesh.rotation.y += 0.012;
+                
+                // Rotate inferno planet's rings
+                if (planet.data.name === 'inferno' && planet.mesh.children[0]) {
+                    planet.mesh.children[0].rotation.y += 0.007;
+                }
+            });
+            
+            // Update comets
+            comets.forEach(comet => {
+                comet.angle += comet.speed;
+                
+                // Calculate position in elliptical orbit
+                const r = comet.semiMajorAxis * (1 - comet.eccentricity * comet.eccentricity) / 
+                          (1 + comet.eccentricity * Math.cos(comet.angle));
+                
+                const x = r * Math.cos(comet.angle);
+                const z = r * Math.sin(comet.angle);
+                const y = Math.sin(comet.angle) * Math.sin(comet.inclination) * r * 0.5;
+                
+                comet.mesh.position.set(x, y, z);
+                
+                // Point tail away from the closest star
+                const solarDist = comet.mesh.position.distanceTo(solarSystem.sun.position);
+                const blueDist = comet.mesh.position.distanceTo(blueSystem.star.position);
+                const redDist = comet.mesh.position.distanceTo(redSystem.star.position);
+                
+                let closestStar;
+                if (solarDist < blueDist && solarDist < redDist) {
+                    closestStar = solarSystem.sun.position;
+                } else if (blueDist < redDist) {
+                    closestStar = blueSystem.star.position;
+                } else {
+                    closestStar = redSystem.star.position;
+                }
+                
+                comet.mesh.lookAt(closestStar);
+                
+                // Change tail length based on distance from star
+                const distanceToStar = comet.mesh.position.distanceTo(closestStar);
+                const tailLength = Math.min(2.0, 40 / distanceToStar);
+                
+                if (comet.mesh.children[0]) {
+                    const positions = comet.mesh.children[0].geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length / 3; i++) {
+                        positions[i * 3] = -i * tailLength * 0.1;
+                    }
+                    comet.mesh.children[0].geometry.attributes.position.needsUpdate = true;
+                    
+                    // Adjust tail color opacity
+                    comet.mesh.children[0].material.opacity = Math.min(0.8, 50 / distanceToStar);
+                }
+            });
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>
