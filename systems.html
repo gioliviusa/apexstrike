@@ -172,9 +172,47 @@
                 padding: 8px;
             }
         }
+@media (max-width: 600px) {
+    .back-home-link {
+        top: 8px;
+        left: 6px;
+        font-size: 1rem;
+        padding: 8px 14px;
+        border-radius: 18px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+    .title {
+        font-size: 1.1rem;
+        top: 48px;
+    }
+}
+.back-home-link {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    z-index: 20;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 20px;
+    border-radius: 24px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    display: inline-block;
+    line-height: 1.2;
+    user-select: none;
+}
+.back-home-link:active, .back-home-link:focus {
+    background: rgba(80,80,80,0.7);
+    color: #ffe;
+}
     </style>
 </head>
 <body>
+    <a href="index.html" class="back-home-link">← Back to Home</a>
     <div class="title">INTERSTELLAR EXPLORER</div>
     
     <div class="instructions">Drag to rotate • Scroll to zoom • Click black hole to travel</div>
@@ -296,7 +334,7 @@
         // Create celestial objects
         let sun;
         const planets = [];
-        const orbitPaths = [];
+        const orbitLines = [];
         
         // Initialize solar system
         function initSolarSystem() {
@@ -344,8 +382,9 @@
             
             // Create planets
             planets.length = 0;
-            orbitPaths.length = 0;
-            orbitsContainer.innerHTML = '';
+            orbitLines.length = 0;
+            // Remove previous orbit lines
+            scene.children = scene.children.filter(obj => obj.userData.type !== 'orbitLine');
             labelsContainer.innerHTML = '';
             
             planetsData.forEach(planetData => {
@@ -366,15 +405,22 @@
                     angle: Math.random() * Math.PI * 2
                 });
                 
-                // Create orbit path
-                const orbitPath = document.createElement('div');
-                orbitPath.className = 'orbit-path';
-                orbitPath.id = `${planetData.name.toLowerCase()}-orbit`;
-                orbitPath.style.width = `${planetData.distance * 2}px`;
-                orbitPath.style.height = `${planetData.distance * 2}px`;
-                orbitPath.style.borderColor = `rgba(100, 180, 255, ${0.3 + Math.random() * 0.2})`;
-                orbitsContainer.appendChild(orbitPath);
-                orbitPaths.push(orbitPath);
+                // Create 3D orbit line
+                const segments = 128;
+                const orbitGeometry = new THREE.BufferGeometry();
+                const orbitVertices = [];
+                for (let i = 0; i <= segments; i++) {
+                    const theta = (i / segments) * Math.PI * 2;
+                    orbitVertices.push(
+                        Math.cos(theta) * planetData.distance, 0, Math.sin(theta) * planetData.distance
+                    );
+                }
+                orbitGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitVertices, 3));
+                const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x64b4ff, opacity: 0.4, transparent: true });
+                const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+                orbitLine.userData.type = 'orbitLine';
+                scene.add(orbitLine);
+                orbitLines.push(orbitLine);
                 
                 // Create planet label
                 const label = document.createElement('div');
@@ -453,8 +499,8 @@
             
             // Create planets
             planets.length = 0;
-            orbitPaths.length = 0;
-            orbitsContainer.innerHTML = '';
+            orbitLines.length = 0;
+            scene.children = scene.children.filter(obj => obj.userData.type !== 'orbitLine');
             labelsContainer.innerHTML = '';
             
             planetsData.forEach(planetData => {
@@ -475,15 +521,22 @@
                     angle: Math.random() * Math.PI * 2
                 });
                 
-                // Create orbit path
-                const orbitPath = document.createElement('div');
-                orbitPath.className = 'orbit-path';
-                orbitPath.id = `${planetData.name.toLowerCase()}-orbit`;
-                orbitPath.style.width = `${planetData.distance * 2}px`;
-                orbitPath.style.height = `${planetData.distance * 2}px`;
-                orbitPath.style.borderColor = planetData.color;
-                orbitsContainer.appendChild(orbitPath);
-                orbitPaths.push(orbitPath);
+                // Create 3D orbit line
+                const segments = 128;
+                const orbitGeometry = new THREE.BufferGeometry();
+                const orbitVertices = [];
+                for (let i = 0; i <= segments; i++) {
+                    const theta = (i / segments) * Math.PI * 2;
+                    orbitVertices.push(
+                        Math.cos(theta) * planetData.distance, 0, Math.sin(theta) * planetData.distance
+                    );
+                }
+                orbitGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitVertices, 3));
+                const orbitMaterial = new THREE.LineBasicMaterial({ color: planetData.color, opacity: 0.4, transparent: true });
+                const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+                orbitLine.userData.type = 'orbitLine';
+                scene.add(orbitLine);
+                orbitLines.push(orbitLine);
                 
                 // Create planet label
                 const label = document.createElement('div');
@@ -597,7 +650,7 @@
         
         document.getElementById('toggle-orbits-btn').addEventListener('click', () => {
             orbitsVisible = !orbitsVisible;
-            orbitsContainer.style.opacity = orbitsVisible ? '1' : '0';
+            orbitLines.forEach(line => line.visible = orbitsVisible);
         });
         
         document.getElementById('warp-btn').addEventListener('click', () => {
@@ -804,17 +857,7 @@
                 blackHole.children[1].scale.set(scale, scale, 1);
             }
             
-            // Update orbit paths positions
-            orbitPaths.forEach((orbitPath, index) => {
-                if (index < planets.length) {
-                    const planetData = planets[index].data;
-                    const orbitScreenPos = new THREE.Vector3(0, 0, 0).project(camera);
-                    const orbitX = (orbitScreenPos.x * 0.5 + 0.5) * window.innerWidth;
-                    const orbitY = (-orbitScreenPos.y * 0.5 + 0.5) * window.innerHeight;
-                    orbitPath.style.left = `${orbitX}px`;
-                    orbitPath.style.top = `${orbitY}px`;
-                }
-            });
+            // (No need to update orbit paths, handled by Three.js)
             
             // Update labels
             updateLabels();
