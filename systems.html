@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Systems</title>
+    <title>Interstellar Explorer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
@@ -35,19 +35,20 @@
             left: 0;
             width: 100%;
             text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 2.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 2rem;
             font-weight: 300;
             letter-spacing: 4px;
             z-index: 10;
             pointer-events: none;
-            animation: fadeIn 8s ease-out;
+            animation: fadeIn 3s ease-out;
             text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .instructions {
@@ -55,219 +56,336 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.9rem;
             text-align: center;
             letter-spacing: 1px;
             z-index: 10;
             pointer-events: none;
-            animation: fadeIn 12s ease-out;
+            animation: fadeIn 5s ease-out;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 20px;
         }
         
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            transition: opacity 1s ease;
-        }
-        
-        .loading-text {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.8rem;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .loading-stars {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .loading-star {
-            width: 25px;
-            height: 25px;
-            background: #4facfe;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite ease-in-out;
-        }
-        
-        .loading-star:nth-child(1) { animation-delay: 0s; background: #ff9966; }
-        .loading-star:nth-child(2) { animation-delay: 0.2s; background: #00f2fe; }
-        .loading-star:nth-child(3) { animation-delay: 0.4s; background: #cc66ff; }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-        
-        .system-label {
+        .celestial-label {
             position: absolute;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
             pointer-events: none;
             z-index: 10;
-            animation: fadeIn 8s ease-out;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            transform: translate(-50%, -50%);
+            font-weight: 400;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+        
+        .celestial-label.visible {
+            opacity: 1;
+        }
+        
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-btn {
+            background: rgba(50, 120, 200, 0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(70, 150, 250, 0.9);
+            transform: translateY(-2px);
+        }
+        
+        .orbit-path {
+            position: absolute;
+            border: 2px solid rgba(100, 180, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 0 10px rgba(100, 180, 255, 0.3);
+        }
+        
+        .black-hole-label {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            pointer-events: none;
+            z-index: 10;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 100, 255, 0.3);
+        }
+        
+        .black-hole-portal {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255,0,255,0.8) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .control-panel {
+                top: 10px;
+                left: 10px;
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" style="position: absolute; top: 20px; left: 20px; z-index: 20; color: #fff; background: rgba(0,0,0,0.4); padding: 8px 18px; border-radius: 22px; text-decoration: none; font-size: 1.1rem; font-weight: 400; letter-spacing: 1px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">← Back to Home</a>
-    <div class="loading">
-        <div class="loading-text">INITIALIZING TRIPLE SYSTEMS</div>
-        <div class="loading-stars">
-            <div class="loading-star"></div>
-            <div class="loading-star"></div>
-            <div class="loading-star"></div>
-        </div>
+    <div class="title">INTERSTELLAR EXPLORER</div>
+    
+    <div class="instructions">Drag to rotate • Scroll to zoom • Click black hole to travel</div>
+    
+    <div class="control-panel">
+        <button class="control-btn" id="reset-btn">Reset View</button>
+        <button class="control-btn" id="zoom-out-btn">Zoom Out</button>
+        <button class="control-btn" id="toggle-labels-btn">Toggle Labels</button>
+        <button class="control-btn" id="toggle-orbits-btn">Toggle Orbits</button>
+        <button class="control-btn" id="warp-btn">Warp to Black Hole</button>
     </div>
     
-    <div class="title">Systems</div>
-    
-    <div class="instructions">Drag to explore • Scroll to zoom • Double-click to reset</div>
-    
     <div id="scene-container"></div>
+    <div id="labels-container"></div>
+    <div id="orbits-container"></div>
+    <div id="black-hole-portal" class="black-hole-portal" style="display: none;"></div>
 
     <script>
-        // Hide loading screen after a delay
-        setTimeout(() => {
-            document.querySelector('.loading').style.opacity = '0';
-            setTimeout(() => {
-                document.querySelector('.loading').style.display = 'none';
-            }, 1000);
-        }, 3000);
+        // Constants
+        const SOLAR_SYSTEM = 0;
+        const ALIEN_SYSTEM = 1;
+        
+        // Global variables
+        let currentSystem = SOLAR_SYSTEM;
+        let labelsVisible = true;
+        let orbitsVisible = true;
+        let blackHole;
         
         // Set up Three.js scene
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 3000);
-        const renderer = new THREE.WebGLRenderer({ 
-            antialias: true,
-            alpha: true
-        });
+        scene.background = new THREE.Color(0x000010);
+        
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('scene-container').appendChild(renderer.domElement);
         
-        // Add fog for depth effect
-        scene.fog = new THREE.FogExp2(0x000022, 0.001);
+        // Create containers
+        const labelsContainer = document.getElementById('labels-container');
+        const orbitsContainer = document.getElementById('orbits-container');
+        const blackHolePortal = document.getElementById('black-hole-portal');
+        
+        // Initialize containers
+        labelsContainer.style.position = 'fixed';
+        labelsContainer.style.top = '0';
+        labelsContainer.style.left = '0';
+        labelsContainer.style.width = '100%';
+        labelsContainer.style.height = '100%';
+        labelsContainer.style.pointerEvents = 'none';
+        
+        orbitsContainer.style.position = 'fixed';
+        orbitsContainer.style.top = '0';
+        orbitsContainer.style.left = '0';
+        orbitsContainer.style.width = '100%';
+        orbitsContainer.style.height = '100%';
+        orbitsContainer.style.pointerEvents = 'none';
+        orbitsContainer.style.zIndex = '1';
         
         // Add orbit controls
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.screenSpacePanning = false;
-        controls.minDistance = 30;
-        controls.maxDistance = 1000;
+        controls.minDistance = 20;
+        controls.maxDistance = 2000;
         
         // Position camera
-        camera.position.set(0, 100, 200);
+        camera.position.set(0, 50, 150);
         controls.update();
         
-        // Create stars background
+        // Create stars background with twinkling effect
         function createStars() {
-            const starGeometry = new THREE.BufferGeometry();
-            const starMaterial = new THREE.PointsMaterial({
-                color: 0xffffff,
-                size: 0.15,
-                sizeAttenuation: true,
-                transparent: true
-            });
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+            const colors = [];
+            const sizes = [];
             
-            const starVertices = [];
-            for (let i = 0; i < 20000; i++) {
-                const x = THREE.MathUtils.randFloatSpread(3000);
-                const y = THREE.MathUtils.randFloatSpread(3000);
-                const z = THREE.MathUtils.randFloatSpread(3000);
-                starVertices.push(x, y, z);
+            for (let i = 0; i < 10000; i++) {
+                vertices.push(
+                    THREE.MathUtils.randFloatSpread(3000),
+                    THREE.MathUtils.randFloatSpread(3000),
+                    THREE.MathUtils.randFloatSpread(3000)
+                );
+                
+                // Random star colors
+                const colorType = Math.random();
+                if (colorType < 0.1) {
+                    colors.push(0.8, 0.8, 1.0); // Blue
+                } else if (colorType < 0.2) {
+                    colors.push(1.0, 0.9, 0.7); // Yellow
+                } else if (colorType < 0.3) {
+                    colors.push(1.0, 0.7, 0.7); // Red
+                } else {
+                    colors.push(1.0, 1.0, 1.0); // White
+                }
+                
+                sizes.push(Math.random() < 0.1 ? 0.5 : 0.2);
             }
             
-            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-            const stars = new THREE.Points(starGeometry, starMaterial);
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.2,
+                sizeAttenuation: true,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const stars = new THREE.Points(geometry, material);
             scene.add(stars);
+            
+            return stars;
         }
         
-        createStars();
+        const stars = createStars();
         
-        // Create our solar system (yellow star)
-        function createSolarSystem(position) {
+        // Create celestial objects
+        let sun;
+        const planets = [];
+        const orbitPaths = [];
+        
+        // Initialize solar system
+        function initSolarSystem() {
+            // Clear previous objects
+            scene.children = [];
+            scene.add(stars);
+            
             // Create sun
-            const sunGeometry = new THREE.SphereGeometry(5, 64, 64);
-            const sunMaterial = new THREE.MeshBasicMaterial({ 
+            const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
+            const sunMaterial = new THREE.MeshBasicMaterial({
                 color: 0xffff00,
                 emissive: 0xffff33,
                 emissiveIntensity: 2
             });
-            const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-            sun.position.copy(position);
+            sun = new THREE.Mesh(sunGeometry, sunMaterial);
             scene.add(sun);
             
-            // Sun glow
-            const sunGlowGeometry = new THREE.SphereGeometry(5.5, 32, 32);
-            const sunGlowMaterial = new THREE.MeshBasicMaterial({
-                color: 0xff9900,
-                transparent: true,
-                opacity: 0.3
-            });
-            const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
-            sunGlow.position.copy(position);
-            scene.add(sunGlow);
-            
-            // Create point light for sun
-            const sunLight = new THREE.PointLight(0xffffff, 1.5, 500);
-            sunLight.position.copy(position);
+            // Sun light
+            const sunLight = new THREE.PointLight(0xffffff, 1.5, 1000);
+            sunLight.position.copy(sun.position);
             scene.add(sunLight);
             
-            // Add system label
-            const label = document.createElement('div');
-            label.className = 'system-label';
-            label.textContent = '';
-            label.style.left = `${50 + (position.x / 15)}%`;
-            label.style.top = `${50 + (position.z / 15)}%`;
-            document.body.appendChild(label);
+            // Sun glow
+            const sunGlowGeometry = new THREE.SphereGeometry(12, 32, 32);
+            const sunGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffaa00,
+                transparent: true,
+                opacity: 0.3,
+                side: THREE.BackSide
+            });
+            const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
+            sun.add(sunGlow);
             
-            // Planet data for our solar system
+            // Planet data for solar system
             const planetsData = [
-                { name: 'mercury', radius: 1.5, distance: 15, color: 0x8a8a8a, speed: 0.01 },
-                { name: 'venus', radius: 2.3, distance: 22, color: 0xe39e1c, speed: 0.007 },
-                { name: 'earth', radius: 2.5, distance: 30, color: 0x1e90ff, speed: 0.005 },
-                { name: 'mars', radius: 1.8, distance: 37, color: 0xff4500, speed: 0.004 },
-                { name: 'jupiter', radius: 5.5, distance: 55, color: 0xd4a373, speed: 0.002 },
-                { name: 'saturn', radius: 4.8, distance: 70, color: 0xe6dba0, speed: 0.0015 },
+                { name: 'MERCURY', radius: 3, distance: 50, color: 0x8a8a8a, speed: 0.02 },
+                { name: 'VENUS', radius: 4.5, distance: 80, color: 0xe39e1c, speed: 0.015 },
+                { name: 'EARTH', radius: 5, distance: 120, color: 0x1e90ff, speed: 0.01 },
+                { name: 'MARS', radius: 3.8, distance: 180, color: 0xff4500, speed: 0.008 },
+                { name: 'JUPITER', radius: 14, distance: 300, color: 0xd4a373, speed: 0.004 },
+                { name: 'SATURN', radius: 12, distance: 400, color: 0xe6dba0, speed: 0.003, hasRings: true },
+                { name: 'URANUS', radius: 8, distance: 500, color: 0x7de3f4, speed: 0.002 },
+                { name: 'NEPTUNE', radius: 7.8, distance: 600, color: 0x4c6ef5, speed: 0.001 }
             ];
             
             // Create planets
-            const planets = [];
+            planets.length = 0;
+            orbitPaths.length = 0;
+            orbitsContainer.innerHTML = '';
+            labelsContainer.innerHTML = '';
             
             planetsData.forEach(planetData => {
-                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
-                const planetMaterial = new THREE.MeshPhongMaterial({
+                const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
                     color: planetData.color,
-                    shininess: 10
+                    shininess: 10,
+                    specular: 0x111111
                 });
-                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                const planet = new THREE.Mesh(geometry, material);
                 
-                planet.position.copy(position);
-                planet.position.x += planetData.distance;
+                planet.position.x = planetData.distance;
                 scene.add(planet);
                 
                 planets.push({
                     mesh: planet,
                     data: planetData,
-                    angle: Math.random() * Math.PI * 2,
-                    systemPosition: position.clone()
+                    angle: Math.random() * Math.PI * 2
                 });
                 
+                // Create orbit path
+                const orbitPath = document.createElement('div');
+                orbitPath.className = 'orbit-path';
+                orbitPath.id = `${planetData.name.toLowerCase()}-orbit`;
+                orbitPath.style.width = `${planetData.distance * 2}px`;
+                orbitPath.style.height = `${planetData.distance * 2}px`;
+                orbitPath.style.borderColor = `rgba(100, 180, 255, ${0.3 + Math.random() * 0.2})`;
+                orbitsContainer.appendChild(orbitPath);
+                orbitPaths.push(orbitPath);
+                
+                // Create planet label
+                const label = document.createElement('div');
+                label.className = 'celestial-label';
+                label.textContent = planetData.name;
+                label.id = `${planetData.name.toLowerCase()}-label`;
+                labelsContainer.appendChild(label);
+                
                 // Add ring for Saturn
-                if (planetData.name === 'saturn') {
-                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 1.5, planetData.radius + 4, 64);
+                if (planetData.hasRings) {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 3, planetData.radius + 8, 64);
                     const ringMaterial = new THREE.MeshBasicMaterial({
                         color: 0xf0e68c,
                         side: THREE.DoubleSide,
@@ -280,86 +398,108 @@
                 }
             });
             
-            // Return objects to animate
-            return { sun, sunGlow, planets, sunLight };
+            // Create black hole at edge of system (closer and more visible)
+            blackHole = createBlackHole(300, 50, -400);
+            
+            // Add sun label
+            const sunLabel = document.createElement('div');
+            sunLabel.className = 'celestial-label';
+            sunLabel.textContent = 'SUN';
+            sunLabel.id = 'sun-label';
+            labelsContainer.appendChild(sunLabel);
         }
         
-        // Create a blue star system
-        function createBlueSystem(position) {
-            // Create blue star
-            const starGeometry = new THREE.SphereGeometry(4.5, 64, 64);
-            const starMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0x00aaff,
-                emissive: 0x0088ff,
-                emissiveIntensity: 1.8
-            });
-            const star = new THREE.Mesh(starGeometry, starMaterial);
-            star.position.copy(position);
-            scene.add(star);
+        // Initialize alien system
+        function initAlienSystem() {
+            // Clear previous objects
+            scene.children = [];
+            scene.add(stars);
             
-            // Star glow
-            const starGlowGeometry = new THREE.SphereGeometry(4.9, 32, 32);
-            const starGlowMaterial = new THREE.MeshBasicMaterial({
-                color: 0x0088ff,
+            // Create exotic sun
+            const sunGeometry = new THREE.SphereGeometry(12, 32, 32);
+            const sunMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff00ff,
+                emissive: 0xff33ff,
+                emissiveIntensity: 3
+            });
+            sun = new THREE.Mesh(sunGeometry, sunMaterial);
+            scene.add(sun);
+            
+            // Sun light
+            const sunLight = new THREE.PointLight(0xff00ff, 2, 1200);
+            sunLight.position.copy(sun.position);
+            scene.add(sunLight);
+            
+            // Sun glow
+            const sunGlowGeometry = new THREE.SphereGeometry(15, 32, 32);
+            const sunGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff00aa,
                 transparent: true,
-                opacity: 0.3
+                opacity: 0.4,
+                side: THREE.BackSide
             });
-            const starGlow = new THREE.Mesh(starGlowGeometry, starGlowMaterial);
-            starGlow.position.copy(position);
-            scene.add(starGlow);
+            const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
+            sun.add(sunGlow);
             
-            // Create point light for blue star
-            const starLight = new THREE.PointLight(0x88ccff, 1.2, 400);
-            starLight.position.copy(position);
-            scene.add(starLight);
-            
-            // Add system label
-            const label = document.createElement('div');
-            label.className = 'system-label';
-            label.textContent = '';
-            label.style.left = `${50 + (position.x / 15)}%`;
-            label.style.top = `${50 + (position.z / 15)}%`;
-            document.body.appendChild(label);
-            
-            // Planet data for blue system
+            // Planet data for alien system
             const planetsData = [
-                { name: 'aqua', radius: 2.2, distance: 18, color: 0x33ccff, speed: -0.012 },
-                { name: 'crimson', radius: 3.0, distance: 28, color: 0xff3366, speed: -0.008 },
-                { name: 'emerald', radius: 3.8, distance: 45, color: 0x33ff99, speed: -0.005 },
-                { name: 'violet', radius: 4.5, distance: 65, color: 0xcc66ff, speed: -0.003 },
+                { name: 'XERON', radius: 6, distance: 60, color: 0xaa66ff, speed: 0.025 },
+                { name: 'ZYLON', radius: 8, distance: 100, color: 0x66ffaa, speed: 0.018 },
+                { name: 'QUAZAR', radius: 12, distance: 160, color: 0xff66aa, speed: 0.012 },
+                { name: 'ORBIS', radius: 20, distance: 250, color: 0xaaff66, speed: 0.008, hasRings: true },
+                { name: 'NEBULA', radius: 16, distance: 350, color: 0x66aaff, speed: 0.005, hasRings: true },
+                { name: 'CRYSTAL', radius: 10, distance: 450, color: 0x88ff88, speed: 0.003 }
             ];
             
-            // Create planets for blue system
-            const planets = [];
+            // Create planets
+            planets.length = 0;
+            orbitPaths.length = 0;
+            orbitsContainer.innerHTML = '';
+            labelsContainer.innerHTML = '';
             
             planetsData.forEach(planetData => {
-                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
-                const planetMaterial = new THREE.MeshPhongMaterial({
+                const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
                     color: planetData.color,
-                    shininess: 10
+                    shininess: 20,
+                    specular: 0x222222
                 });
-                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                const planet = new THREE.Mesh(geometry, material);
                 
-                // Position relative to the blue star
-                planet.position.copy(position);
-                planet.position.x += planetData.distance;
+                planet.position.x = planetData.distance;
                 scene.add(planet);
                 
                 planets.push({
                     mesh: planet,
                     data: planetData,
-                    angle: Math.random() * Math.PI * 2,
-                    systemPosition: position.clone()
+                    angle: Math.random() * Math.PI * 2
                 });
                 
-                // Add rings to the violet planet
-                if (planetData.name === 'violet') {
-                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 1.2, planetData.radius + 3.5, 64);
+                // Create orbit path
+                const orbitPath = document.createElement('div');
+                orbitPath.className = 'orbit-path';
+                orbitPath.id = `${planetData.name.toLowerCase()}-orbit`;
+                orbitPath.style.width = `${planetData.distance * 2}px`;
+                orbitPath.style.height = `${planetData.distance * 2}px`;
+                orbitPath.style.borderColor = planetData.color;
+                orbitsContainer.appendChild(orbitPath);
+                orbitPaths.push(orbitPath);
+                
+                // Create planet label
+                const label = document.createElement('div');
+                label.className = 'celestial-label';
+                label.textContent = planetData.name;
+                label.id = `${planetData.name.toLowerCase()}-label`;
+                labelsContainer.appendChild(label);
+                
+                // Add rings
+                if (planetData.hasRings) {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 4, planetData.radius + 12, 64);
                     const ringMaterial = new THREE.MeshBasicMaterial({
-                        color: 0xcc99ff,
+                        color: planetData.color,
                         side: THREE.DoubleSide,
                         transparent: true,
-                        opacity: 0.7
+                        opacity: 0.6
                     });
                     const ring = new THREE.Mesh(ringGeometry, ringMaterial);
                     ring.rotation.x = Math.PI / 3;
@@ -367,168 +507,71 @@
                 }
             });
             
-            // Return objects to animate
-            return { star, starGlow, planets, starLight };
+            // Create black hole at edge of system (closer and more visible)
+            blackHole = createBlackHole(-350, 80, 300);
+            
+            // Add sun label
+            const sunLabel = document.createElement('div');
+            sunLabel.className = 'celestial-label';
+            sunLabel.textContent = 'NOVA PRIME';
+            sunLabel.id = 'sun-label';
+            labelsContainer.appendChild(sunLabel);
         }
         
-        // Create a red star system
-        function createRedSystem(position) {
-            // Create red star
-            const starGeometry = new THREE.SphereGeometry(6, 64, 64);
-            const starMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xff3300,
-                emissive: 0xff5522,
-                emissiveIntensity: 1.7
+        // Create black hole (now more visible and closer)
+        function createBlackHole(x, y, z) {
+            // Event horizon
+            const bhGeometry = new THREE.SphereGeometry(20, 64, 64); // Larger size
+            const bhMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x000000,
+                emissive: 0x660066, // More visible glow
+                emissiveIntensity: 1.2
             });
-            const star = new THREE.Mesh(starGeometry, starMaterial);
-            star.position.copy(position);
-            scene.add(star);
+            const bh = new THREE.Mesh(bhGeometry, bhMaterial);
+            bh.position.set(x, y, z);
+            scene.add(bh);
             
-            // Star glow
-            const starGlowGeometry = new THREE.SphereGeometry(6.5, 32, 32);
-            const starGlowMaterial = new THREE.MeshBasicMaterial({
-                color: 0xff5522,
+            // Accretion disk (larger and more visible)
+            const diskGeometry = new THREE.RingGeometry(21, 40, 64);
+            const diskMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff00ff,
+                side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 0.3
+                opacity: 0.9, // More opaque
+                blending: THREE.AdditiveBlending
             });
-            const starGlow = new THREE.Mesh(starGlowGeometry, starGlowMaterial);
-            starGlow.position.copy(position);
-            scene.add(starGlow);
+            const disk = new THREE.Mesh(diskGeometry, diskMaterial);
+            disk.rotation.x = Math.PI / 2;
+            bh.add(disk);
             
-            // Create point light for red star
-            const starLight = new THREE.PointLight(0xff8866, 1.3, 500);
-            starLight.position.copy(position);
-            scene.add(starLight);
-            
-            // Add system label
-            const label = document.createElement('div');
-            label.className = 'system-label';
-            label.textContent = '';
-            label.style.left = `${50 + (position.x / 15)}%`;
-            label.style.top = `${50 + (position.z / 15)}%`;
-            document.body.appendChild(label);
-            
-            // Planet data for red system
-            const planetsData = [
-                { name: 'charred', radius: 3.0, distance: 22, color: 0x664422, speed: 0.009 },
-                { name: 'magma', radius: 4.0, distance: 35, color: 0xff5500, speed: 0.006 },
-                { name: 'cinder', radius: 5.0, distance: 50, color: 0xff3366, speed: 0.004 },
-                { name: 'ember', radius: 4.5, distance: 70, color: 0xff66aa, speed: 0.0025 },
-                { name: 'inferno', radius: 7.0, distance: 90, color: 0xff0000, speed: 0.0015 },
-            ];
-            
-            // Create planets for red system
-            const planets = [];
-            
-            planetsData.forEach(planetData => {
-                const planetGeometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
-                const planetMaterial = new THREE.MeshPhongMaterial({
-                    color: planetData.color,
-                    shininess: 10
-                });
-                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-                
-                // Position relative to the red star
-                planet.position.copy(position);
-                planet.position.x += planetData.distance;
-                scene.add(planet);
-                
-                planets.push({
-                    mesh: planet,
-                    data: planetData,
-                    angle: Math.random() * Math.PI * 2,
-                    systemPosition: position.clone()
-                });
-                
-                // Add rings to the inferno planet
-                if (planetData.name === 'inferno') {
-                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 2.0, planetData.radius + 5.0, 64);
-                    const ringMaterial = new THREE.MeshBasicMaterial({
-                        color: 0xff6666,
-                        side: THREE.DoubleSide,
-                        transparent: true,
-                        opacity: 0.7
-                    });
-                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-                    ring.rotation.x = Math.PI / 3;
-                    planet.add(ring);
-                }
+            // Gravitational lensing effect
+            const lensingGeometry = new THREE.RingGeometry(20, 30, 64);
+            const lensingMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5,
+                blending: THREE.AdditiveBlending
             });
+            const lensing = new THREE.Mesh(lensingGeometry, lensingMaterial);
+            lensing.rotation.x = Math.PI / 2;
+            bh.add(lensing);
             
-            // Return objects to animate
-            return { star, starGlow, planets, starLight };
+            // Black hole label
+            const bhLabel = document.createElement('div');
+            bhLabel.className = 'black-hole-label';
+            bhLabel.textContent = 'BLACK HOLE (CLICK TO TRAVEL)';
+            bhLabel.id = 'black-hole-label';
+            labelsContainer.appendChild(bhLabel);
+            
+            // Make black hole clickable
+            bh.userData = { isBlackHole: true };
+            
+            return bh;
         }
         
-        // Create comets
-        function createComets() {
-            const comets = [];
-            
-            function createComet(color, speedFactor) {
-                // Comet nucleus
-                const nucleusGeometry = new THREE.SphereGeometry(0.6, 8, 8);
-                const nucleusMaterial = new THREE.MeshBasicMaterial({ color: color });
-                const nucleus = new THREE.Mesh(nucleusGeometry, nucleusMaterial);
-                
-                // Comet tail particles
-                const tailParticles = new THREE.BufferGeometry();
-                const tailCount = 200;
-                const tailPositions = new Float32Array(tailCount * 3);
-                
-                for (let i = 0; i < tailCount; i++) {
-                    const i3 = i * 3;
-                    tailPositions[i3] = -i * 0.1;
-                    tailPositions[i3 + 1] = (Math.random() - 0.5) * 0.1;
-                    tailPositions[i3 + 2] = (Math.random() - 0.5) * 0.1;
-                }
-                
-                tailParticles.setAttribute('position', new THREE.BufferAttribute(tailPositions, 3));
-                
-                const tailMaterial = new THREE.PointsMaterial({
-                    color: color,
-                    size: 0.2,
-                    transparent: true,
-                    opacity: 0.7,
-                    sizeAttenuation: true
-                });
-                
-                const tail = new THREE.Points(tailParticles, tailMaterial);
-                nucleus.add(tail);
-                
-                // Orbit parameters
-                const semiMajorAxis = 300 + Math.random() * 100;
-                const eccentricity = 0.85 + Math.random() * 0.14;
-                const inclination = Math.random() * Math.PI;
-                const perihelion = 20 + Math.random() * 30;
-                
-                const comet = {
-                    mesh: nucleus,
-                    semiMajorAxis: semiMajorAxis,
-                    eccentricity: eccentricity,
-                    inclination: inclination,
-                    perihelion: perihelion,
-                    angle: Math.random() * Math.PI * 2,
-                    speed: (0.0005 + Math.random() * 0.0003) * speedFactor,
-                    color: color
-                };
-                
-                scene.add(nucleus);
-                comets.push(comet);
-            }
-            
-            // Create several comets with different colors
-            createComet(0x66ccff, 1); // Blue comet
-            createComet(0xff9966, -1.2); // Orange comet
-            createComet(0x99ff99, 1.5); // Green comet
-            createComet(0xcc66ff, -0.8); // Purple comet
-            
-            return comets;
-        }
-        
-        // Create all three solar systems
-        const solarSystem = createSolarSystem(new THREE.Vector3(0, 0, 0));
-        const blueSystem = createBlueSystem(new THREE.Vector3(-200, 50, 150));
-        const redSystem = createRedSystem(new THREE.Vector3(180, -30, -120));
-        const comets = createComets();
+        // Initialize the solar system
+        initSolarSystem();
         
         // Handle window resize
         window.addEventListener('resize', () => {
@@ -537,115 +580,244 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // Double-click to reset view
-        renderer.domElement.addEventListener('dblclick', () => {
-            camera.position.set(0, 100, 200);
+        // UI Controls
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            camera.position.set(0, 50, 150);
             controls.reset();
+        });
+        
+        document.getElementById('zoom-out-btn').addEventListener('click', () => {
+            controls.dollyOut(0.5);
+        });
+        
+        document.getElementById('toggle-labels-btn').addEventListener('click', () => {
+            labelsVisible = !labelsVisible;
+            updateLabelsVisibility();
+        });
+        
+        document.getElementById('toggle-orbits-btn').addEventListener('click', () => {
+            orbitsVisible = !orbitsVisible;
+            orbitsContainer.style.opacity = orbitsVisible ? '1' : '0';
+        });
+        
+        document.getElementById('warp-btn').addEventListener('click', () => {
+            if (blackHole) {
+                // Animate camera to black hole
+                const startPos = camera.position.clone();
+                const endPos = blackHole.position.clone();
+                const duration = 1500;
+                const startTime = Date.now();
+                
+                function animateWarp() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(1, elapsed / duration);
+                    
+                    camera.position.lerpVectors(startPos, endPos, easeInOutCubic(progress));
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animateWarp);
+                    } else {
+                        travelThroughBlackHole();
+                    }
+                }
+                
+                animateWarp();
+            }
+        });
+        
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        // Update labels visibility
+        function updateLabelsVisibility() {
+            const labels = document.querySelectorAll('.celestial-label');
+            labels.forEach(label => {
+                label.style.display = labelsVisible ? 'block' : 'none';
+            });
+        }
+        
+        // Function to update labels with distance-based fading
+        function updateLabels() {
+            const labelDistanceThreshold = 400;
+            
+            // Update sun label
+            if (sun) {
+                const sunScreenPos = new THREE.Vector3().copy(sun.position).project(camera);
+                const sunX = (sunScreenPos.x * 0.5 + 0.5) * window.innerWidth;
+                const sunY = (-sunScreenPos.y * 0.5 + 0.5) * window.innerHeight;
+                
+                const sunLabel = document.getElementById('sun-label');
+                if (sunLabel) {
+                    sunLabel.style.left = `${sunX}px`;
+                    sunLabel.style.top = `${sunY}px`;
+                    
+                    const sunDistance = camera.position.distanceTo(sun.position);
+                    if (labelsVisible) {
+                        sunLabel.style.opacity = Math.min(1, 1 - (sunDistance / labelDistanceThreshold));
+                    }
+                }
+            }
+            
+            // Update planet labels
+            planets.forEach(planet => {
+                const planetScreenPos = new THREE.Vector3().copy(planet.mesh.position).project(camera);
+                const x = (planetScreenPos.x * 0.5 + 0.5) * window.innerWidth;
+                const y = (-planetScreenPos.y * 0.5 + 0.5) * window.innerHeight;
+                
+                const label = document.getElementById(`${planet.data.name.toLowerCase()}-label`);
+                if (label) {
+                    label.style.left = `${x}px`;
+                    label.style.top = `${y}px`;
+                    
+                    const planetDistance = camera.position.distanceTo(planet.mesh.position);
+                    if (labelsVisible) {
+                        label.style.opacity = Math.min(1, 1 - (planetDistance / labelDistanceThreshold));
+                    }
+                }
+            });
+            
+            // Update black hole label and portal
+            if (blackHole) {
+                const bhScreenPos = new THREE.Vector3().copy(blackHole.position).project(camera);
+                const bhX = (bhScreenPos.x * 0.5 + 0.5) * window.innerWidth;
+                const bhY = (-bhScreenPos.y * 0.5 + 0.5) * window.innerHeight;
+                
+                const bhLabel = document.getElementById('black-hole-label');
+                if (bhLabel) {
+                    bhLabel.style.left = `${bhX}px`;
+                    bhLabel.style.top = `${bhY}px`;
+                    
+                    const bhDistance = camera.position.distanceTo(blackHole.position);
+                    if (labelsVisible) {
+                        bhLabel.style.opacity = Math.min(1, 1 - (bhDistance / (labelDistanceThreshold * 1.5)));
+                    }
+                }
+                
+                // Update portal position
+                blackHolePortal.style.left = `${bhX}px`;
+                blackHolePortal.style.top = `${bhY}px`;
+                blackHolePortal.style.display = 'block';
+                blackHolePortal.style.width = '100px';
+                blackHolePortal.style.height = '100px';
+            }
+        }
+        
+        // Travel through black hole to other system
+        function travelThroughBlackHole() {
+            blackHolePortal.style.display = 'none';
+            
+            // Animate warp effect
+            const startTime = Date.now();
+            const duration = 2000;
+            
+            function animateWarp() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(1, elapsed / duration);
+                
+                // Distortion effects
+                camera.fov = 60 + (progress * 40);
+                camera.updateProjectionMatrix();
+                camera.rotation.z = progress * Math.PI * 4;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateWarp);
+                } else {
+                    // Switch to other system
+                    if (currentSystem === SOLAR_SYSTEM) {
+                        currentSystem = ALIEN_SYSTEM;
+                        initAlienSystem();
+                    } else {
+                        currentSystem = SOLAR_SYSTEM;
+                        initSolarSystem();
+                    }
+                    
+                    // Reset camera with cool effect
+                    camera.fov = 60;
+                    camera.updateProjectionMatrix();
+                    camera.rotation.set(0, 0, 0);
+                    camera.position.set(0, 50, 150);
+                    controls.reset();
+                }
+            }
+            
+            animateWarp();
+        }
+        
+        // Handle clicks on objects
+        renderer.domElement.addEventListener('click', (event) => {
+            // Calculate mouse position in normalized device coordinates
+            const mouse = new THREE.Vector2();
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            // Set up raycaster
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+            
+            // Check for intersections
+            const intersects = raycaster.intersectObjects(scene.children);
+            
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                
+                // Check if clicked on black hole
+                if (object.userData.isBlackHole) {
+                    travelThroughBlackHole();
+                }
+            }
         });
         
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
             
-            // Rotate our sun
-            solarSystem.sun.rotation.y += 0.001;
-            solarSystem.sunGlow.rotation.y += 0.001;
+            // Rotate sun with pulsing glow
+            if (sun) {
+                sun.rotation.y += 0.005;
+                if (sun.children.length > 0) {
+                    const glow = sun.children[0];
+                    glow.scale.setScalar(1 + Math.sin(Date.now() * 0.001) * 0.05);
+                }
+            }
             
-            // Rotate planets in our solar system
-            solarSystem.planets.forEach(planet => {
+            // Update planets
+            planets.forEach(planet => {
                 planet.angle += planet.data.speed;
-                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
-                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
-                planet.mesh.position.set(x, planet.systemPosition.y, z);
+                planet.mesh.position.x = Math.cos(planet.angle) * planet.data.distance;
+                planet.mesh.position.z = Math.sin(planet.angle) * planet.data.distance;
                 planet.mesh.rotation.y += 0.01;
                 
-                // Rotate Saturn's rings
-                if (planet.data.name === 'saturn' && planet.mesh.children[0]) {
+                // Rotate rings
+                if (planet.data.hasRings && planet.mesh.children.length > 0) {
                     planet.mesh.children[0].rotation.y += 0.005;
                 }
             });
             
-            // Rotate blue star
-            blueSystem.star.rotation.y += 0.001;
-            blueSystem.starGlow.rotation.y += 0.001;
-            
-            // Rotate planets in blue system
-            blueSystem.planets.forEach(planet => {
-                planet.angle += planet.data.speed;
-                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
-                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
-                planet.mesh.position.set(x, planet.systemPosition.y, z);
-                planet.mesh.rotation.y += 0.015;
+            // Update black hole effects
+            if (blackHole && blackHole.children.length >= 2) {
+                blackHole.children[0].rotation.z += 0.01; // Disk rotation
+                blackHole.children[1].rotation.z -= 0.02; // Lensing rotation
                 
-                // Rotate violet planet's rings
-                if (planet.data.name === 'violet' && planet.mesh.children[0]) {
-                    planet.mesh.children[0].rotation.y += 0.006;
+                // Pulsing lensing effect
+                const scale = 1 + Math.sin(Date.now() * 0.002) * 0.2;
+                blackHole.children[1].scale.set(scale, scale, 1);
+            }
+            
+            // Update orbit paths positions
+            orbitPaths.forEach((orbitPath, index) => {
+                if (index < planets.length) {
+                    const planetData = planets[index].data;
+                    const orbitScreenPos = new THREE.Vector3(0, 0, 0).project(camera);
+                    const orbitX = (orbitScreenPos.x * 0.5 + 0.5) * window.innerWidth;
+                    const orbitY = (-orbitScreenPos.y * 0.5 + 0.5) * window.innerHeight;
+                    orbitPath.style.left = `${orbitX}px`;
+                    orbitPath.style.top = `${orbitY}px`;
                 }
             });
             
-            // Rotate red star
-            redSystem.star.rotation.y += 0.001;
-            redSystem.starGlow.rotation.y += 0.001;
-            
-            // Rotate planets in red system
-            redSystem.planets.forEach(planet => {
-                planet.angle += planet.data.speed;
-                const x = planet.systemPosition.x + Math.cos(planet.angle) * planet.data.distance;
-                const z = planet.systemPosition.z + Math.sin(planet.angle) * planet.data.distance;
-                planet.mesh.position.set(x, planet.systemPosition.y, z);
-                planet.mesh.rotation.y += 0.012;
-                
-                // Rotate inferno planet's rings
-                if (planet.data.name === 'inferno' && planet.mesh.children[0]) {
-                    planet.mesh.children[0].rotation.y += 0.007;
-                }
-            });
-            
-            // Update comets
-            comets.forEach(comet => {
-                comet.angle += comet.speed;
-                
-                // Calculate position in elliptical orbit
-                const r = comet.semiMajorAxis * (1 - comet.eccentricity * comet.eccentricity) / 
-                          (1 + comet.eccentricity * Math.cos(comet.angle));
-                
-                const x = r * Math.cos(comet.angle);
-                const z = r * Math.sin(comet.angle);
-                const y = Math.sin(comet.angle) * Math.sin(comet.inclination) * r * 0.5;
-                
-                comet.mesh.position.set(x, y, z);
-                
-                // Point tail away from the closest star
-                const solarDist = comet.mesh.position.distanceTo(solarSystem.sun.position);
-                const blueDist = comet.mesh.position.distanceTo(blueSystem.star.position);
-                const redDist = comet.mesh.position.distanceTo(redSystem.star.position);
-                
-                let closestStar;
-                if (solarDist < blueDist && solarDist < redDist) {
-                    closestStar = solarSystem.sun.position;
-                } else if (blueDist < redDist) {
-                    closestStar = blueSystem.star.position;
-                } else {
-                    closestStar = redSystem.star.position;
-                }
-                
-                comet.mesh.lookAt(closestStar);
-                
-                // Change tail length based on distance from star
-                const distanceToStar = comet.mesh.position.distanceTo(closestStar);
-                const tailLength = Math.min(2.0, 40 / distanceToStar);
-                
-                if (comet.mesh.children[0]) {
-                    const positions = comet.mesh.children[0].geometry.attributes.position.array;
-                    for (let i = 0; i < positions.length / 3; i++) {
-                        positions[i * 3] = -i * tailLength * 0.1;
-                    }
-                    comet.mesh.children[0].geometry.attributes.position.needsUpdate = true;
-                    
-                    // Adjust tail color opacity
-                    comet.mesh.children[0].material.opacity = Math.min(0.8, 50 / distanceToStar);
-                }
-            });
+            // Update labels
+            updateLabels();
             
             controls.update();
             renderer.render(scene, camera);
