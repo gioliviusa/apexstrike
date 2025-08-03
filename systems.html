@@ -210,19 +210,54 @@
     color: #ffe;
 }
     </style>
+    .back-home-btn {
+        display: inline-block;
+        margin-top: 12px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        color: #fff;
+        padding: 10px 24px;
+        border-radius: 24px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        user-select: none;
+    }
+    .back-home-btn:hover, .back-home-btn:focus {
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        color: #222;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    }
+    @media (max-width: 600px) {
+        .back-home-btn {
+            font-size: 1rem;
+            padding: 8px 14px;
+            border-radius: 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+            margin-top: 8px;
+        }
+        .title {
+            font-size: 1.1rem;
+            top: 48px;
+        }
+    }
+</style>
 </head>
 <body>
-    <a href="index.html" class="back-home-link">← Back to Home</a>
     <div class="title">INTERSTELLAR EXPLORER</div>
-    
     <div class="instructions">Drag to rotate • Scroll to zoom • Click black hole to travel</div>
-    
     <div class="control-panel">
         <button class="control-btn" id="reset-btn">Reset View</button>
         <button class="control-btn" id="zoom-out-btn">Zoom Out</button>
         <button class="control-btn" id="toggle-labels-btn">Toggle Labels</button>
         <button class="control-btn" id="toggle-orbits-btn">Toggle Orbits</button>
         <button class="control-btn" id="warp-btn">Warp to Black Hole</button>
+        <a href="index.html" class="back-home-btn">← Back to Home</a>
     </div>
     
     <div id="scene-container"></div>
