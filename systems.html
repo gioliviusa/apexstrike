@@ -370,13 +370,15 @@
         let sun;
         const planets = [];
         const orbitLines = [];
+        // Comets
+        const comets = [];
         
         // Initialize solar system
         function initSolarSystem() {
             // Clear previous objects
             scene.children = [];
             scene.add(stars);
-            
+
             // Create sun
             const sunGeometry = new THREE.SphereGeometry(10, 32, 32);
             const sunMaterial = new THREE.MeshBasicMaterial({
@@ -386,12 +388,12 @@
             });
             sun = new THREE.Mesh(sunGeometry, sunMaterial);
             scene.add(sun);
-            
+
             // Sun light
             const sunLight = new THREE.PointLight(0xffffff, 1.5, 1000);
             sunLight.position.copy(sun.position);
             scene.add(sunLight);
-            
+
             // Sun glow
             const sunGlowGeometry = new THREE.SphereGeometry(12, 32, 32);
             const sunGlowMaterial = new THREE.MeshBasicMaterial({
@@ -402,7 +404,7 @@
             });
             const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
             sun.add(sunGlow);
-            
+
             // Planet data for solar system
             const planetsData = [
                 { name: 'MERCURY', radius: 3, distance: 50, color: 0x8a8a8a, speed: 0.02 },
@@ -414,14 +416,14 @@
                 { name: 'URANUS', radius: 8, distance: 500, color: 0x7de3f4, speed: 0.002 },
                 { name: 'NEPTUNE', radius: 7.8, distance: 600, color: 0x4c6ef5, speed: 0.001 }
             ];
-            
+
             // Create planets
             planets.length = 0;
             orbitLines.length = 0;
             // Remove previous orbit lines
             scene.children = scene.children.filter(obj => obj.userData.type !== 'orbitLine');
             labelsContainer.innerHTML = '';
-            
+
             planetsData.forEach(planetData => {
                 const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
                 const material = new THREE.MeshPhongMaterial({
@@ -430,16 +432,16 @@
                     specular: 0x111111
                 });
                 const planet = new THREE.Mesh(geometry, material);
-                
+
                 planet.position.x = planetData.distance;
                 scene.add(planet);
-                
+
                 planets.push({
                     mesh: planet,
                     data: planetData,
                     angle: Math.random() * Math.PI * 2
                 });
-                
+
                 // Create 3D orbit line
                 const segments = 128;
                 const orbitGeometry = new THREE.BufferGeometry();
@@ -456,14 +458,14 @@
                 orbitLine.userData.type = 'orbitLine';
                 scene.add(orbitLine);
                 orbitLines.push(orbitLine);
-                
+
                 // Create planet label
                 const label = document.createElement('div');
                 label.className = 'celestial-label';
                 label.textContent = planetData.name;
                 label.id = `${planetData.name.toLowerCase()}-label`;
                 labelsContainer.appendChild(label);
-                
+
                 // Add ring for Saturn
                 if (planetData.hasRings) {
                     const ringGeometry = new THREE.RingGeometry(planetData.radius + 3, planetData.radius + 8, 64);
@@ -478,16 +480,19 @@
                     planet.add(ring);
                 }
             });
-            
+
             // Create black hole at edge of system (closer and more visible)
             blackHole = createBlackHole(300, 50, -400);
-            
+
             // Add sun label
             const sunLabel = document.createElement('div');
             sunLabel.className = 'celestial-label';
             sunLabel.textContent = 'SUN';
             sunLabel.id = 'sun-label';
             labelsContainer.appendChild(sunLabel);
+
+            // --- Add comets ---
+            createComets('solar');
         }
         
         // Initialize alien system
@@ -495,7 +500,7 @@
             // Clear previous objects
             scene.children = [];
             scene.add(stars);
-            
+
             // Create exotic sun
             const sunGeometry = new THREE.SphereGeometry(12, 32, 32);
             const sunMaterial = new THREE.MeshBasicMaterial({
@@ -505,12 +510,12 @@
             });
             sun = new THREE.Mesh(sunGeometry, sunMaterial);
             scene.add(sun);
-            
+
             // Sun light
             const sunLight = new THREE.PointLight(0xff00ff, 2, 1200);
             sunLight.position.copy(sun.position);
             scene.add(sunLight);
-            
+
             // Sun glow
             const sunGlowGeometry = new THREE.SphereGeometry(15, 32, 32);
             const sunGlowMaterial = new THREE.MeshBasicMaterial({
@@ -521,7 +526,7 @@
             });
             const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
             sun.add(sunGlow);
-            
+
             // Planet data for alien system
             const planetsData = [
                 { name: 'XERON', radius: 6, distance: 60, color: 0xaa66ff, speed: 0.025 },
@@ -531,13 +536,13 @@
                 { name: 'NEBULA', radius: 16, distance: 350, color: 0x66aaff, speed: 0.005, hasRings: true },
                 { name: 'CRYSTAL', radius: 10, distance: 450, color: 0x88ff88, speed: 0.003 }
             ];
-            
+
             // Create planets
             planets.length = 0;
             orbitLines.length = 0;
             scene.children = scene.children.filter(obj => obj.userData.type !== 'orbitLine');
             labelsContainer.innerHTML = '';
-            
+
             planetsData.forEach(planetData => {
                 const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
                 const material = new THREE.MeshPhongMaterial({
@@ -546,16 +551,16 @@
                     specular: 0x222222
                 });
                 const planet = new THREE.Mesh(geometry, material);
-                
+
                 planet.position.x = planetData.distance;
                 scene.add(planet);
-                
+
                 planets.push({
                     mesh: planet,
                     data: planetData,
                     angle: Math.random() * Math.PI * 2
                 });
-                
+
                 // Create 3D orbit line
                 const segments = 128;
                 const orbitGeometry = new THREE.BufferGeometry();
@@ -572,14 +577,14 @@
                 orbitLine.userData.type = 'orbitLine';
                 scene.add(orbitLine);
                 orbitLines.push(orbitLine);
-                
+
                 // Create planet label
                 const label = document.createElement('div');
                 label.className = 'celestial-label';
                 label.textContent = planetData.name;
                 label.id = `${planetData.name.toLowerCase()}-label`;
                 labelsContainer.appendChild(label);
-                
+
                 // Add rings
                 if (planetData.hasRings) {
                     const ringGeometry = new THREE.RingGeometry(planetData.radius + 4, planetData.radius + 12, 64);
@@ -594,16 +599,60 @@
                     planet.add(ring);
                 }
             });
-            
+
             // Create black hole at edge of system (closer and more visible)
             blackHole = createBlackHole(-350, 80, 300);
-            
+
             // Add sun label
             const sunLabel = document.createElement('div');
             sunLabel.className = 'celestial-label';
             sunLabel.textContent = 'NOVA PRIME';
             sunLabel.id = 'sun-label';
             labelsContainer.appendChild(sunLabel);
+
+            // --- Add comets ---
+            createComets('alien');
+        }
+        // Create comets for the current system
+        function createComets(system) {
+            // Remove previous comets
+            comets.forEach(c => scene.remove(c.mesh));
+            comets.length = 0;
+
+            // Define comet data for each system
+            let cometData = [];
+            if (system === 'solar') {
+                cometData = [
+                    { a: 350, b: 80, speed: 0.006, color: 0xffffff, tailColor: 0x99e6ff, size: 2, angle: Math.random() * Math.PI * 2 },
+                    { a: 500, b: 120, speed: 0.004, color: 0xfff6e6, tailColor: 0xffeedd, size: 2.5, angle: Math.random() * Math.PI * 2 },
+                    { a: 250, b: 60, speed: 0.008, color: 0xbbeeff, tailColor: 0x66ccff, size: 1.5, angle: Math.random() * Math.PI * 2 }
+                ];
+            } else {
+                cometData = [
+                    { a: 300, b: 100, speed: 0.007, color: 0xffe6ff, tailColor: 0xff99ff, size: 2.2, angle: Math.random() * Math.PI * 2 },
+                    { a: 420, b: 80, speed: 0.005, color: 0xccffcc, tailColor: 0x99ffcc, size: 2.8, angle: Math.random() * Math.PI * 2 }
+                ];
+            }
+
+            cometData.forEach(data => {
+                // Comet head
+                const geometry = new THREE.SphereGeometry(data.size, 16, 16);
+                const material = new THREE.MeshBasicMaterial({ color: data.color, emissive: data.color, emissiveIntensity: 1.5 });
+                const mesh = new THREE.Mesh(geometry, material);
+
+                // Comet tail (glowing trail)
+                const tailLength = 32;
+                const tailGeometry = new THREE.BufferGeometry();
+                const tailVertices = new Float32Array((tailLength + 1) * 3);
+                tailGeometry.setAttribute('position', new THREE.BufferAttribute(tailVertices, 3));
+                const tailMaterial = new THREE.LineBasicMaterial({ color: data.tailColor, transparent: true, opacity: 0.7 });
+                const tail = new THREE.Line(tailGeometry, tailMaterial);
+                mesh.add(tail);
+
+                mesh.userData = { a: data.a, b: data.b, speed: data.speed, angle: data.angle, tail, tailVertices, tailLength };
+                scene.add(mesh);
+                comets.push({ mesh, data });
+            });
         }
         
         // Create black hole (now more visible and closer)
@@ -675,7 +724,8 @@
         });
         
         document.getElementById('zoom-out-btn').addEventListener('click', () => {
-            controls.dollyOut(0.5);
+            controls.dollyOut(2); // Increase value for a more noticeable zoom out
+            controls.update();
         });
         
         document.getElementById('toggle-labels-btn').addEventListener('click', () => {
@@ -859,7 +909,7 @@
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
-            
+
             // Rotate sun with pulsing glow
             if (sun) {
                 sun.rotation.y += 0.005;
@@ -868,39 +918,60 @@
                     glow.scale.setScalar(1 + Math.sin(Date.now() * 0.001) * 0.05);
                 }
             }
-            
+
             // Update planets
             planets.forEach(planet => {
                 planet.angle += planet.data.speed;
                 planet.mesh.position.x = Math.cos(planet.angle) * planet.data.distance;
                 planet.mesh.position.z = Math.sin(planet.angle) * planet.data.distance;
                 planet.mesh.rotation.y += 0.01;
-                
+
                 // Rotate rings
                 if (planet.data.hasRings && planet.mesh.children.length > 0) {
                     planet.mesh.children[0].rotation.y += 0.005;
                 }
             });
-            
+
+            // --- Animate comets ---
+            comets.forEach(comet => {
+                const u = comet.mesh.userData;
+                u.angle += u.speed;
+                // Elliptical orbit
+                comet.mesh.position.x = Math.cos(u.angle) * u.a;
+                comet.mesh.position.z = Math.sin(u.angle) * u.b;
+                comet.mesh.position.y = Math.sin(u.angle * 2) * 10;
+
+                // Animate tail
+                const tail = u.tail;
+                const tailVertices = u.tailVertices;
+                for (let i = 0; i <= u.tailLength; i++) {
+                    const t = u.angle - i * 0.07;
+                    tailVertices[i * 3] = Math.cos(t) * u.a;
+                    tailVertices[i * 3 + 1] = Math.sin(t * 2) * 10;
+                    tailVertices[i * 3 + 2] = Math.sin(t) * u.b;
+                }
+                tail.geometry.attributes.position.needsUpdate = true;
+            });
+
             // Update black hole effects
             if (blackHole && blackHole.children.length >= 2) {
                 blackHole.children[0].rotation.z += 0.01; // Disk rotation
                 blackHole.children[1].rotation.z -= 0.02; // Lensing rotation
-                
+
                 // Pulsing lensing effect
                 const scale = 1 + Math.sin(Date.now() * 0.002) * 0.2;
                 blackHole.children[1].scale.set(scale, scale, 1);
             }
-            
+
             // (No need to update orbit paths, handled by Three.js)
-            
+
             // Update labels
             updateLabels();
-            
+
             controls.update();
             renderer.render(scene, camera);
         }
-        
+
         animate();
     </script>
 </body>
