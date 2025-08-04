@@ -269,6 +269,7 @@
         // Constants
         const SOLAR_SYSTEM = 0;
         const ALIEN_SYSTEM = 1;
+        const MILKY_WAY_SYSTEM = 2;
         
         // Global variables
         let currentSystem = SOLAR_SYSTEM;
@@ -372,6 +373,125 @@
         const orbitLines = [];
         // Comets
         const comets = [];
+
+        // Initialize Milky Way system
+        function initMilkyWaySystem() {
+            // Clear previous objects
+            scene.children = [];
+            scene.add(stars);
+
+            // Create Milky Way sun (blue-white giant)
+            const sunGeometry = new THREE.SphereGeometry(13, 32, 32);
+            const sunMaterial = new THREE.MeshBasicMaterial({
+                color: 0x99ccff,
+                emissive: 0x66aaff,
+                emissiveIntensity: 3.5
+            });
+            sun = new THREE.Mesh(sunGeometry, sunMaterial);
+            scene.add(sun);
+
+            // Sun light
+            const sunLight = new THREE.PointLight(0x99ccff, 2.2, 1400);
+            sunLight.position.copy(sun.position);
+            scene.add(sunLight);
+
+            // Sun glow
+            const sunGlowGeometry = new THREE.SphereGeometry(16, 32, 32);
+            const sunGlowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x99ccff,
+                transparent: true,
+                opacity: 0.35,
+                side: THREE.BackSide
+            });
+            const sunGlow = new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
+            sun.add(sunGlow);
+
+            // Planet data for Milky Way system
+            const planetsData = [
+                { name: 'GAIA', radius: 7, distance: 70, color: 0x7fffd4, speed: 0.021 },
+                { name: 'TITAN', radius: 10, distance: 130, color: 0xdeb887, speed: 0.013, hasRings: true },
+                { name: 'HYPERION', radius: 6, distance: 200, color: 0x8a2be2, speed: 0.009 },
+                { name: 'PROMETHEUS', radius: 12, distance: 300, color: 0xffe4e1, speed: 0.006 },
+                { name: 'CHRONOS', radius: 18, distance: 420, color: 0x4682b4, speed: 0.004, hasRings: true },
+                { name: 'ECHO', radius: 8, distance: 520, color: 0x00ced1, speed: 0.002 }
+            ];
+
+            // Create planets
+            planets.length = 0;
+            orbitLines.length = 0;
+            scene.children = scene.children.filter(obj => obj.userData.type !== 'orbitLine');
+            labelsContainer.innerHTML = '';
+
+            planetsData.forEach(planetData => {
+                const geometry = new THREE.SphereGeometry(planetData.radius, 32, 32);
+                const material = new THREE.MeshPhongMaterial({
+                    color: planetData.color,
+                    shininess: 18,
+                    specular: 0x222244
+                });
+                const planet = new THREE.Mesh(geometry, material);
+
+                planet.position.x = planetData.distance;
+                scene.add(planet);
+
+                planets.push({
+                    mesh: planet,
+                    data: planetData,
+                    angle: Math.random() * Math.PI * 2
+                });
+
+                // Create 3D orbit line
+                const segments = 128;
+                const orbitGeometry = new THREE.BufferGeometry();
+                const orbitVertices = [];
+                for (let i = 0; i <= segments; i++) {
+                    const theta = (i / segments) * Math.PI * 2;
+                    orbitVertices.push(
+                        Math.cos(theta) * planetData.distance, 0, Math.sin(theta) * planetData.distance
+                    );
+                }
+                orbitGeometry.setAttribute('position', new THREE.Float32BufferAttribute(orbitVertices, 3));
+                const orbitMaterial = new THREE.LineBasicMaterial({ color: planetData.color, opacity: 0.35, transparent: true });
+                const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+                orbitLine.userData.type = 'orbitLine';
+                scene.add(orbitLine);
+                orbitLines.push(orbitLine);
+
+                // Create planet label
+                const label = document.createElement('div');
+                label.className = 'celestial-label';
+                label.textContent = planetData.name;
+                label.id = `${planetData.name.toLowerCase()}-label`;
+                labelsContainer.appendChild(label);
+
+                // Add rings
+                if (planetData.hasRings) {
+                    const ringGeometry = new THREE.RingGeometry(planetData.radius + 4, planetData.radius + 10, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: planetData.color,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.5
+                    });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 3;
+                    planet.add(ring);
+                }
+            });
+
+            // Create black hole at edge of system (closer and more visible)
+            blackHole = createBlackHole(350, 60, 350);
+
+            // Add sun label
+            const sunLabel = document.createElement('div');
+            sunLabel.className = 'celestial-label';
+            sunLabel.textContent = 'MILKY WAY SUN';
+            sunLabel.id = 'sun-label';
+            labelsContainer.appendChild(sunLabel);
+
+            // --- Add comets ---
+            createComets('milkyway');
+        }
         
         // Initialize solar system
         function initSolarSystem() {
@@ -627,10 +747,15 @@
                     { a: 500, b: 120, speed: 0.004, color: 0xfff6e6, tailColor: 0xffeedd, size: 2.5, angle: Math.random() * Math.PI * 2 },
                     { a: 250, b: 60, speed: 0.008, color: 0xbbeeff, tailColor: 0x66ccff, size: 1.5, angle: Math.random() * Math.PI * 2 }
                 ];
-            } else {
+            } else if (system === 'alien') {
                 cometData = [
                     { a: 300, b: 100, speed: 0.007, color: 0xffe6ff, tailColor: 0xff99ff, size: 2.2, angle: Math.random() * Math.PI * 2 },
                     { a: 420, b: 80, speed: 0.005, color: 0xccffcc, tailColor: 0x99ffcc, size: 2.8, angle: Math.random() * Math.PI * 2 }
+                ];
+            } else if (system === 'milkyway') {
+                cometData = [
+                    { a: 380, b: 120, speed: 0.005, color: 0xf0f8ff, tailColor: 0xadd8e6, size: 2.3, angle: Math.random() * Math.PI * 2 },
+                    { a: 480, b: 160, speed: 0.003, color: 0xe6e6fa, tailColor: 0xdda0dd, size: 2.7, angle: Math.random() * Math.PI * 2 }
                 ];
             }
 
@@ -848,28 +973,31 @@
             // Animate warp effect
             const startTime = Date.now();
             const duration = 2000;
-            
+
             function animateWarp() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(1, elapsed / duration);
-                
+
                 // Distortion effects
                 camera.fov = 60 + (progress * 40);
                 camera.updateProjectionMatrix();
                 camera.rotation.z = progress * Math.PI * 4;
-                
+
                 if (progress < 1) {
                     requestAnimationFrame(animateWarp);
                 } else {
-                    // Switch to other system
+                    // Cycle through all three systems
                     if (currentSystem === SOLAR_SYSTEM) {
                         currentSystem = ALIEN_SYSTEM;
                         initAlienSystem();
+                    } else if (currentSystem === ALIEN_SYSTEM) {
+                        currentSystem = MILKY_WAY_SYSTEM;
+                        initMilkyWaySystem();
                     } else {
                         currentSystem = SOLAR_SYSTEM;
                         initSolarSystem();
                     }
-                    
+
                     // Reset camera with cool effect
                     camera.fov = 60;
                     camera.updateProjectionMatrix();
@@ -878,7 +1006,7 @@
                     controls.reset();
                 }
             }
-            
+
             animateWarp();
         }
         
