@@ -289,23 +289,30 @@
             min-width: 220px;
             max-width: 340px;
             padding: 22px 44px;
-            background: linear-gradient(270deg, var(--primary), var(--accent), var(--secondary), var(--primary));
-            background-size: 400% 400%;
+            background: linear-gradient(120deg, var(--primary), var(--accent), var(--secondary), var(--primary));
+            background-size: 200% 200%;
             color: var(--dark);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            font-size: 1.45rem;
-            font-weight: 700;
+            border: none;
+            border-radius: 24px;
+            font-size: 1.5rem;
+            font-weight: 800;
             cursor: pointer;
             transition: box-shadow 0.3s, background 0.3s, transform 0.2s, border-color 0.3s;
             text-transform: uppercase;
             letter-spacing: 2.5px;
             font-family: 'Orbitron', sans-serif;
-            box-shadow: 0 10px 32px rgba(0, 247, 255, 0.22), 0 0 24px var(--primary), 0 0 0 4px rgba(0,247,255,0.15);
+            box-shadow: 0 8px 32px rgba(0, 247, 255, 0.22), 0 0 32px var(--primary), 0 0 0 6px rgba(0,247,255,0.18);
             margin: 36px auto 0 auto;
             text-align: center;
             position: relative;
-            animation: btn-gradient 4s ease infinite;
+            animation: btn-gradient 3s ease-in-out infinite;
+            outline: none;
+        }
+        @keyframes btn-gradient {
+            0% {background-position:0% 50%}
+            50% {background-position:100% 50%}
+            100% {background-position:0% 50%}
+        }
         }
         @keyframes btn-gradient {
             0% {background-position:0% 50%}
@@ -319,16 +326,10 @@
             vertical-align: middle;
             transition: transform 0.2s;
         .btn i {
-            font-size: 1.5em;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-        .btn:hover {
-            background: linear-gradient(270deg, var(--secondary), var(--accent), var(--primary), var(--secondary));
-            background-size: 400% 400%;
-            border-color: var(--secondary);
-            transform: translateY(-4px) scale(1.07);
-            box-shadow: 0 16px 32px rgba(255, 0, 228, 0.22), 0 0 32px var(--secondary), 0 0 0 6px rgba(255,0,228,0.12);
+            background: linear-gradient(120deg, var(--secondary), var(--accent), var(--primary), var(--secondary));
+            background-size: 200% 200%;
+            box-shadow: 0 16px 40px rgba(255, 0, 228, 0.22), 0 0 40px var(--secondary), 0 0 0 8px rgba(255,0,228,0.15);
+            transform: translateY(-6px) scale(1.08);
         }
         .btn:hover i {
             transform: scale(1.15) rotate(-8deg);
@@ -451,12 +452,6 @@
         }
         .section-title:after {
             content: '';
-            display: block;
-            width: 80px;
-            height: 5px;
-            background: var(--secondary);
-            border-radius: 3px;
-            margin: 10px auto 0;
         }
         .jobs-grid {
             display: grid;
@@ -492,13 +487,7 @@
             font-weight: 600;
         }
         .job-content {
-            padding: 20px;
-        }
-        .job-content h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
             font-size: 1.3rem;
-        }
         .job-meta {
             display: flex;
             justify-content: space-between;
@@ -610,12 +599,6 @@
             .content {
                 flex-direction: column;
             }
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            .form-section, .info-section {
-                padding: 10px;
-            }
             .form-row {
                 flex-direction: column;
                 gap: 0;
@@ -688,7 +671,6 @@
                 font-size: 0.95rem;
                 padding: 10px;
             }
-        }
     </style>
 </head>
 <body>
