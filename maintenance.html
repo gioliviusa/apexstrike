@@ -569,37 +569,33 @@
             
             <div class="content">
                 <div class="form-section">
-                    <form id="bookingForm">
+                    <form action="https://formspree.io/f/xwkzqgqg" method="POST">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" class="form-control" required placeholder="John">
+                                <input type="text" name="First Name" class="form-control" required placeholder="John">
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" class="form-control" required placeholder="Doe">
+                                <input type="text" name="Last Name" class="form-control" required placeholder="Doe">
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" class="form-control" required placeholder="john.doe@example.com">
+                            <input type="email" name="Email" class="form-control" required placeholder="john.doe@example.com">
                         </div>
-                        
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="tel" id="phone" class="form-control" required placeholder="(954) 123-4567">
+                            <input type="tel" name="Phone" class="form-control" required placeholder="(954) 123-4567">
                         </div>
-                        
                         <div class="form-group">
                             <label for="address">Home Address</label>
-                            <input type="text" id="address" class="form-control" required placeholder="123 Ocean Drive, Fort Lauderdale">
+                            <input type="text" name="Address" class="form-control" required placeholder="123 Ocean Drive, Fort Lauderdale">
                         </div>
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="serviceType">Service Type</label>
-                                <select id="serviceType" class="form-control" required>
+                                <select name="Service Type" class="form-control" required>
                                     <option value="">Select a service</option>
                                     <option value="plumbing">Plumbing</option>
                                     <option value="electrical">Electrical</option>
@@ -614,7 +610,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="urgency">Urgency</label>
-                                <select id="urgency" class="form-control" required>
+                                <select name="Urgency" class="form-control" required>
                                     <option value="routine">Routine (1-2 weeks)</option>
                                     <option value="soon">Soon (3-5 days)</option>
                                     <option value="urgent">Urgent (1-2 days)</option>
@@ -622,15 +618,14 @@
                                 </select>
                             </div>
                         </div>
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="date">Preferred Date</label>
-                                <input type="date" id="date" class="form-control" required>
+                                <input type="date" name="Preferred Date" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="time">Preferred Time</label>
-                                <select id="time" class="form-control" required>
+                                <select name="Preferred Time" class="form-control" required>
                                     <option value="">Select time</option>
                                     <option value="morning">Morning (8am - 12pm)</option>
                                     <option value="afternoon">Afternoon (12pm - 4pm)</option>
@@ -638,17 +633,14 @@
                                 </select>
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <label for="details">Service Details</label>
-                            <textarea id="details" class="form-control" rows="4" placeholder="Describe the maintenance required..."></textarea>
+                            <textarea name="Service Details" class="form-control" rows="4" placeholder="Describe the maintenance required..."></textarea>
                         </div>
-                        
                         <button type="submit" class="btn">
                             <i class="fas fa-calendar-check"></i> Schedule Maintenance
                         </button>
-                        
-                        <div id="successMessage" class="success-message">
+                        <div class="success-message" style="display:none;" id="successMessage">
                             <i class="fas fa-check-circle"></i>
                             <h3>Booking Confirmed!</h3>
                             <p>Thank you for scheduling with us. A confirmation has been sent to your email.</p>
@@ -799,7 +791,7 @@
                 <h3>Contact Info</h3>
                 <ul class="footer-links">
                     <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Sunrise Blvd, Fort Lauderdale, FL</a></li>
-                    <li><a href="tel:9541234567"><i class="fas fa-phone"></i> (954) 123-4567</a></li>
+                    <li><a href="tel:9541234567"><i class="fas fa-phone"></i> (239) 204 8113 </li>
                     <li><a href="mailto:service@apexstryke.com"><i class="fas fa-envelope"></i> service@apexstryke.com</a></li>
                     <li><a href="#"><i class="fas fa-clock"></i> Mon-Fri: 8am-6pm, Sat: 9am-4pm</a></li>
                 </ul>
@@ -807,68 +799,12 @@
         </div>
         
         <div class="copyright">
-            <p>&copy; 2023 ApexStryke Home Maintenance. All rights reserved. | Serving Fort Lauderdale and surrounding areas</p>
+            <p>&copy; 2025 ApexStryke Home Maintenance. All rights reserved. | Serving Fort Lauderdale and surrounding areas</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const bookingForm = document.getElementById('bookingForm');
-            const successMessage = document.getElementById('successMessage');
-            
-            // Set min date to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').min = today;
-            
-            // Set default date to tomorrow
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
-            
-            bookingForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Form validation
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
-                const serviceType = document.getElementById('serviceType').value;
-                
-                if (!firstName || !lastName || !email || !phone || !address || !serviceType) {
-                    alert('Please fill in all required fields.');
-                    return;
-                }
-                
-                // Email validation
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert('Please enter a valid email address.');
-                    return;
-                }
-                
-                // Phone validation (simple version)
-                if (phone.replace(/\D/g, '').length < 10) {
-                    alert('Please enter a valid phone number.');
-                    return;
-                }
-                
-                // Simulate form submission
-                setTimeout(() => {
-                    // Show success message
-                    successMessage.style.display = 'block';
-                    
-                    // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth' });
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 5000);
-                }, 800);
-            });
-            
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
