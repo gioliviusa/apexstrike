@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Schedule professional home maintenance services in Fort Lauderdale. Fast, reliable, and local experts for all your home needs.">
+    <meta name="keywords" content="Fort Lauderdale home maintenance, plumbing repair, electrical service, HVAC maintenance, pool service, appliance repair">
+    <meta name="author" content="ApexStryke">
+    <meta property="og:title" content="Fort Lauderdale Home Maintenance | ApexStryke">
+    <meta property="og:description" content="Professional home maintenance services for Fort Lauderdale homeowners. Book online today!">
+    <meta property="og:url" content="https://apexstryke.com/maintenance">
+    <meta property="og:type" content="website">
+    <title>Fort Lauderdale Home Maintenance | ApexStryke</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00e4;
+            --dark: #0a0a14;
+            --light: #f0f0f0;
+            --accent: #7700ff;
+            --glow: 0 0 10px rgba(0, 247, 255, 0.7);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background-color: rgba(10, 10, 20, 0.9);
+            box-shadow: var(--glow);
+            transition: all 0.3s ease;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logo-icon {
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow);
+        }
+        .logo-icon i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        nav a:hover {
+            color: var(--primary);
+            background: rgba(0, 247, 255, 0.1);
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .card {
+            background: rgba(20, 20, 30, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--glow);
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 40px;
+            margin-top: 100px;
+        }
+        .header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 25px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+        }
+        .info-section {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #1a1a2a, #23234a);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: var(--light);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light);
+        }
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #222;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            background: #181828;
+            color: var(--light);
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 247, 255, 0.2);
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        select.form-control {
+            appearance: none;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23757575' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E") no-repeat right 16px center;
+            padding-right: 40px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: var(--dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 4px 6px rgba(0, 247, 255, 0.3);
+        }
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(255, 0, 228, 0.4);
+        }
+        .info-section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .info-section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        .service-list {
+            list-style: none;
+        }
+        .service-list li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            border-bottom: 1px dashed #222;
+        }
+        .service-list li:last-child {
+            border-bottom: none;
+        }
+        .service-list li i {
+            position: absolute;
+            left: 0;
+            top: 14px;
+            color: var(--accent);
+            font-size: 20px;
+        }
+        .contact-info {
+            background: var(--accent);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        .contact-info p {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-info i {
+            width: 24px;
+            text-align: center;
+        }
+        .location {
+            margin-top: 25px;
+            background: #181828;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--glow);
+        }
+        .location h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .map-placeholder {
+            height: 150px;
+            background: linear-gradient(45deg, #23234a, #1a1a2a);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .map-placeholder i {
+            font-size: 40px;
+            margin-right: 10px;
+        }
+        .success-message {
+            display: none;
+            background: var(--accent);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        .success-message i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .completed-jobs {
+            background: #181828;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--glow);
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            position: relative;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 5px;
+            background: var(--secondary);
+            border-radius: 3px;
+            margin: 10px auto 0;
+        }
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .job-card {
+            background: #23234a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 247, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.12);
+        }
+        .job-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .job-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .job-content {
+            padding: 20px;
+        }
+        .job-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .job-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--light);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .job-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .job-description {
+            margin-bottom: 15px;
+            color: #b0b0b0;
+        }
+        .job-testimonial {
+            background: rgba(0, 247, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            font-style: italic;
+            color: var(--light);
+        }
+        .job-testimonial:before {
+            content: '"';
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--primary);
+        }
+        footer {
+            width: 100%;
+            background: linear-gradient(120deg, var(--accent), var(--dark));
+            color: white;
+            padding: 30px 0;
+            border-radius: 15px 15px 0 0;
+            margin-top: auto;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--primary);
+        }
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .header {
+                padding: 20px 15px;
+            }
+            .form-section, .info-section {
+                padding: 20px;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="https://apexstryke.com/maintenance" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span class="logo-text">ApexStryke Maintenance</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#booking">Book Now</a></li>
+                    <li><a href="#completed-jobs">Our Work</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Main Booking Card -->
+        <div class="card" id="booking">
+            <div class="header">
+                <h1>Fort Lauderdale Home Maintenance</h1>
+                <p>Schedule professional maintenance services for your home. Fast, reliable, and local experts.</p>
+            </div>
+            
+            <div class="content">
+                <div class="form-section">
+                    <form id="bookingForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required placeholder="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required placeholder="Doe">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required placeholder="john.doe@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" class="form-control" required placeholder="(954) 123-4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Home Address</label>
+                            <input type="text" id="address" class="form-control" required placeholder="123 Ocean Drive, Fort Lauderdale">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="serviceType">Service Type</label>
+                                <select id="serviceType" class="form-control" required>
+                                    <option value="">Select a service</option>
+                                    <option value="plumbing">Plumbing</option>
+                                    <option value="electrical">Electrical</option>
+                                    <option value="hvac">HVAC Maintenance</option>
+                                    <option value="appliance">Appliance Repair</option>
+                                    <option value="painting">Painting</option>
+                                    <option value="cleaning">Deep Cleaning</option>
+                                    <option value="pool">Pool Maintenance</option>
+                                    <option value="landscaping">Landscaping</option>
+                                    <option value="other">Other Service</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="urgency">Urgency</label>
+                                <select id="urgency" class="form-control" required>
+                                    <option value="routine">Routine (1-2 weeks)</option>
+                                    <option value="soon">Soon (3-5 days)</option>
+                                    <option value="urgent">Urgent (1-2 days)</option>
+                                    <option value="emergency">Emergency (Same day)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">Preferred Date</label>
+                                <input type="date" id="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Preferred Time</label>
+                                <select id="time" class="form-control" required>
+                                    <option value="">Select time</option>
+                                    <option value="morning">Morning (8am - 12pm)</option>
+                                    <option value="afternoon">Afternoon (12pm - 4pm)</option>
+                                    <option value="late-afternoon">Late Afternoon (4pm - 6pm)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="details">Service Details</label>
+                            <textarea id="details" class="form-control" rows="4" placeholder="Describe the maintenance required..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-calendar-check"></i> Schedule Maintenance
+                        </button>
+                        
+                        <div id="successMessage" class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Booking Confirmed!</h3>
+                            <p>Thank you for scheduling with us. A confirmation has been sent to your email.</p>
+                            <p>Our team will contact you shortly to confirm details.</p>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="info-section" id="services">
+                    <h2>Our Services</h2>
+                    <ul class="service-list">
+                        <li><i class="fas fa-faucet"></i> Plumbing Repairs & Installation</li>
+                        <li><i class="fas fa-bolt"></i> Electrical System Maintenance</li>
+                        <li><i class="fas fa-wind"></i> HVAC Service & Repair</li>
+                        <li><i class="fas fa-tools"></i> Appliance Repair</li>
+                        <li><i class="fas fa-paint-roller"></i> Interior/Exterior Painting</li>
+                        <li><i class="fas fa-broom"></i> Deep Cleaning Services</li>
+                        <li><i class="fas fa-swimming-pool"></i> Pool & Spa Maintenance</li>
+                        <li><i class="fas fa-tree"></i> Landscaping & Yard Work</li>
+                    </ul>
+                    
+                    <div class="contact-info" id="contact">
+                        <p><i class="fas fa-phone"></i> <span>(954) 123-4567</span></p>
+                        <p><i class="fas fa-envelope"></i> <span>service@apexstryke.com</span></p>
+                        <p><i class="fas fa-clock"></i> <span>Mon-Fri: 8am-6pm, Sat: 9am-4pm</span></p>
+                        <p><i class="fas fa-map-marker-alt"></i> <span>123 Sunrise Blvd, Fort Lauderdale, FL 33304</span></p>
+                    </div>
+                    
+                    <div class="location">
+                        <h3><i class="fas fa-map-marked-alt"></i> Serving All Fort Lauderdale Areas</h3>
+                        <p>We provide maintenance services throughout Fort Lauderdale including:</p>
+                        <ul>
+                            <li>Downtown</li>
+                            <li>Las Olas</li>
+                            <li>Victoria Park</li>
+                            <li>Coral Ridge</li>
+                            <li>Rio Vista</li>
+                            <li>All surrounding areas</li>
+                        </ul>
+                        
+                        <div class="map-placeholder">
+                            <i class="fas fa-map"></i>
+                            <span>Fort Lauderdale Service Area Map</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Jobs Section -->
+        <div class="completed-jobs" id="completed-jobs">
+            <h2 class="section-title">Recently Completed Projects</h2>
+            <div class="jobs-grid">
+                <!-- Job 1 -->
+                <div class="job-card">
+                    <div class="job-image" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="job-badge">Plumbing</div>
+                    </div>
+                    <div class="job-content">
+                        <h3>Kitchen Plumbing Overhaul</h3>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Victoria Park</span>
+                            <span><i class="fas fa-calendar-alt"></i> Aug 10, 2023</span>
+                        </div>
+                        <p class="job-description">Complete replacement of outdated plumbing system in a historic Victoria Park home. Installed modern fixtures and fixed persistent leaks.</p>
+                        <div class="job-testimonial">
+                            "They arrived on time, fixed our plumbing issues efficiently, and cleaned up perfectly. Highly recommended!"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job 2 -->
+                <div class="job-card">
+                    <div class="job-image" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="job-badge">Electrical</div>
+                    </div>
+                    <div class="job-content">
+                        <h3>Whole-House Rewiring</h3>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Coral Ridge</span>
+                            <span><i class="fas fa-calendar-alt"></i> Aug 5, 2023</span>
+                        </div>
+                        <p class="job-description">Updated the entire electrical system in a 1970s Coral Ridge home to meet modern safety standards and accommodate smart home technology.</p>
+                        <div class="job-testimonial">
+                            "Professional team that completed the job ahead of schedule. Our home is safer and more efficient now."
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job 3 -->
+                <div class="job-card">
+                    <div class="job-image" style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1581578021470-9d7db269d5c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="job-badge">Pool Service</div>
+                    </div>
+                    <div class="job-content">
+                        <h3>Pool Pump Replacement</h3>
+                        <div class="job-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Rio Vista</span>
+                            <span><i class="fas fa-calendar-alt"></i> Aug 2, 2023</span>
+                        </div>
+                        <p class="job-description">Replaced failing pool pump and filtration system with energy-efficient models for a Rio Vista homeowner. Added automated controls.</p>
+                        <div class="job-testimonial">
+                            "Our pool has never been cleaner! The new system is saving us money on electricity too."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>ApexStryke Maintenance</h3>
+                <p>Professional home maintenance services for Fort Lauderdale homeowners since 2010.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                    <li><a href="#booking"><i class="fas fa-chevron-right"></i> Book Online</a></li>
+                    <li><a href="#completed-jobs"><i class="fas fa-chevron-right"></i> Our Work</a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-wrench"></i> Plumbing Services</a></li>
+                    <li><a href="#"><i class="fas fa-bolt"></i> Electrical Repairs</a></li>
+                    <li><a href="#"><i class="fas fa-wind"></i> HVAC Maintenance</a></li>
+                    <li><a href="#"><i class="fas fa-swimming-pool"></i> Pool Care</a></li>
+                    <li><a href="#"><i class="fas fa-paint-roller"></i> Painting Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Sunrise Blvd, Fort Lauderdale, FL</a></li>
+                    <li><a href="tel:9541234567"><i class="fas fa-phone"></i> (954) 123-4567</a></li>
+                    <li><a href="mailto:service@apexstryke.com"><i class="fas fa-envelope"></i> service@apexstryke.com</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Mon-Fri: 8am-6pm, Sat: 9am-4pm</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 ApexStryke Home Maintenance. All rights reserved. | Serving Fort Lauderdale and surrounding areas</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookingForm = document.getElementById('bookingForm');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').min = today;
+            
+            // Set default date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+            
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Form validation
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const serviceType = document.getElementById('serviceType').value;
+                
+                if (!firstName || !lastName || !email || !phone || !address || !serviceType) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+                
+                // Phone validation (simple version)
+                if (phone.replace(/\D/g, '').length < 10) {
+                    alert('Please enter a valid phone number.');
+                    return;
+                }
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }, 800);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
