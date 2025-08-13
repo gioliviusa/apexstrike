@@ -51,7 +51,8 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 20px 0;
+            height: 70px;
+            padding: 0;
             background-color: rgba(10, 10, 20, 0.9);
             box-shadow: var(--glow);
             transition: all 0.3s ease;
@@ -61,6 +62,49 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
+            position: relative;
+            height: 70px;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            nav {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                background: rgba(10, 10, 20, 0.98);
+                box-shadow: var(--glow);
+                border-radius: 0 0 15px 15px;
+                width: 200px;
+                transition: max-height 0.3s ease;
+                overflow: hidden;
+                max-height: 0;
+            }
+            nav.open {
+                max-height: 500px;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+                padding: 10px 0;
+            }
+            nav a {
+                padding: 14px 20px;
+                font-size: 1.1rem;
+                border-radius: 0;
+                border-bottom: 1px solid #222;
+            }
+        }
         }
         .logo {
             font-family: 'Orbitron', sans-serif;
@@ -540,8 +584,32 @@
                 padding: 12px;
             }
             .nav-container {
-                flex-direction: column;
-                gap: 15px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0;
+                height: 70px;
+            }
+            .logo {
+                order: 1;
+                display: flex;
+                align-items: center;
+                height: 70px;
+            }
+            .logo-icon {
+                margin-right: 10px;
+            }
+            .logo-text {
+                order: 2;
+                flex: 1;
+                text-align: center;
+                font-size: 1.2rem;
+            }
+            .menu-toggle {
+                order: 3;
+                margin-left: 10px;
+            }
             }
             nav ul {
                 flex-wrap: wrap;
@@ -585,6 +653,9 @@
                 </div>
                 <span class="logo-text">ApexStryke Maintenance</span>
             </a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -843,6 +914,18 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('header nav');
+            menuToggle.addEventListener('click', function() {
+                nav.classList.toggle('open');
+            });
+            // Close menu on link click (mobile)
+            nav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    nav.classList.remove('open');
+                });
+            });
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
