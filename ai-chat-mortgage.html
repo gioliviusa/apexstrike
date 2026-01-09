@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a3a8f 0%, #4a7dff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        .header {
+            background: linear-gradient(90deg, #1a3a8f, #4a7dff);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo i {
+            font-size: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .logo-text p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4cff4c;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8f9ff;
+        }
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bot-message {
+            background: #eef2ff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            color: #1a3a8f;
+            border: 1px solid #d9e1ff;
+        }
+        .user-message {
+            background: linear-gradient(90deg, #1a3a8f, #4a7dff);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .quick-btn {
+            background: white;
+            border: 1px solid #1a3a8f;
+            color: #1a3a8f;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-btn:hover {
+            background: #1a3a8f;
+            color: white;
+        }
+        .calc-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e8ff;
+        }
+        .calc-card h4 {
+            color: #1a3a8f;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        .calc-card input, .calc-card select {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        .calc-result {
+            background: #f0f7ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            text-align: center;
+            font-weight: 600;
+            color: #1a3a8f;
+        }
+        .loan-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .loan-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        .loan-card:hover {
+            transform: translateY(-3px);
+            border-color: #1a3a8f;
+        }
+        .loan-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1a3a8f;
+        }
+        .info-box {
+            background: #e8f4ff;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #4a7dff;
+            font-size: 0.9rem;
+        }
+        .input-container {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .input-container input:focus {
+            border-color: #1a3a8f;
+        }
+        .send-btn {
+            background: linear-gradient(90deg, #1a3a8f, #4a7dff);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #eef2ff;
+            border-radius: 18px;
+            width: 60px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #1a3a8f;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+        .qual-form {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e1e8ff;
+        }
+        .qual-form input, .qual-form select {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .form-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .submit-btn {
+            background: #1a3a8f;
+            color: white;
+        }
+        .submit-btn:hover {
+            background: #4a7dff;
+        }
+        .cancel-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .cancel-btn:hover {
+            background: #e0e0e0;
+        }
+        .confirmation {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        @media (max-width: 480px) {
+            .container { height: 95vh; }
+            .loan-options { grid-template-columns: 1fr; }
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <div class="logo-text">
+                    <h1>MortgageAI</h1>
+                    <p>Your Loan Assistant</p>
+                </div>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Online</span>
+            </div>
+        </div>
+        <div class="chat-container" id="chatContainer"></div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Ask about mortgages, calculate payments, or check eligibility..." autocomplete="off">
+            <button class="send-btn" id="sendButton"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        let qualStep = 0;
+        let qualData = {};
+
+        window.onload = function() {
+            setTimeout(() => {
+                addBotMessage("Hello! I'm your AI mortgage assistant. I can help you calculate payments, explore loan options, check pre-qualification, and answer your questions. How can I help you today?");
+                setTimeout(() => addQuickActions(), 500);
+            }, 800);
+        };
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', e => { if(e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const msg = userInput.value.trim();
+            if(!msg) return;
+            addUserMessage(msg);
+            userInput.value = '';
+            showTyping();
+            setTimeout(() => { processMessage(msg); }, 1000);
+        }
+
+        function addBotMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message bot-message';
+            div.innerHTML = `<div>${text}</div><div class="message-time">${getTime()}</div>`;
+            chatContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message user-message';
+            div.innerHTML = `<div>${text}</div><div class="message-time">${getTime()}</div>`;
+            chatContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message bot-message typing-indicator';
+            div.id = 'typing';
+            div.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
+            chatContainer.appendChild(div);
+            scrollToBottom();
+        }
+
+        function removeTyping() {
+            const elem = document.getElementById('typing');
+            if(elem) elem.remove();
+        }
+
+        function addQuickActions() {
+            const div = document.createElement('div');
+            div.className = 'quick-actions';
+            const actions = ["Calculate Payment", "Loan Options", "Pre-Qualify", "FAQ", "Document Checklist"];
+            actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-btn';
+                btn.textContent = action;
+                btn.onclick = () => {
+                    userInput.value = action;
+                    sendMessage();
+                };
+                div.appendChild(btn);
+            });
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(div);
+            scrollToBottom();
+        }
+
+        function showCalculator() {
+            addBotMessage("Use our mortgage calculator to estimate your monthly payment. Enter the details below:");
+            const calcDiv = document.createElement('div');
+            calcDiv.className = 'calc-card';
+            calcDiv.innerHTML = `
+                <h4>Mortgage Calculator</h4>
+                <input type="number" id="loanAmount" placeholder="Loan Amount ($)" value="300000">
+                <input type="number" id="interestRate" placeholder="Interest Rate (%)" value="6.5" step="0.1">
+                <select id="loanTerm">
+                    <option value="15">15 years</option>
+                    <option value="30" selected>30 years</option>
+                </select>
+                <div class="calc-result" id="calcResult">Monthly Payment: $2,528</div>
+                <div class="form-buttons">
+                    <button class="form-btn submit-btn" id="calculateBtn">Calculate</button>
+                    <button class="form-btn cancel-btn" id="closeCalc">Close</button>
+                </div>
+            `;
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(calcDiv);
+            document.getElementById('calculateBtn').onclick = calculatePayment;
+            document.getElementById('closeCalc').onclick = () => calcDiv.remove();
+            document.getElementById('loanAmount').oninput = calculatePayment;
+            document.getElementById('interestRate').oninput = calculatePayment;
+            document.getElementById('loanTerm').onchange = calculatePayment;
+            calculatePayment();
+        }
+
+        function calculatePayment() {
+            const amount = parseFloat(document.getElementById('loanAmount').value) || 300000;
+            const rate = parseFloat(document.getElementById('interestRate').value) || 6.5;
+            const term = parseInt(document.getElementById('loanTerm').value) || 30;
+            const monthlyRate = rate / 100 / 12;
+            const payments = term * 12;
+            const monthly = amount * monthlyRate * Math.pow(1 + monthlyRate, payments) / (Math.pow(1 + monthlyRate, payments) - 1);
+            document.getElementById('calcResult').textContent = `Monthly Payment: $${monthly.toFixed(0)}`;
+        }
+
+        function showLoanOptions() {
+            addBotMessage("Here are common mortgage loan types. Click to learn more:");
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'loan-options';
+            const loans = [
+                {icon: 'fa-flag-usa', name: 'Conventional', desc: 'Standard loan, 3% down'},
+                {icon: 'fa-shield-alt', name: 'FHA', desc: 'Low down payment, 3.5% down'},
+                {icon: 'fa-landmark', name: 'VA', desc: 'For veterans, 0% down'},
+                {icon: 'fa-home', name: 'USDA', desc: 'Rural areas, 0% down'},
+                {icon: 'fa-chart-line', name: 'Jumbo', desc: 'High-value loans'},
+                {icon: 'fa-sync', name: 'Refinance', desc: 'Lower rates/payments'}
+            ];
+            loans.forEach(loan => {
+                const card = document.createElement('div');
+                card.className = 'loan-card';
+                card.innerHTML = `
+                    <div class="loan-icon"><i class="fas ${loan.icon}"></i></div>
+                    <h4>${loan.name}</h4>
+                    <p style="font-size:0.8rem;color:#666;">${loan.desc}</p>
+                `;
+                card.onclick = () => showLoanDetail(loan);
+                optionsDiv.appendChild(card);
+            });
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(optionsDiv);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info-box';
+            infoDiv.innerHTML = `<b>Tip:</b> Chatbots can help gather documents, verify information, and suggest suitable mortgage products based on your financial profile[reference:0].`;
+            lastMsg.appendChild(infoDiv);
+        }
+
+        function showLoanDetail(loan) {
+            addBotMessage(`<b>${loan.name} Loan</b><br><br>
+                ${loan.desc}. This type of loan has specific requirements and benefits. 
+                Mortgage chatbots can automate document collection and verification for such loans[reference:1].`);
+            const actionDiv = document.createElement('div');
+            actionDiv.className = 'quick-actions';
+            actionDiv.style.marginTop = '10px';
+            const actions = ["Pre-Qualify for This Loan", "Calculate Payment", "Back to Options"];
+            actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-btn';
+                btn.textContent = action;
+                btn.onclick = () => {
+                    if(action === "Pre-Qualify for This Loan") startPreQual();
+                    else if(action === "Calculate Payment") showCalculator();
+                    else showLoanOptions();
+                };
+                actionDiv.appendChild(btn);
+            });
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(actionDiv);
+        }
+
+        function startPreQual() {
+            qualStep = 1;
+            addBotMessage("Let's check your pre-qualification. First, what's your estimated credit score?");
+            const formDiv = document.createElement('div');
+            formDiv.className = 'qual-form';
+            formDiv.id = 'qualForm';
+            formDiv.innerHTML = `
+                <h4>Pre-Qualification</h4>
+                <select id="creditScore">
+                    <option value="">Select Credit Score</option>
+                    <option value="excellent">720+ (Excellent)</option>
+                    <option value="good">680-719 (Good)</option>
+                    <option value="fair">620-679 (Fair)</option>
+                    <option value="poor">Below 620 (Poor)</option>
+                </select>
+                <div class="form-buttons">
+                    <button class="form-btn submit-btn" id="nextBtn">Next</button>
+                    <button class="form-btn cancel-btn" id="cancelBtn">Cancel</button>
+                </div>
+            `;
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(formDiv);
+            document.getElementById('nextBtn').onclick = nextQualStep;
+            document.getElementById('cancelBtn').onclick = cancelQual;
+        }
+
+        function nextQualStep() {
+            if(qualStep === 1) {
+                const score = document.getElementById('creditScore').value;
+                if(!score) { alert("Please select credit score"); return; }
+                qualData.creditScore = score;
+                qualStep = 2;
+                const formDiv = document.getElementById('qualForm');
+                formDiv.innerHTML = `
+                    <h4>Pre-Qualification</h4>
+                    <p><b>Credit Score:</b> ${score}</p>
+                    <input type="number" id="annualIncome" placeholder="Annual Income ($)">
+                    <input type="number" id="monthlyDebt" placeholder="Monthly Debt Payments ($)">
+                    <div class="form-buttons">
+                        <button class="form-btn submit-btn" id="nextBtn">Next</button>
+                        <button class="form-btn cancel-btn" id="prevBtn">Back</button>
+                    </div>
+                `;
+                document.getElementById('nextBtn').onclick = nextQualStep;
+                document.getElementById('prevBtn').onclick = () => { qualStep = 1; startPreQual(); };
+            } else if(qualStep === 2) {
+                const income = parseFloat(document.getElementById('annualIncome').value);
+                const debt = parseFloat(document.getElementById('monthlyDebt').value);
+                if(!income || !debt) { alert("Please enter income and debt"); return; }
+                qualData.income = income;
+                qualData.debt = debt;
+                qualStep = 3;
+                const formDiv = document.getElementById('qualForm');
+                const dti = (debt * 12 / income * 100).toFixed(1);
+                let qualResult = "Likely Qualified";
+                let message = "Based on your inputs, you appear to be a good candidate for a mortgage.";
+                if(qualData.creditScore === 'poor' || dti > 45) {
+                    qualResult = "Needs Review";
+                    message = "Your profile may need further review. A loan officer can help explore options.";
+                }
+                formDiv.innerHTML = `
+                    <h4>Pre-Qualification Result</h4>
+                    <p><b>Credit Score:</b> ${qualData.creditScore}</p>
+                    <p><b>Annual Income:</b> $${income.toLocaleString()}</p>
+                    <p><b>Monthly Debt:</b> $${debt.toLocaleString()}</p>
+                    <p><b>DTI Ratio:</b> ${dti}%</p>
+                    <div class="confirmation">
+                        <h4>${qualResult}</h4>
+                        <p>${message} Chatbots can help collect and verify documents for your application[reference:2].</p>
+                    </div>
+                    <div class="form-buttons">
+                        <button class="form-btn submit-btn" id="connectBtn">Connect with Lender</button>
+                        <button class="form-btn cancel-btn" id="newBtn">New Check</button>
+                    </div>
+                `;
+                document.getElementById('connectBtn').onclick = () => {
+                    addBotMessage("I can connect you with a licensed mortgage lender. They'll contact you within 24 hours.");
+                    formDiv.remove();
+                    qualData = {};
+                    qualStep = 0;
+                };
+                document.getElementById('newBtn').onclick = () => {
+                    formDiv.remove();
+                    qualData = {};
+                    qualStep = 0;
+                    startPreQual();
+                };
+            }
+        }
+
+        function cancelQual() {
+            qualData = {};
+            qualStep = 0;
+            const formDiv = document.getElementById('qualForm');
+            if(formDiv) formDiv.remove();
+            addBotMessage("Pre-qualification cancelled. How else can I help?");
+            addQuickActions();
+        }
+
+        function showFAQ() {
+            addBotMessage("Here are answers to common mortgage questions:");
+            const faq = [
+                {q: "What is a pre-approval?", a: "A lender's conditional commitment after reviewing your finances. Chatbots can automate this process[reference:3]."},
+                {q: "How much down payment do I need?", a: "Typically 3-20% depending on loan type. FHA loans require 3.5% down."},
+                {q: "What is PMI?", a: "Private Mortgage Insurance required for conventional loans with less than 20% down."},
+                {q: "How long does the process take?", a: "Typically 30-45 days from application to closing."}
+            ];
+            faq.forEach(item => {
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'info-box';
+                infoDiv.innerHTML = `<b>Q: ${item.q}</b><br>${item.a}`;
+                const lastMsg = document.querySelector('.bot-message:last-child');
+                if(lastMsg) lastMsg.appendChild(infoDiv);
+            });
+            addQuickActions();
+        }
+
+        function showDocChecklist() {
+            addBotMessage("Here's a typical document checklist for a mortgage application. Chatbots can help collect and verify these documents[reference:4]:");
+            const docs = [
+                "Pay stubs (last 30 days)",
+                "W-2 forms (past 2 years)",
+                "Tax returns (past 2 years)",
+                "Bank statements (last 2 months)",
+                "Photo ID (driver's license, passport)",
+                "Proof of assets (investment accounts)",
+                "Purchase agreement (if applicable)"
+            ];
+            let html = "<ul style='padding-left:20px;'>";
+            docs.forEach(doc => html += `<li>${doc}</li>`);
+            html += "</ul>";
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'info-box';
+            infoDiv.innerHTML = html;
+            const lastMsg = document.querySelector('.bot-message:last-child');
+            if(lastMsg) lastMsg.appendChild(infoDiv);
+            const actionDiv = document.createElement('div');
+            actionDiv.className = 'quick-actions';
+            actionDiv.style.marginTop = '10px';
+            const actions = ["Start Pre-Qualification", "Calculate Payment", "Back to Main"];
+            actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-btn';
+                btn.textContent = action;
+                btn.onclick = () => {
+                    if(action === "Start Pre-Qualification") startPreQual();
+                    else if(action === "Calculate Payment") showCalculator();
+                    else addQuickActions();
+                };
+                actionDiv.appendChild(btn);
+            });
+            lastMsg.appendChild(actionDiv);
+        }
+
+        function processMessage(msg) {
+            removeTyping();
+            const lowerMsg = msg.toLowerCase();
+            if(lowerMsg.includes('calculat') || lowerMsg.includes('payment')) showCalculator();
+            else if(lowerMsg.includes('loan option') || lowerMsg.includes('type')) showLoanOptions();
+            else if(lowerMsg.includes('pre-qualif') || lowerMsg.includes('eligibil')) startPreQual();
+            else if(lowerMsg.includes('faq') || lowerMsg.includes('question')) showFAQ();
+            else if(lowerMsg.includes('document') || lowerMsg.includes('checklist')) showDocChecklist();
+            else if(lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
+                addBotMessage("Hello! I'm your AI mortgage assistant. How can I help you today?");
+                addQuickActions();
+            } else if(lowerMsg.includes('thank')) {
+                addBotMessage("You're welcome! Let me know if you need further assistance.");
+                addQuickActions();
+            } else if(lowerMsg.includes('bye')) {
+                addBotMessage("Goodbye! Good luck with your mortgage journey!");
+            } else {
+                addBotMessage("I can help you calculate payments, explore loan options, check pre-qualification, or answer FAQs. What would you like to do?");
+                addQuickActions();
+            }
+        }
+
+        function getTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
