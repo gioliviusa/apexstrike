@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4cff4c;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: #e9ecef;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+        
+        .user-message {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-btn {
+            background: white;
+            border: 1px solid #2c3e50;
+            color: #2c3e50;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .legal-areas {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .legal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .legal-card:hover {
+            transform: translateY(-3px);
+            border-color: #2c3e50;
+        }
+        
+        .legal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .legal-type {
+            background: #e9ecef;
+            color: #2c3e50;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .legal-price {
+            color: #34495e;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .legal-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+        
+        .legal-details {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .lawyer-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .lawyer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .lawyer-card:hover {
+            transform: translateY(-3px);
+            border-color: #2c3e50;
+        }
+        
+        .lawyer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+        
+        .lawyer-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .lawyer-specialty {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .lawyer-rating {
+            color: #f39c12;
+            font-size: 0.8rem;
+        }
+        
+        .input-container {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .input-container input:focus {
+            border-color: #2c3e50;
+        }
+        
+        .send-btn {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #e9ecef;
+            border-radius: 18px;
+            width: 60px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #2c3e50;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+        
+        .booking-form {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #dee2e6;
+        }
+        
+        .booking-form h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .booking-form input, .booking-form select, .booking-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
+            border-color: #2c3e50;
+            outline: none;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .form-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            background: #34495e;
+        }
+        
+        .cancel-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .cancel-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .confirmation {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .legal-info {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #bbdefb;
+        }
+        
+        .legal-info h5 {
+            color: #1565c0;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .disclaimer {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ffeaa7;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .document-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .document-card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            border-left: 4px solid #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+        
+        .document-text {
+            flex: 1;
+        }
+        
+        .document-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .document-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                height: 95vh;
+            }
+            
+            .lawyer-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-gavel"></i>
+                <div class="logo-text">
+                    <h1>LegalAI</h1>
+                    <p>Your Legal Assistant</p>
+                </div>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Online</span>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <!-- Chat messages will be inserted here -->
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Ask a legal question or book a consultation..." autocomplete="off">
+            <button class="send-btn" id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // State variables
+        let currentLegalArea = null;
+        let currentLawyer = null;
+        let bookingStep = 0;
+        let bookingData = {};
+        
+        // Sample legal areas data
+        const legalAreas = [
+            {
+                id: 1,
+                title: "Family Law",
+                type: "Divorce, Child Custody",
+                price: "$250-$400/hr",
+                description: "Legal matters related to family relationships such as divorce, child custody, adoption, and domestic violence.",
+                commonIssues: ["Divorce proceedings", "Child custody agreements", "Alimony disputes", "Prenuptial agreements"],
+                lawyers: [1, 2]
+            },
+            {
+                id: 2,
+                title: "Criminal Defense",
+                type: "Criminal Charges",
+                price: "$300-$600/hr",
+                description: "Defense of individuals and companies charged with criminal activity. Representation in court proceedings.",
+                commonIssues: ["DUI/DWI", "Drug offenses", "Assault charges", "Theft & fraud"],
+                lawyers: [3, 4]
+            },
+            {
+                id: 3,
+                title: "Corporate Law",
+                type: "Business & Contracts",
+                price: "$400-$800/hr",
+                description: "Legal practice involving corporations, including formation, governance, contracts, mergers, and compliance.",
+                commonIssues: ["Business formation", "Contract drafting", "Mergers & acquisitions", "Regulatory compliance"],
+                lawyers: [5, 6]
+            },
+            {
+                id: 4,
+                title: "Real Estate Law",
+                type: "Property Transactions",
+                price: "$200-$350/hr",
+                description: "Legal aspects of buying, selling, and renting residential or commercial property.",
+                commonIssues: ["Property purchase agreements", "Landlord-tenant disputes", "Zoning issues", "Title disputes"],
+                lawyers: [7, 8]
+            },
+            {
+                id: 5,
+                title: "Immigration Law",
+                type: "Visas & Citizenship",
+                price: "$200-$400/hr",
+                description: "Legal matters concerning immigration, visas, citizenship, and deportation defense.",
+                commonIssues: ["Visa applications", "Green card process", "Citizenship applications", "Deportation defense"],
+                lawyers: [9]
+            },
+            {
+                id: 6,
+                title: "Personal Injury",
+                type: "Accidents & Injuries",
+                price: "Contingency (30-40%)",
+                description: "Legal representation for those injured physically or psychologically due to negligence of another.",
+                commonIssues: ["Car accidents", "Medical malpractice", "Workplace injuries", "Slip & fall accidents"],
+                lawyers: [10]
+            }
+        ];
+        
+        // Sample lawyers data
+        const lawyers = [
+            { id: 1, name: "Sarah Johnson", specialty: "Family Law", rating: 4.9, experience: "12 years", avatar: "SJ" },
+            { id: 2, name: "Michael Chen", specialty: "Divorce Law", rating: 4.8, experience: "8 years", avatar: "MC" },
+            { id: 3, name: "Robert Williams", specialty: "Criminal Defense", rating: 4.7, experience: "15 years", avatar: "RW" },
+            { id: 4, name: "Jennifer Lee", specialty: "DUI Defense", rating: 4.9, experience: "10 years", avatar: "JL" },
+            { id: 5, name: "David Miller", specialty: "Corporate Law", rating: 4.8, experience: "20 years", avatar: "DM" },
+            { id: 6, name: "Amanda Wilson", specialty: "Business Contracts", rating: 4.6, experience: "7 years", avatar: "AW" },
+            { id: 7, name: "James Brown", specialty: "Real Estate", rating: 4.7, experience: "14 years", avatar: "JB" },
+            { id: 8, name: "Lisa Taylor", specialty: "Property Law", rating: 4.9, experience: "9 years", avatar: "LT" },
+            { id: 9, name: "Carlos Rodriguez", specialty: "Immigration", rating: 4.8, experience: "11 years", avatar: "CR" },
+            { id: 10, name: "Emily White", specialty: "Personal Injury", rating: 4.9, experience: "13 years", avatar: "EW" }
+        ];
+        
+        // Sample documents
+        const legalDocuments = [
+            { id: 1, title: "Will & Testament", description: "Legal document expressing a person's wishes for distribution of property after death", icon: "fa-file-contract" },
+            { id: 2, title: "Power of Attorney", description: "Authorization to act on someone else's behalf in legal matters", icon: "fa-file-signature" },
+            { id: 3, title: "Rental Agreement", description: "Contract outlining terms of property rental between landlord and tenant", icon: "fa-file-alt" },
+            { id: 4, title: "Business Contract", description: "Legally binding agreement between two or more parties", icon: "fa-handshake" },
+            { id: 5, title: "Divorce Petition", description: "Formal request to court to dissolve a marriage", icon: "fa-file-invoice" },
+            { id: 6, title: "NDA Agreement", description: "Non-disclosure agreement to protect confidential information", icon: "fa-user-secret" }
+        ];
+        
+        // Initial bot message
+        window.onload = function() {
+            setTimeout(() => {
+                addBotMessage("Hello! I'm your AI legal assistant. I can help you with legal questions, connect you with specialized attorneys, and schedule consultations. How can I help you today?");
+                
+                // Add disclaimer
+                const disclaimerDiv = document.createElement('div');
+                disclaimerDiv.className = 'disclaimer';
+                disclaimerDiv.innerHTML = `<strong>Disclaimer:</strong> I'm an AI assistant and not a licensed attorney. My responses are for informational purposes only and do not constitute legal advice. For legal advice, please consult with a qualified attorney.`;
+                
+                const lastBotMessage = document.querySelector('.bot-message:last-child');
+                lastBotMessage.appendChild(disclaimerDiv);
+                
+                // Add quick actions
+                setTimeout(() => {
+                    addQuickActions();
+                }, 500);
+            }, 800);
+        };
+        
+        // Send message when send button is clicked
+        sendButton.addEventListener('click', sendMessage);
+        
+        // Send message when Enter key is pressed
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Function to send a message
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            addUserMessage(message);
+            userInput.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Process message and generate response after a delay
+            setTimeout(() => {
+                processUserMessage(message);
+            }, 1000);
+        }
+        
+        // Function to add a bot message
+        function addBotMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot-message';
+            
+            const time = getCurrentTime();
+            messageDiv.innerHTML = `
+                <div>${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Function to add a user message
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            
+            const time = getCurrentTime();
+            messageDiv.innerHTML = `
+                <div>${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Function to show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        // Function to remove typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        // Function to add quick action buttons
+        function addQuickActions() {
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            
+            const actions = [
+                "Legal Areas", 
+                "Find a Lawyer", 
+                "Book Consultation", 
+                "Legal Documents",
+                "Legal Questions"
+            ];
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    userInput.value = action;
+                    sendMessage();
+                });
+                actionsDiv.appendChild(button);
+            });
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        function showLegalAreas() {
+            addBotMessage("Here are the main legal practice areas we specialize in:");
+            const legalDiv = document.createElement('div');
+            legalDiv.className = 'legal-areas';
+            legalAreas.forEach(area => {
+                const card = document.createElement('div');
+                card.className = 'legal-card';
+                card.innerHTML = `<div class="legal-header"><div class="legal-type">${area.type}</div><div class="legal-price">${area.price}</div></div><div class="legal-title">${area.title}</div><div class="legal-details">${area.description}</div>`;
+                card.addEventListener('click', () => selectLegalArea(area.id));
+                legalDiv.appendChild(card);
+            });
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(legalDiv);
+            scrollToBottom();
+        }
+        
+        function selectLegalArea(areaId) {
+            const area = legalAreas.find(a => a.id === areaId);
+            currentLegalArea = area;
+            addBotMessage(`You've selected: <b>${area.title}</b>`);
+            const highlightDiv = document.createElement('div');
+            highlightDiv.className = 'legal-info';
+            highlightDiv.innerHTML = `<h5>${area.title}</h5><p>${area.description}</p><p style="margin-top: 8px;"><strong>Common Issues:</strong> ${area.commonIssues.join(", ")}</p><p style="margin-top: 8px;"><strong>Typical Fees:</strong> ${area.price}</p>`;
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(highlightDiv);
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            actionsDiv.style.marginTop = '10px';
+            const actions = ["Find a Lawyer", "Book Consultation", "Back to Areas"];
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    if (action === "Find a Lawyer") showLawyersForArea(area.id);
+                    else if (action === "Book Consultation") currentLawyer ? startBookingProcess() : showLawyersForArea(area.id);
+                    else { currentLegalArea = null; showLegalAreas(); }
+                });
+                actionsDiv.appendChild(button);
+            });
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        function showLawyersForArea(areaId) {
+            const area = legalAreas.find(a => a.id === areaId);
+            const areaLawyers = lawyers.filter(lawyer => area.lawyers.includes(lawyer.id));
+            addBotMessage(`Here are lawyers specializing in ${area.title}:`);
+            const lawyersDiv = document.createElement('div');
+            lawyersDiv.className = 'lawyer-options';
+            areaLawyers.forEach(lawyer => {
+                const card = document.createElement('div');
+                card.className = 'lawyer-card';
+                card.innerHTML = `<div class="lawyer-avatar">${lawyer.avatar}</div><div class="lawyer-name">${lawyer.name}</div><div class="lawyer-specialty">${lawyer.specialty}</div><div class="lawyer-rating"><i class="fas fa-star"></i> ${lawyer.rating}/5.0 <span style="margin-left: 8px; color: #666;">${lawyer.experience}</span></div>`;
+                card.addEventListener('click', () => selectLawyer(lawyer.id));
+                lawyersDiv.appendChild(card);
+            });
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(lawyersDiv);
+            scrollToBottom();
+        }
+        
+        function selectLawyer(lawyerId) {
+            const lawyer = lawyers.find(l => l.id === lawyerId);
+            currentLawyer = lawyer;
+            addBotMessage(`You've selected: <b>${lawyer.name}</b>`);
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'legal-info';
+            infoDiv.innerHTML = `<h5>${lawyer.name}</h5><p><strong>Specialty:</strong> ${lawyer.specialty}</p><p><strong>Experience:</strong> ${lawyer.experience}</p><p><strong>Rating:</strong> <i class="fas fa-star" style="color: #f39c12;"></i> ${lawyer.rating}/5.0</p><p><strong>Consultation Fee:</strong> $200 (first 30 minutes)</p><p style="margin-top: 8px;">${lawyer.name} specializes in ${currentLegalArea ? currentLegalArea.title.toLowerCase() : 'various legal areas'} and has successfully handled hundreds of cases.</p>`;
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(infoDiv);
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            actionsDiv.style.marginTop = '10px';
+            const actions = ["Book Consultation", "Select Another Lawyer"];
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    if (action === "Book Consultation") startBookingProcess();
+                    else { currentLawyer = null; currentLegalArea ? showLawyersForArea(currentLegalArea.id) : showLegalAreas(); }
+                });
+                actionsDiv.appendChild(button);
+            });
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        function showLegalDocuments() {
+            addBotMessage("I can help you with these common legal documents:");
+            const docsDiv = document.createElement('div');
+            docsDiv.className = 'document-options';
+            legalDocuments.forEach(doc => {
+                const card = document.createElement('div');
+                card.className = 'document-card';
+                card.innerHTML = `<div class="document-icon"><i class="fas ${doc.icon}"></i></div><div class="document-text"><div class="document-title">${doc.title}</div><div class="document-desc">${doc.description}</div></div>`;
+                card.addEventListener('click', () => {
+                    addBotMessage(`I can provide information about <b>${doc.title}</b>. However, I strongly recommend having an attorney review or customize any legal document for your specific needs. Would you like me to connect you with a lawyer?`);
+                });
+                docsDiv.appendChild(card);
+            });
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(docsDiv);
+            scrollToBottom();
+        }
+        
+        function startBookingProcess() {
+            if (!currentLawyer) {
+                addBotMessage("Please select a lawyer first before booking a consultation.");
+                showLegalAreas();
+                return;
+            }
+            bookingStep = 1;
+            addBotMessage(`Let's schedule a consultation with ${currentLawyer.name}. Please enter your name:`);
+            const formDiv = document.createElement('div');
+            formDiv.className = 'booking-form';
+            formDiv.id = 'bookingForm';
+            formDiv.innerHTML = `<h4>Schedule Legal Consultation</h4><input type="text" id="userName" placeholder="Your full name"><div class="form-buttons"><button class="form-btn submit-btn" id="nextBtn">Next</button><button class="form-btn cancel-btn" id="cancelBooking">Cancel</button></div>`;
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(formDiv);
+            document.getElementById('nextBtn').addEventListener('click', nextBookingStep);
+            document.getElementById('cancelBooking').addEventListener('click', cancelBooking);
+            document.getElementById('userName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') nextBookingStep();
+            });
+            scrollToBottom();
+        }
+        
+        function nextBookingStep() {
+            if (bookingStep === 1) {
+                const userName = document.getElementById('userName').value.trim();
+                if (!userName) { alert("Please enter your name"); return; }
+                bookingData.name = userName;
+                bookingStep = 2;
+                const formDiv = document.getElementById('bookingForm');
+                formDiv.innerHTML = `<h4>Schedule Legal Consultation</h4><p><strong>Name:</strong> ${userName}</p><input type="email" id="userEmail" placeholder="Your email"><input type="tel" id="userPhone" placeholder="Your phone number"><textarea id="legalIssue" rows="3" placeholder="Brief description of your legal issue..."></textarea><div class="form-buttons"><button class="form-btn submit-btn" id="confirmBtn">Confirm Booking</button><button class="form-btn cancel-btn" id="prevBtn">Previous</button></div>`;
+                document.getElementById('confirmBtn').addEventListener('click', confirmBooking);
+                document.getElementById('prevBtn').addEventListener('click', () => { bookingStep = 1; startBookingProcess(); });
+            }
+        }
+        
+        function cancelBooking() {
+            currentLegalArea = null;
+            currentLawyer = null;
+            bookingStep = 0;
+            bookingData = {};
+            addBotMessage("Consultation scheduling cancelled. How else can I help you?");
+            addQuickActions();
+        }
+        
+        function confirmBooking() {
+            const userEmail = document.getElementById('userEmail').value.trim();
+            const userPhone = document.getElementById('userPhone').value.trim();
+            const legalIssue = document.getElementById('legalIssue').value.trim();
+            if (!userEmail || !userPhone || !legalIssue) { alert("Please fill in all fields"); return; }
+            const formDiv = document.getElementById('bookingForm');
+            if (formDiv) formDiv.remove();
+            const confirmationDiv = document.createElement('div');
+            confirmationDiv.className = 'confirmation';
+            confirmationDiv.innerHTML = `<h4>✅ Consultation Confirmed!</h4><p>Your consultation with <strong>${currentLawyer.name}</strong> has been scheduled.</p><p>A confirmation email has been sent to ${userEmail} with details and instructions.</p><p><strong>Fee:</strong> $200 for the first 30 minutes</p>`;
+            addBotMessage("Your legal consultation has been scheduled successfully!");
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(confirmationDiv);
+            currentLegalArea = null;
+            currentLawyer = null;
+            bookingStep = 0;
+            bookingData = {};
+            setTimeout(() => {
+                addBotMessage("Would you like help with anything else legal-related?");
+                addQuickActions();
+            }, 1000);
+        }
+        
+        function processUserMessage(message) {
+            removeTypingIndicator();
+            const lowerMsg = message.toLowerCase();
+            if (lowerMsg.includes('legal area') || lowerMsg.includes('practice area')) showLegalAreas();
+            else if (lowerMsg.includes('lawyer') || lowerMsg.includes('attorney')) showLegalAreas();
+            else if (lowerMsg.includes('book') || lowerMsg.includes('consultation') || lowerMsg.includes('schedule')) currentLawyer ? startBookingProcess() : showLegalAreas();
+            else if (lowerMsg.includes('document') || lowerMsg.includes('form') || lowerMsg.includes('contract')) showLegalDocuments();
+            else if (lowerMsg.includes('divorce') || lowerMsg.includes('family')) selectLegalArea(1);
+            else if (lowerMsg.includes('criminal') || lowerMsg.includes('dui')) selectLegalArea(2);
+            else if (lowerMsg.includes('business') || lowerMsg.includes('corporate')) selectLegalArea(3);
+            else if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) { addBotMessage("Hello! How can I help you with your legal needs today?"); addQuickActions(); }
+            else if (lowerMsg.includes('thank')) { addBotMessage("You're welcome! Anything else I can help with?"); addQuickActions(); }
+            else { addBotMessage("I can help you with legal questions, finding lawyers, booking consultations, and legal documents. What would you like to know?"); addQuickActions(); }
+        }
+        
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        }
+        
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

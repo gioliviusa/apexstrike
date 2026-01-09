@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f4c75 0%, #1b5e7e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #0f4c75, #1b5e7e);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4cff4c;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #f5f9fc;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: #e8f0f7;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            color: #0f4c75;
+            border: 1px solid #d1e3f0;
+        }
+        
+        .user-message {
+            background: linear-gradient(90deg, #0f4c75, #1b5e7e);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-btn {
+            background: white;
+            border: 1px solid #0f4c75;
+            color: #0f4c75;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background: #0f4c75;
+            color: white;
+        }
+        
+        .property-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-3px);
+            border-color: #0f4c75;
+        }
+        
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .property-type {
+            background: #e8f0f7;
+            color: #0f4c75;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .property-price {
+            color: #1b5e7e;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .property-title {
+            font-weight: 600;
+            color: #0f4c75;
+            font-size: 1.1rem;
+        }
+        
+        .property-details {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .property-detail {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .property-detail i {
+            color: #0f4c75;
+        }
+        
+        .property-location {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .input-container {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-container input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .input-container input:focus {
+            border-color: #0f4c75;
+        }
+        
+        .send-btn {
+            background: linear-gradient(90deg, #0f4c75, #1b5e7e);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #e8f0f7;
+            border-radius: 18px;
+            width: 60px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #0f4c75;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+        
+        .booking-form {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d1e3f0;
+        }
+        
+        .booking-form h4 {
+            color: #0f4c75;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .booking-form input, .booking-form select {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .booking-form input:focus, .booking-form select:focus {
+            border-color: #0f4c75;
+            outline: none;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .form-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn {
+            background: #0f4c75;
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            background: #1b5e7e;
+        }
+        
+        .cancel-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .cancel-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .confirmation {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .property-highlight {
+            background: #e8f0f7;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #d1e3f0;
+        }
+        
+        .property-highlight h5 {
+            color: #0f4c75;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .market-info {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .market-info h5 {
+            color: #e65100;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                height: 95vh;
+            }
+            
+            .property-details {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+        
+        /* Scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <div class="logo-text">
+                    <h1>EstateAI</h1>
+                    <p>Your Real Estate Assistant</p>
+                </div>
+            </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Online</span>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <!-- Chat messages will be inserted here -->
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Ask about properties, pricing, or book a viewing..." autocomplete="off">
+            <button class="send-btn" id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // State variables
+        let currentProperty = null;
+        let bookingStep = 0;
+        let bookingData = {};
+        
+        // Sample properties data
+        const properties = [
+            {
+                id: 1,
+                title: "Modern Downtown Apartment",
+                type: "Apartment",
+                price: "$450,000",
+                bedrooms: 2,
+                bathrooms: 2,
+                sqft: 1200,
+                location: "Downtown, City Center",
+                description: "Luxury apartment with city views, modern amenities, and secure parking.",
+                viewingTimes: ["10:00 AM", "2:00 PM", "4:30 PM"]
+            },
+            {
+                id: 2,
+                title: "Suburban Family Home",
+                type: "House",
+                price: "$750,000",
+                bedrooms: 4,
+                bathrooms: 3,
+                sqft: 2400,
+                location: "Green Valley Suburbs",
+                description: "Spacious family home with large backyard, garage, and excellent schools nearby.",
+                viewingTimes: ["9:30 AM", "1:00 PM", "3:30 PM"]
+            },
+            {
+                id: 3,
+                title: "Waterfront Condo",
+                type: "Condo",
+                price: "$620,000",
+                bedrooms: 3,
+                bathrooms: 2,
+                sqft: 1800,
+                location: "Marina Bay",
+                description: "Stunning waterfront condo with balcony, pool access, and marina views.",
+                viewingTimes: ["11:00 AM", "3:00 PM", "5:30 PM"]
+            },
+            {
+                id: 4,
+                title: "Urban Loft Studio",
+                type: "Studio",
+                price: "$285,000",
+                bedrooms: 1,
+                bathrooms: 1,
+                sqft: 850,
+                location: "Arts District",
+                description: "Converted loft with exposed brick, high ceilings, and industrial design.",
+                viewingTimes: ["12:00 PM", "4:00 PM"]
+            }
+        ];
+        
+        // Initial bot message
+        window.onload = function() {
+            setTimeout(() => {
+                addBotMessage("Hello! I'm your AI real estate assistant. I can help you find properties, answer questions about the market, and schedule viewings. How can I help you today?");
+                
+                // Add quick actions
+                setTimeout(() => {
+                    addQuickActions();
+                }, 500);
+            }, 800);
+        };
+        
+        // Send message when send button is clicked
+        sendButton.addEventListener('click', sendMessage);
+        
+        // Send message when Enter key is pressed
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Function to send a message
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message to chat
+            addUserMessage(message);
+            userInput.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Process message and generate response after a delay
+            setTimeout(() => {
+                processUserMessage(message);
+            }, 1000);
+        }
+        
+        // Function to add a bot message
+        function addBotMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot-message';
+            
+            const time = getCurrentTime();
+            messageDiv.innerHTML = `
+                <div>${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Function to add a user message
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            
+            const time = getCurrentTime();
+            messageDiv.innerHTML = `
+                <div>${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        // Function to show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            
+            chatContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+        
+        // Function to remove typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        // Function to add quick action buttons
+        function addQuickActions() {
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            
+            const actions = [
+                "View Properties", 
+                "Schedule Viewing", 
+                "Market Trends", 
+                "Mortgage Info",
+                "Contact Agent"
+            ];
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    userInput.value = action;
+                    sendMessage();
+                });
+                actionsDiv.appendChild(button);
+            });
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        // Function to display property listings
+        function showProperties() {
+            addBotMessage("Here are some properties that might interest you:");
+            
+            const propertiesDiv = document.createElement('div');
+            propertiesDiv.className = 'property-options';
+            
+            properties.forEach(property => {
+                const card = document.createElement('div');
+                card.className = 'property-card';
+                card.dataset.id = property.id;
+                
+                card.innerHTML = `
+                    <div class="property-header">
+                        <div class="property-type">${property.type}</div>
+                        <div class="property-price">${property.price}</div>
+                    </div>
+                    <div class="property-title">${property.title}</div>
+                    <div class="property-details">
+                        <div class="property-detail">
+                            <i class="fas fa-bed"></i>
+                            <span>${property.bedrooms} beds</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-bath"></i>
+                            <span>${property.bathrooms} baths</span>
+                        </div>
+                        <div class="property-detail">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>${property.sqft} sqft</span>
+                        </div>
+                    </div>
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${property.location}</span>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    selectProperty(property.id);
+                });
+                
+                propertiesDiv.appendChild(card);
+            });
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(propertiesDiv);
+            scrollToBottom();
+        }
+        
+        // Function to select a property
+        function selectProperty(propertyId) {
+            const property = properties.find(p => p.id === propertyId);
+            currentProperty = property;
+            
+            addBotMessage(`You've selected: <b>${property.title}</b>`);
+            
+            // Create property highlight
+            const highlightDiv = document.createElement('div');
+            highlightDiv.className = 'property-highlight';
+            highlightDiv.innerHTML = `
+                <h5>${property.title}</h5>
+                <p>${property.description}</p>
+                <div class="property-details" style="margin-top: 10px;">
+                    <div class="property-detail">
+                        <i class="fas fa-bed"></i>
+                        <span>${property.bedrooms} beds</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-bath"></i>
+                        <span>${property.bathrooms} baths</span>
+                    </div>
+                    <div class="property-detail">
+                        <i class="fas fa-ruler-combined"></i>
+                        <span>${property.sqft} sqft</span>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; font-weight: 600; color: #0f4c75;">${property.price}</div>
+            `;
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(highlightDiv);
+            
+            // Add quick actions for the selected property
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            actionsDiv.style.marginTop = '10px';
+            
+            const actions = [
+                "Schedule Viewing", 
+                "More Details", 
+                "Virtual Tour", 
+                "Back to Listings"
+            ];
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    if (action === "Schedule Viewing") {
+                        startBookingProcess();
+                    } else if (action === "More Details") {
+                        showPropertyDetails();
+                    } else if (action === "Virtual Tour") {
+                        showVirtualTour();
+                    } else {
+                        currentProperty = null;
+                        showProperties();
+                    }
+                });
+                actionsDiv.appendChild(button);
+            });
+            
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        // Function to show property details
+        function showPropertyDetails() {
+            if (!currentProperty) return;
+            
+            const details = `
+                <b>Detailed Information:</b><br><br>
+                <b>Property Type:</b> ${currentProperty.type}<br>
+                <b>Price:</b> ${currentProperty.price}<br>
+                <b>Square Footage:</b> ${currentProperty.sqft} sqft<br>
+                <b>Bedrooms:</b> ${currentProperty.bedrooms}<br>
+                <b>Bathrooms:</b> ${currentProperty.bathrooms}<br>
+                <b>Location:</b> ${currentProperty.location}<br><br>
+                <b>Description:</b> ${currentProperty.description}<br><br>
+                <b>Additional Features:</b> Central heating, modern kitchen, secure parking, balcony, community pool.
+            `;
+            
+            addBotMessage(details);
+            
+            // Add market comparison
+            const marketDiv = document.createElement('div');
+            marketDiv.className = 'market-info';
+            marketDiv.innerHTML = `
+                <h5>Market Comparison</h5>
+                <p>Similar properties in this area have sold for 5-10% above asking price in the last 6 months. This property is priced at market value.</p>
+            `;
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(marketDiv);
+            
+            scrollToBottom();
+        }
+        
+        // Function to show virtual tour info
+        function showVirtualTour() {
+            if (!currentProperty) return;
+            
+            addBotMessage(`A virtual tour is available for ${currentProperty.title}. You can access it through our website or schedule a live video walkthrough with an agent.`);
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            
+            const actions = [
+                "Schedule Live Walkthrough", 
+                "View Online Tour", 
+                "Back to Property"
+            ];
+            
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.className = 'quick-btn';
+                button.textContent = action;
+                button.addEventListener('click', () => {
+                    if (action === "Schedule Live Walkthrough") {
+                        startBookingProcess();
+                    } else if (action === "View Online Tour") {
+                        addBotMessage("Here's the link to the virtual tour: <a href='#' style='color: #0f4c75; font-weight: 600;'>estateai.com/tours/${currentProperty.id}</a>");
+                    } else {
+                        // Do nothing, user stays on property
+                    }
+                });
+                actionsDiv.appendChild(button);
+            });
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(actionsDiv);
+            scrollToBottom();
+        }
+        
+        // Function to start booking process
+        function startBookingProcess() {
+            if (!currentProperty) {
+                addBotMessage("Please select a property first to schedule a viewing.");
+                showProperties();
+                return;
+            }
+            
+            bookingStep = 1;
+            addBotMessage(`Let's schedule a viewing for ${currentProperty.title}. First, please enter your name:`);
+            
+            // Create booking form
+            const formDiv = document.createElement('div');
+            formDiv.className = 'booking-form';
+            formDiv.id = 'bookingForm';
+            formDiv.innerHTML = `
+                <h4>Schedule Viewing</h4>
+                <input type="text" id="userName" placeholder="Your full name">
+                <div class="form-buttons">
+                    <button class="form-btn submit-btn" id="nextBtn">Next</button>
+                    <button class="form-btn cancel-btn" id="cancelBooking">Cancel</button>
+                </div>
+            `;
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(formDiv);
+            
+            // Add event listeners for booking form
+            document.getElementById('nextBtn').addEventListener('click', nextBookingStep);
+            document.getElementById('cancelBooking').addEventListener('click', cancelBooking);
+            document.getElementById('userName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') nextBookingStep();
+            });
+            
+            scrollToBottom();
+        }
+        
+        // Function to handle next booking step
+        function nextBookingStep() {
+            if (bookingStep === 1) {
+                const userName = document.getElementById('userName').value.trim();
+                if (!userName) {
+                    alert("Please enter your name");
+                    return;
+                }
+                
+                bookingData.name = userName;
+                bookingStep = 2;
+                
+                // Update form for next step
+                const formDiv = document.getElementById('bookingForm');
+                formDiv.innerHTML = `
+                    <h4>Schedule Viewing</h4>
+                    <p><strong>Name:</strong> ${userName}</p>
+                    <input type="email" id="userEmail" placeholder="Your email address">
+                    <input type="tel" id="userPhone" placeholder="Your phone number">
+                    <div class="form-buttons">
+                        <button class="form-btn submit-btn" id="nextBtn">Next</button>
+                        <button class="form-btn cancel-btn" id="prevBtn">Previous</button>
+                    </div>
+                `;
+                
+                document.getElementById('nextBtn').addEventListener('click', nextBookingStep);
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    bookingStep = 1;
+                    startBookingProcess();
+                });
+            } else if (bookingStep === 2) {
+                const userEmail = document.getElementById('userEmail').value.trim();
+                const userPhone = document.getElementById('userPhone').value.trim();
+                
+                if (!userEmail || !userPhone) {
+                    alert("Please enter both email and phone number");
+                    return;
+                }
+                
+                bookingData.email = userEmail;
+                bookingData.phone = userPhone;
+                bookingStep = 3;
+                
+                // Update form for next step
+                const formDiv = document.getElementById('bookingForm');
+                formDiv.innerHTML = `
+                    <h4>Schedule Viewing</h4>
+                    <p><strong>Name:</strong> ${bookingData.name}</p>
+                    <p><strong>Email:</strong> ${userEmail}</p>
+                    <p><strong>Phone:</strong> ${userPhone}</p>
+                    
+                    <label for="bookingDate">Preferred date:</label>
+                    <input type="date" id="bookingDate">
+                    
+                    <label for="bookingTime">Preferred time:</label>
+                    <select id="bookingTime">
+                        <option value="">Select a time</option>
+                        ${currentProperty.viewingTimes.map(time => `<option value="${time}">${time}</option>`).join('')}
+                    </select>
+                    
+                    <div class="form-buttons">
+                        <button class="form-btn submit-btn" id="nextBtn">Next</button>
+                        <button class="form-btn cancel-btn" id="prevBtn">Previous</button>
+                    </div>
+                `;
+                
+                // Set min date to today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('bookingDate').min = today;
+                
+                document.getElementById('nextBtn').addEventListener('click', nextBookingStep);
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    bookingStep = 2;
+                    nextBookingStep();
+                });
+            } else if (bookingStep === 3) {
+                const bookingDate = document.getElementById('bookingDate').value;
+                const bookingTime = document.getElementById('bookingTime').value;
+                
+                if (!bookingDate || !bookingTime) {
+                    alert("Please select both date and time");
+                    return;
+                }
+                
+                bookingData.date = bookingDate;
+                bookingData.time = bookingTime;
+                bookingData.property = currentProperty.title;
+                bookingStep = 4;
+                
+                // Update form for confirmation
+                const formDiv = document.getElementById('bookingForm');
+                formDiv.innerHTML = `
+                    <h4>Confirm Viewing Appointment</h4>
+                    <p><strong>Property:</strong> ${currentProperty.title}</p>
+                    <p><strong>Name:</strong> ${bookingData.name}</p>
+                    <p><strong>Email:</strong> ${bookingData.email}</p>
+                    <p><strong>Phone:</strong> ${bookingData.phone}</p>
+                    <p><strong>Date:</strong> ${formatDate(bookingData.date)}</p>
+                    <p><strong>Time:</strong> ${bookingData.time}</p>
+                    
+                    <div class="form-buttons">
+                        <button class="form-btn submit-btn" id="confirmBtn">Confirm Viewing</button>
+                        <button class="form-btn cancel-btn" id="prevBtn">Previous</button>
+                    </div>
+                `;
+                
+                document.getElementById('confirmBtn').addEventListener('click', confirmBooking);
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    bookingStep = 3;
+                    nextBookingStep();
+                });
+            }
+        }
+        
+        // Function to cancel booking
+        function cancelBooking() {
+            currentProperty = null;
+            bookingStep = 0;
+            bookingData = {};
+            
+            addBotMessage("Viewing scheduling cancelled. How else can I help you?");
+            addQuickActions();
+        }
+        
+        // Function to confirm booking
+        function confirmBooking() {
+            // Remove booking form
+            const formDiv = document.getElementById('bookingForm');
+            if (formDiv) formDiv.remove();
+            
+            // Show confirmation message
+            const confirmationDiv = document.createElement('div');
+            confirmationDiv.className = 'confirmation';
+            confirmationDiv.innerHTML = `
+                <h4>✅ Viewing Confirmed!</h4>
+                <p>Your viewing for <strong>${currentProperty.title}</strong> is confirmed for ${formatDate(bookingData.date)} at ${bookingData.time}.</p>
+                <p>A confirmation email has been sent to ${bookingData.email} with property details and viewing instructions.</p>
+                <p>Our agent, Sarah Johnson, will meet you at the property. Please bring a photo ID.</p>
+            `;
+            
+            addBotMessage("Your property viewing has been scheduled successfully!");
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(confirmationDiv);
+            
+            // Reset booking data
+            currentProperty = null;
+            bookingStep = 0;
+            bookingData = {};
+            
+            // Ask if user needs further assistance
+            setTimeout(() => {
+                addBotMessage("Would you like to view other properties or schedule another viewing?");
+                addQuickActions();
+            }, 1000);
+        }
+        
+        // Function to show market trends
+        function showMarketTrends() {
+            addBotMessage("Here are the current real estate market trends:");
+            
+            const marketDiv = document.createElement('div');
+            marketDiv.className = 'market-info';
+            marketDiv.innerHTML = `
+                <h5>Market Overview</h5>
+                <p><strong>Average Home Price:</strong> $520,000 (up 3.2% from last year)</p>
+                <p><strong>Days on Market:</strong> 28 days (down from 35 last year)</p>
+                <p><strong>Inventory Level:</strong> 2.1 months supply (balanced market)</p>
+                <p><strong>Interest Rates:</strong> 6.5% for 30-year fixed</p>
+                <p><strong>Market Outlook:</strong> Prices expected to rise 2-4% over next year</p>
+            `;
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(marketDiv);
+            
+            // Add mortgage info
+            setTimeout(() => {
+                addBotMessage("For mortgage information, I can connect you with our approved lenders who offer competitive rates for qualified buyers.");
+                
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'quick-actions';
+                
+                const actions = [
+                    "Connect with Lender", 
+                    "Mortgage Calculator", 
+                    "Back to Main Menu"
+                ];
+                
+                actions.forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = 'quick-btn';
+                    button.textContent = action;
+                    button.addEventListener('click', () => {
+                        if (action === "Connect with Lender") {
+                            addBotMessage("I'll connect you with our mortgage specialist. They'll contact you within 24 hours to discuss loan options.");
+                        } else if (action === "Mortgage Calculator") {
+                            showMortgageCalculator();
+                        } else {
+                            addQuickActions();
+                        }
+                    });
+                    actionsDiv.appendChild(button);
+                });
+                
+                const newBotMessage = document.querySelector('.bot-message:last-child');
+                newBotMessage.appendChild(actionsDiv);
+                scrollToBottom();
+            }, 500);
+        }
+        
+        // Function to show mortgage calculator
+        function showMortgageCalculator() {
+            addBotMessage("Use our mortgage calculator to estimate your monthly payments:");
+            
+            const calculatorDiv = document.createElement('div');
+            calculatorDiv.className = 'booking-form';
+            calculatorDiv.innerHTML = `
+                <h4>Mortgage Calculator</h4>
+                <input type="number" id="loanAmount" placeholder="Loan Amount ($)" value="400000">
+                <input type="number" id="interestRate" placeholder="Interest Rate (%)" value="6.5" step="0.1">
+                <input type="number" id="loanTerm" placeholder="Loan Term (years)" value="30">
+                
+                <div style="margin-top: 15px; padding: 10px; background: #f5f9fc; border-radius: 8px;">
+                    <p><strong>Estimated Monthly Payment:</strong> <span id="monthlyPayment" style="color: #0f4c75; font-weight: 700;">$2,528</span></p>
+                </div>
+                
+                <div class="form-buttons">
+                    <button class="form-btn submit-btn" id="calculateBtn">Calculate</button>
+                    <button class="form-btn cancel-btn" id="closeCalculator">Close</button>
+                </div>
+            `;
+            
+            const lastBotMessage = document.querySelector('.bot-message:last-child');
+            lastBotMessage.appendChild(calculatorDiv);
+            
+            // Calculate initial payment
+            calculateMonthlyPayment();
+            
+            // Add event listeners
+            document.getElementById('calculateBtn').addEventListener('click', calculateMonthlyPayment);
+            document.getElementById('closeCalculator').addEventListener('click', () => {
+                calculatorDiv.remove();
+            });
+            
+            // Add input event listeners for real-time calculation
+            document.getElementById('loanAmount').addEventListener('input', calculateMonthlyPayment);
+            document.getElementById('interestRate').addEventListener('input', calculateMonthlyPayment);
+            document.getElementById('loanTerm').addEventListener('input', calculateMonthlyPayment);
+            
+            scrollToBottom();
+        }
+        
+        // Function to calculate mortgage payment
+        function calculateMonthlyPayment() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 400000;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 6.5;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+            
+            const monthlyRate = interestRate / 100 / 12;
+            const numberOfPayments = loanTerm * 12;
+            
+            // Mortgage formula: P = L[c(1 + c)^n]/[(1 + c)^n - 1]
+            const monthlyPayment = loanAmount * 
+                (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / 
+                (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            
+            document.getElementById('monthlyPayment').textContent = `$${monthlyPayment.toFixed(0)}`;
+        }
+        
+        // Function to process user messages
+        function processUserMessage(message) {
+            removeTypingIndicator();
+            
+            const lowerMsg = message.toLowerCase();
+            
+            // Check user intent
+            if (lowerMsg.includes('property') || lowerMsg.includes('home') || lowerMsg.includes('house') || lowerMsg.includes('view') || lowerMsg.includes('list')) {
+                showProperties();
+            } else if (lowerMsg.includes('schedule') || lowerMsg.includes('viewing') || lowerMsg.includes('tour') || lowerMsg.includes('appointment')) {
+                if (currentProperty) {
+                    startBookingProcess();
+                } else {
+                    addBotMessage("I can help you schedule a property viewing. First, let me show you available properties.");
+                    setTimeout(() => showProperties(), 500);
+                }
+            } else if (lowerMsg.includes('market') || lowerMsg.includes('trend') || lowerMsg.includes('price') || lowerMsg.includes('value')) {
+                showMarketTrends();
+            } else if (lowerMsg.includes('mortgage') || lowerMsg.includes('loan') || lowerMsg.includes('finance') || lowerMsg.includes('payment')) {
+                showMortgageCalculator();
+            } else if (lowerMsg.includes('contact') || lowerMsg.includes('agent') || lowerMsg.includes('representative')) {
+                addBotMessage("I can connect you with a real estate agent. Our agents are available Monday-Saturday 9AM-6PM. Would you like me to schedule a call with an agent?");
+                
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'quick-actions';
+                
+                const actions = ["Schedule Call", "Agent Profiles", "Back to Main Menu"];
+                
+                actions.forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = 'quick-btn';
+                    button.textContent = action;
+                    button.addEventListener('click', () => {
+                        if (action === "Schedule Call") {
+                            addBotMessage("I'll schedule a call with an agent for you. Our agent will contact you within 2 hours.");
+                        } else if (action === "Agent Profiles") {
+                            addBotMessage("Our top agents: <br>1. <b>Sarah Johnson</b> - 10+ years experience, Downtown specialist<br>2. <b>Michael Chen</b> - Luxury properties, 5-star rated<br>3. <b>Jessica Williams</b> - First-time buyers, patient guidance");
+                        } else {
+                            addQuickActions();
+                        }
+                    });
+                    actionsDiv.appendChild(button);
+                });
+                
+                const lastBotMessage = document.querySelector('.bot-message:last-child');
+                lastBotMessage.appendChild(actionsDiv);
+            } else if (lowerMsg.includes('hello') || lowerMsg.includes('hi') || lowerMsg.includes('hey')) {
+                addBotMessage("Hello! I'm your AI real estate assistant. How can I help you today?");
+                addQuickActions();
+            } else if (lowerMsg.includes('thank') || lowerMsg.includes('thanks')) {
+                addBotMessage("You're welcome! Is there anything else I can help you with regarding real estate?");
+                addQuickActions();
+            } else if (lowerMsg.includes('bye') || lowerMsg.includes('goodbye')) {
+                addBotMessage("Thank you for chatting with me! Good luck with your property search!");
+            } else {
+                addBotMessage("I can help you with finding properties, scheduling viewings, market information, and mortgage calculations. What would you like to know about?");
+                addQuickActions();
+            }
+        }
+        
+        // Utility functions
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                   now.getMinutes().toString().padStart(2, '0');
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+        
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
