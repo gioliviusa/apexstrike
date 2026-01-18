@@ -1155,7 +1155,7 @@
                 <a href="https://instagram.com/apexstryke" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://tiktok.com/@apexstryke" target="_blank"><i class="fab fa-tiktok"></i></a>
             </div>
-            <p class="copyright">© 2025 ApexStryke. All rights reserved. Helping Fort Lauderdale businesses grow online.</p>
+            <p class="copyright">© 2026 ApexStryke. All rights reserved. Helping Fort Lauderdale businesses grow online.</p>
         </div>
     </footer>
 
@@ -1550,6 +1550,1014 @@
         }
       ]
     }
+    </script>
+
+    <!-- AI Chatbot Toggle Button -->
+    <div id="chatToggleBtn" class="chat-toggle-btn">
+        <i class="fas fa-comments"></i>
+        <span class="chat-badge">1</span>
+    </div>
+
+    <!-- AI Chatbot Widget -->
+    <div id="chatWidget" class="chat-widget" style="display: none;">
+        <div class="chat-widget-container">
+            <div class="chat-widget-header">
+                <div class="chat-widget-logo">
+                    <i class="fas fa-rocket"></i>
+                    <div class="chat-widget-logo-text">
+                        <h1>ApexStryke AI</h1>
+                        <p>Grow Your Business Online</p>
+                    </div>
+                </div>
+                <div class="chat-widget-controls">
+                    <div class="chat-widget-status">
+                        <div class="chat-widget-status-dot"></div>
+                        <span>Online</span>
+                    </div>
+                    <button id="chatCloseBtn" class="chat-close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="chat-widget-chat-container" id="chatWidgetContainer"></div>
+            <div class="chat-widget-input-container">
+                <input type="text" id="chatWidgetUserInput" placeholder="Ask about our services, pricing, or a free website audit..." autocomplete="off">
+                <button class="chat-widget-send-btn" id="chatWidgetSendButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chatbot Styles -->
+    <style>
+        /* Toggle Button */
+        .chat-toggle-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(106, 17, 203, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .chat-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(106, 17, 203, 0.6);
+        }
+        .chat-toggle-btn i {
+            color: white;
+            font-size: 28px;
+        }
+        .chat-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            animation: chat-badge-pulse 2s infinite;
+        }
+        @keyframes chat-badge-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 440px;
+            height: 650px;
+            z-index: 998;
+            animation: chat-widget-slide-in 0.3s ease;
+        }
+        @keyframes chat-widget-slide-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .chat-widget-container {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-widget-header {
+            background: linear-gradient(90deg, #4f6ef7, #6a11cb);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-widget-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-widget-logo i {
+            font-size: 24px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .chat-widget-logo-text h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .chat-widget-logo-text p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin: 3px 0 0 0;
+        }
+        .chat-widget-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-widget-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .chat-widget-status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4cff4c;
+            border-radius: 50%;
+            animation: chat-widget-pulse 2s infinite;
+        }
+        @keyframes chat-widget-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .chat-close-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .chat-close-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .chat-widget-chat-container {
+            flex: 1;
+            padding: 22px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #f8f9ff;
+        }
+        .chat-widget-message {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            line-height: 1.5;
+            position: relative;
+            animation: chat-widget-fadeIn 0.3s ease;
+        }
+        @keyframes chat-widget-fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-widget-bot-message {
+            background: #edf0ff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            color: #333;
+            border: 1px solid #e0e5ff;
+        }
+        .chat-widget-user-message {
+            background: linear-gradient(90deg, #6a11cb, #4f6ef7);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .chat-widget-message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 6px;
+            text-align: right;
+        }
+        .chat-widget-quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .chat-widget-quick-btn {
+            background: white;
+            border: 1px solid #6a11cb;
+            color: #6a11cb;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .chat-widget-quick-btn:hover {
+            background: #6a11cb;
+            color: white;
+        }
+        .chat-widget-service-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .chat-widget-service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 18px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        .chat-widget-service-card:hover {
+            transform: translateY(-3px);
+            border-color: #6a11cb;
+        }
+        .chat-widget-service-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6a11cb, #4f6ef7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin: 0 auto 12px;
+        }
+        .chat-widget-service-name {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+        .chat-widget-service-desc {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        .chat-widget-input-container {
+            padding: 18px 22px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 12px;
+        }
+        .chat-widget-input-container input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .chat-widget-input-container input:focus {
+            border-color: #6a11cb;
+        }
+        .chat-widget-send-btn {
+            background: linear-gradient(90deg, #6a11cb, #4f6ef7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        .chat-widget-send-btn:hover {
+            transform: scale(1.05);
+        }
+        .chat-widget-typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 18px;
+            background: #edf0ff;
+            border-radius: 20px;
+            width: 70px;
+        }
+        .chat-widget-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #6a11cb;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: chat-widget-typing 1.4s infinite ease-in-out;
+        }
+        .chat-widget-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .chat-widget-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes chat-widget-typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-7px); opacity: 1; }
+        }
+        .chat-widget-contact-form, .chat-widget-audit-form {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e5ff;
+        }
+        .chat-widget-contact-form h4, .chat-widget-audit-form h4 {
+            color: #6a11cb;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .chat-widget-contact-form input, .chat-widget-contact-form textarea, .chat-widget-audit-form input, .chat-widget-audit-form textarea, .chat-widget-contact-form select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        .chat-widget-contact-form input:focus, .chat-widget-contact-form textarea:focus, .chat-widget-audit-form input:focus, .chat-widget-audit-form textarea:focus, .chat-widget-contact-form select:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        .chat-widget-form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .chat-widget-form-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .chat-widget-submit-btn {
+            background: #6a11cb;
+            color: white;
+        }
+        .chat-widget-submit-btn:hover {
+            background: #4f6ef7;
+        }
+        .chat-widget-cancel-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .chat-widget-cancel-btn:hover {
+            background: #e0e0e0;
+        }
+        .chat-widget-confirmation {
+            background: #e8f5e9;
+            padding: 18px;
+            border-radius: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        .chat-widget-info-card {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 12px 0;
+            border: 1px solid #bbdefb;
+        }
+        .chat-widget-info-card h5 {
+            color: #1565c0;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .chat-widget-case-study {
+            background: #fff8e1;
+            border-left: 4px solid #ffb300;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .chat-widget-pricing-card {
+            background: white;
+            border: 2px solid #e0e5ff;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 12px 0;
+        }
+        .chat-widget-pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .chat-widget-price-tag {
+            background: linear-gradient(90deg, #6a11cb, #4f6ef7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .chat-widget-popular-badge {
+            background: #ffb300;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .chat-widget-chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-widget-chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .chat-widget-chat-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        .chat-widget-chat-container::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .chat-widget {
+                bottom: 95px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+                height: 600px;
+            }
+            .chat-toggle-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+            }
+            .chat-toggle-btn i {
+                font-size: 24px;
+            }
+            .chat-widget-service-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <!-- AI Chatbot Script -->
+    <script>
+        (function() {
+            const chatToggleBtn = document.getElementById('chatToggleBtn');
+            const chatWidget = document.getElementById('chatWidget');
+            const chatCloseBtn = document.getElementById('chatCloseBtn');
+            const chatWidgetContainer = document.getElementById('chatWidgetContainer');
+            const chatWidgetUserInput = document.getElementById('chatWidgetUserInput');
+            const chatWidgetSendButton = document.getElementById('chatWidgetSendButton');
+            const chatBadge = document.querySelector('.chat-badge');
+            
+            let contactStep = 0, auditStep = 0, contactData = {}, auditData = {};
+            let isFirstOpen = true;
+            
+            const businessInfo = {
+                name: "ApexStryke",
+                tagline: "Transform Your Business Online | Web Design & Development",
+                mission: "We help small business owners attract more customers and save time with professional websites and smart automation. No tech jargon—just real solutions for real business growth.",
+                phone: "239-204-8113",
+                email: "gioliviusa@gmail.com",
+                location: "Fort Lauderdale-based team",
+                website: "https://www.apexstryke.com",
+                promise: "No confusing tech talk. No hidden fees. No abandoned projects. Just honest service and websites that actually work for your business.",
+                differentiators: [
+                    "Fast Turnaround: Most websites done in 2-3 weeks",
+                    "Local Support: Fort Lauderdale-based team",
+                    "Results-Focused: We measure success by YOUR business growth",
+                    "Transparent Pricing: Know exactly what you're paying for upfront"
+                ],
+                services: [
+                    { id: 1, name: "Professional Websites", icon: "fa-globe", desc: "Mobile-friendly, fast-loading sites designed to convert visitors into paying clients." },
+                    { id: 2, name: "24/7 AI Customer Service", icon: "fa-robot", desc: "AI chatbots answer questions, book appointments, and capture leads while you focus on your business." },
+                    { id: 3, name: "Business Automation", icon: "fa-cogs", desc: "Automate repetitive workflows so you can focus on growing your business and serving customers." },
+                    { id: 4, name: "Online Stores", icon: "fa-shopping-cart", desc: "E-commerce stores with secure payments, inventory management, and everything to succeed online." },
+                    { id: 5, name: "Website Support & Updates", icon: "fa-tools", desc: "We handle updates, security, and technical support—no hassle for you." },
+                    { id: 6, name: "Free Website Audit", icon: "fa-chart-line", desc: "We analyze your site and show you exactly where you're losing customers and how to fix it." }
+                ],
+                pricing: {
+                    starter: { name: "Starter", price: "$1,500", desc: "Perfect for new businesses", features: ["5-page professional website", "Mobile-responsive design", "Basic SEO setup", "Contact form integration", "2 weeks delivery", "30 days support"] },
+                    growth: { name: "Growth", price: "$3,500", popular: true, desc: "For growing businesses", features: ["10-page custom website", "Advanced SEO optimization", "AI chatbot integration", "Lead capture system", "3 weeks delivery", "90 days support", "Free website audit included"] },
+                    enterprise: { name: "Enterprise", price: "Custom", desc: "For established businesses", features: ["Unlimited pages", "E-commerce functionality", "Custom AI automation", "Advanced integrations", "Priority support", "Dedicated account manager", "Monthly strategy calls"] },
+                    support: {
+                        basic: { name: "Basic", price: "$99/month", features: ["Security updates", "Backups", "Email support"] },
+                        premium: { name: "Premium", price: "$299/month", features: ["Everything in Basic", "Content updates", "Performance monitoring", "Priority support"] }
+                    }
+                },
+                caseStudies: [
+                    { industry: "Real Estate Agency", challenge: "Missing leads outside business hours.", solution: "24/7 AI assistant for property Q&A and booking.", result: "40% more qualified leads without hiring extra staff." },
+                    { industry: "Law Firm", challenge: "Spending hours answering basic legal questions.", solution: "AI assistant that pre-qualifies clients and books consultations.", result: "50% reduction in admin time, more time for billable hours." },
+                    { industry: "Italian Restaurant", challenge: "Outdated website not showing in Google.", solution: "Beautiful, mobile-friendly site optimized for local search.", result: "Tripled online reservations, ranks #1 locally." },
+                    { industry: "Mortgage Broker", challenge: "Prospects needed instant payment calculations.", solution: "Interactive AI that calculates payments and schedules consultations.", result: "3x increase in consultation bookings, better-informed clients." },
+                    { industry: "Container Rental Company", challenge: "No online presence, losing business.", solution: "Professional website with instant quote calculator and online booking.", result: "Dominates local search, 60% of new business from website." },
+                    { industry: "Luxury Property Showcase", challenge: "High-end properties need premium presentation.", solution: "Stunning visual website with virtual tours and lead capture.", result: "Properties sell 30% faster, attracted international buyers." }
+                ]
+            };
+
+            // Toggle chat widget
+            chatToggleBtn.addEventListener('click', function() {
+                if (chatWidget.style.display === 'none') {
+                    chatWidget.style.display = 'block';
+                    chatBadge.style.display = 'none';
+                    if (isFirstOpen) {
+                        setTimeout(() => {
+                            addBotMessage(`Welcome to <b>${businessInfo.name}</b>! 🚀<br><br>${businessInfo.mission}<br><br>How can I help you grow your business online today?`);
+                            setTimeout(addQuickActions, 600);
+                        }, 300);
+                        isFirstOpen = false;
+                    }
+                } else {
+                    chatWidget.style.display = 'none';
+                }
+            });
+
+            chatCloseBtn.addEventListener('click', function() {
+                chatWidget.style.display = 'none';
+            });
+
+            chatWidgetSendButton.addEventListener('click', sendMessage);
+            chatWidgetUserInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            function sendMessage() {
+                const msg = chatWidgetUserInput.value.trim();
+                if (!msg) return;
+                addUserMessage(msg);
+                chatWidgetUserInput.value = '';
+                showTyping();
+                setTimeout(() => {
+                    processMessage(msg);
+                }, 1200);
+            }
+
+            function addBotMessage(text) {
+                const div = document.createElement('div');
+                div.className = 'chat-widget-message chat-widget-bot-message';
+                div.innerHTML = `<div>${text}</div><div class="chat-widget-message-time">${getTime()}</div>`;
+                chatWidgetContainer.appendChild(div);
+                scrollToBottom();
+            }
+
+            function addUserMessage(text) {
+                const div = document.createElement('div');
+                div.className = 'chat-widget-message chat-widget-user-message';
+                div.innerHTML = `<div>${text}</div><div class="chat-widget-message-time">${getTime()}</div>`;
+                chatWidgetContainer.appendChild(div);
+                scrollToBottom();
+            }
+
+            function showTyping() {
+                const div = document.createElement('div');
+                div.className = 'chat-widget-message chat-widget-bot-message chat-widget-typing-indicator';
+                div.id = 'chatWidgetTyping';
+                div.innerHTML = `<div class="chat-widget-typing-dot"></div><div class="chat-widget-typing-dot"></div><div class="chat-widget-typing-dot"></div>`;
+                chatWidgetContainer.appendChild(div);
+                scrollToBottom();
+            }
+
+            function removeTyping() {
+                const elem = document.getElementById('chatWidgetTyping');
+                if (elem) elem.remove();
+            }
+
+            function addQuickActions() {
+                const div = document.createElement('div');
+                div.className = 'chat-widget-quick-actions';
+                ["Our Services", "See Pricing", "Case Studies", "Free Audit", "Contact Us"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        chatWidgetUserInput.value = action;
+                        sendMessage();
+                    };
+                    div.appendChild(btn);
+                });
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(div);
+                scrollToBottom();
+            }
+
+            function showServices() {
+                addBotMessage(`<b>How We Help Your Business Grow:</b><br>Simple solutions that make a real difference to your bottom line.`);
+                const servicesDiv = document.createElement('div');
+                servicesDiv.className = 'chat-widget-service-options';
+                businessInfo.services.forEach(service => {
+                    const card = document.createElement('div');
+                    card.className = 'chat-widget-service-card';
+                    card.innerHTML = `<div class="chat-widget-service-icon"><i class="fas ${service.icon}"></i></div><div class="chat-widget-service-name">${service.name}</div><div class="chat-widget-service-desc">${service.desc}</div>`;
+                    card.onclick = () => showServiceDetails(service.id);
+                    servicesDiv.appendChild(card);
+                });
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(servicesDiv);
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'chat-widget-info-card';
+                infoDiv.innerHTML = `<h5>Why Choose ${businessInfo.name}?</h5><p>${businessInfo.promise}</p><ul style="margin-top:10px; font-size:0.9em;">${businessInfo.differentiators.map(diff => `<li>${diff}</li>`).join('')}</ul>`;
+                lastMsg.appendChild(infoDiv);
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'chat-widget-quick-actions';
+                actionDiv.style.marginTop = '15px';
+                ["Get a Quote", "Free Audit", "Case Studies", "Contact"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        if (action === "Get a Quote") startQuoteProcess();
+                        else if (action === "Free Audit") startAuditProcess();
+                        else if (action === "Case Studies") showCaseStudies();
+                        else startContactProcess();
+                    };
+                    actionDiv.appendChild(btn);
+                });
+                lastMsg.appendChild(actionDiv);
+                scrollToBottom();
+            }
+
+            function showServiceDetails(id) {
+                const service = businessInfo.services.find(s => s.id === id);
+                addBotMessage(`<b>${service.name}</b>`);
+                let details = '';
+                let relatedCase = null;
+
+                if (id === 1) {
+                    details = "We build professional, mobile-responsive websites that are designed to convert visitors into customers. Fast loading and optimized for search engines.";
+                    relatedCase = businessInfo.caseStudies[2];
+                } else if (id === 2) {
+                    details = "Our AI chatbots provide 24/7 customer service, answer questions, capture leads, and book appointments automatically—like the ones we built for real estate and law firms.";
+                    relatedCase = businessInfo.caseStudies[0];
+                } else if (id === 3) {
+                    details = "We identify repetitive tasks in your business and automate them, saving you time and reducing errors so you can focus on growth.";
+                } else if (id === 4) {
+                    details = "Complete e-commerce solutions with secure payment processing, inventory management, shipping integration, and marketing tools.";
+                } else if (id === 5) {
+                    details = "Keep your website secure, updated, and performing at its best. We handle technical maintenance so you don't have to.";
+                } else if (id === 6) {
+                    details = "We'll analyze your current website's performance, SEO, user experience, and conversion points, then provide a actionable report.";
+                    startAuditProcess();
+                    return;
+                }
+
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'chat-widget-info-card';
+                infoDiv.innerHTML = `<h5>Service Details</h5><p>${details}</p>`;
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(infoDiv);
+
+                if (relatedCase) {
+                    const caseDiv = document.createElement('div');
+                    caseDiv.className = 'chat-widget-case-study';
+                    caseDiv.innerHTML = `<h5>Real-World Example: ${relatedCase.industry}</h5><p><b>Challenge:</b> ${relatedCase.challenge}</p><p><b>Our Solution:</b> ${relatedCase.solution}</p><p><b>Result:</b> ${relatedCase.result}</p>`;
+                    lastMsg.appendChild(caseDiv);
+                }
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'chat-widget-quick-actions';
+                actionDiv.style.marginTop = '12px';
+                ["Get Quote", "Free Audit", "All Services"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        if (action === "Get Quote") startQuoteProcess();
+                        else if (action === "Free Audit") startAuditProcess();
+                        else showServices();
+                    };
+                    actionDiv.appendChild(btn);
+                });
+                lastMsg.appendChild(actionDiv);
+                scrollToBottom();
+            }
+
+            function showPricing() {
+                addBotMessage(`<b>Simple, Transparent Pricing</b><br>Choose the package that fits your business needs:`);
+                ['starter', 'growth', 'enterprise'].forEach(pkgKey => {
+                    const pkg = businessInfo.pricing[pkgKey];
+                    const card = document.createElement('div');
+                    card.className = 'chat-widget-pricing-card';
+                    card.innerHTML = `<div class="chat-widget-pricing-header"><h4 style="color:#6a11cb;">${pkg.name}</h4><div class="chat-widget-price-tag">${pkg.price}</div></div><p><em>${pkg.desc}</em></p><ul style="margin-top:12px; font-size:0.9em;">${pkg.features.map(f => `<li>${f}</li>`).join('')}</ul>${pkg.popular ? `<div style="margin-top:12px;"><span class="chat-widget-popular-badge">MOST POPULAR</span></div>` : ''}`;
+                    const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                    if (lastMsg) lastMsg.appendChild(card);
+                });
+
+                const supportDiv = document.createElement('div');
+                supportDiv.className = 'chat-widget-info-card';
+                supportDiv.innerHTML = `<h5>💰 Ongoing Support Plans</h5><p><b>${businessInfo.pricing.support.basic.name}:</b> ${businessInfo.pricing.support.basic.price} - ${businessInfo.pricing.support.basic.features.join(', ')}</p><p><b>${businessInfo.pricing.support.premium.name}:</b> ${businessInfo.pricing.support.premium.price} - ${businessInfo.pricing.support.premium.features.join(', ')}</p>`;
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(supportDiv);
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'chat-widget-quick-actions';
+                actionDiv.style.marginTop = '12px';
+                ["Get a Quote", "Free Audit", "Contact"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        if (action === "Get a Quote") startQuoteProcess();
+                        else if (action === "Free Audit") startAuditProcess();
+                        else startContactProcess();
+                    };
+                    actionDiv.appendChild(btn);
+                });
+                lastMsg.appendChild(actionDiv);
+                scrollToBottom();
+            }
+
+            function showCaseStudies() {
+                addBotMessage(`<b>Real Results for Real Businesses</b><br>See how we've helped businesses like yours grow online:`);
+                businessInfo.caseStudies.forEach(study => {
+                    const studyDiv = document.createElement('div');
+                    studyDiv.className = 'chat-widget-case-study';
+                    studyDiv.innerHTML = `<h5>${study.industry}</h5><p><b>The Challenge:</b> ${study.challenge}</p><p><b>Our Solution:</b> ${study.solution}</p><p><b>The Result:</b> ${study.result}</p>`;
+                    const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                    if (lastMsg) lastMsg.appendChild(studyDiv);
+                });
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'chat-widget-quick-actions';
+                actionDiv.style.marginTop = '12px';
+                ["Get a Quote", "Free Audit", "Our Services"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        if (action === "Get a Quote") startQuoteProcess();
+                        else if (action === "Free Audit") startAuditProcess();
+                        else showServices();
+                    };
+                    actionDiv.appendChild(btn);
+                });
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(actionDiv);
+                scrollToBottom();
+            }
+
+            function startQuoteProcess() {
+                contactStep = 1;
+                addBotMessage("Great! To provide you with the best quote, I need a few details. First, what's your name?");
+                const formDiv = document.createElement('div');
+                formDiv.className = 'chat-widget-contact-form';
+                formDiv.id = 'chatWidgetContactForm';
+                formDiv.innerHTML = `<h4>Get a Custom Quote</h4><input type="text" id="chatWidgetUserName" placeholder="Your full name"><div class="chat-widget-form-buttons"><button class="chat-widget-form-btn chat-widget-submit-btn" id="chatWidgetNextBtn">Next</button><button class="chat-widget-form-btn chat-widget-cancel-btn" id="chatWidgetCancelBtn">Cancel</button></div>`;
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(formDiv);
+                document.getElementById('chatWidgetNextBtn').onclick = nextQuoteStep;
+                document.getElementById('chatWidgetCancelBtn').onclick = () => {
+                    contactStep = 0;
+                    contactData = {};
+                    const form = document.getElementById('chatWidgetContactForm');
+                    if (form) form.remove();
+                    addBotMessage("Quote request cancelled.");
+                    addQuickActions();
+                };
+                document.getElementById('chatWidgetUserName').onkeypress = e => {
+                    if (e.key === 'Enter') nextQuoteStep();
+                };
+                scrollToBottom();
+            }
+
+            function nextQuoteStep() {
+                if (contactStep === 1) {
+                    const name = document.getElementById('chatWidgetUserName').value.trim();
+                    if (!name) {
+                        alert("Please enter your name");
+                        return;
+                    }
+                    contactData.name = name;
+                    contactStep = 2;
+                    const formDiv = document.getElementById('chatWidgetContactForm');
+                    formDiv.innerHTML = `<h4>Get a Custom Quote</h4><p><b>Name:</b> ${name}</p><input type="email" id="chatWidgetUserEmail" placeholder="Your email address"><input type="tel" id="chatWidgetUserPhone" placeholder="Your phone number"><div class="chat-widget-form-buttons"><button class="chat-widget-form-btn chat-widget-submit-btn" id="chatWidgetNextBtn">Next</button><button class="chat-widget-form-btn chat-widget-cancel-btn" id="chatWidgetPrevBtn">Back</button></div>`;
+                    document.getElementById('chatWidgetNextBtn').onclick = nextQuoteStep;
+                    document.getElementById('chatWidgetPrevBtn').onclick = () => {
+                        contactStep = 1;
+                        startQuoteProcess();
+                    };
+                } else if (contactStep === 2) {
+                    const email = document.getElementById('chatWidgetUserEmail').value.trim();
+                    const phone = document.getElementById('chatWidgetUserPhone').value.trim();
+                    if (!email || !phone) {
+                        alert("Please enter both email and phone");
+                        return;
+                    }
+                    contactData.email = email;
+                    contactData.phone = phone;
+                    contactStep = 3;
+                    const formDiv = document.getElementById('chatWidgetContactForm');
+                    formDiv.innerHTML = `<h4>Get a Custom Quote</h4><p><b>Name:</b> ${contactData.name}</p><p><b>Email:</b> ${email}</p><p><b>Phone:</b> ${phone}</p><label for="chatWidgetServiceInterest">Which service interests you most?</label><select id="chatWidgetServiceInterest"><option value="">Select...</option>${businessInfo.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}<option value="Multiple">Multiple Services</option></select><textarea id="chatWidgetProjectDetails" rows="3" placeholder="Briefly describe your project or business needs..."></textarea><div class="chat-widget-form-buttons"><button class="chat-widget-form-btn chat-widget-submit-btn" id="chatWidgetSubmitBtn">Submit Request</button><button class="chat-widget-form-btn chat-widget-cancel-btn" id="chatWidgetPrevBtn">Back</button></div>`;
+                    document.getElementById('chatWidgetSubmitBtn').onclick = submitQuote;
+                    document.getElementById('chatWidgetPrevBtn').onclick = () => {
+                        contactStep = 2;
+                        nextQuoteStep();
+                    };
+                }
+            }
+
+            function submitQuote() {
+                const service = document.getElementById('chatWidgetServiceInterest').value;
+                const details = document.getElementById('chatWidgetProjectDetails').value.trim();
+                if (!service) {
+                    alert("Please select a service interest");
+                    return;
+                }
+                contactData.service = service;
+                contactData.details = details;
+                const formDiv = document.getElementById('chatWidgetContactForm');
+                if (formDiv) formDiv.remove();
+
+                const confirmDiv = document.createElement('div');
+                confirmDiv.className = 'chat-widget-confirmation';
+                confirmDiv.innerHTML = `<h4>✅ Quote Request Received!</h4><p>Thank you <b>${contactData.name}</b>! Your request for a <b>${contactData.service}</b> quote has been sent to our team.</p><p>We will review your needs and contact you at <b>${contactData.email}</b> or <b>${contactData.phone}</b> within 24 hours with a personalized proposal and quote.</p><p>You can also reach us directly at:<br><b>Phone:</b> ${businessInfo.phone}<br><b>Email:</b> ${businessInfo.email}</p>`;
+                addBotMessage("Your quote request has been submitted!");
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(confirmDiv);
+
+                contactStep = 0;
+                contactData = {};
+                setTimeout(() => {
+                    addBotMessage("Is there anything else I can help you with?");
+                    addQuickActions();
+                }, 1500);
+            }
+
+            function startAuditProcess() {
+                auditStep = 1;
+                addBotMessage("Great choice! Our <b>Free Website Audit</b> reveals where you're losing customers. First, what's your website URL?");
+                const formDiv = document.createElement('div');
+                formDiv.className = 'chat-widget-audit-form';
+                formDiv.id = 'chatWidgetAuditForm';
+                formDiv.innerHTML = `<h4>Free Website Audit Request</h4><input type="url" id="chatWidgetWebsiteUrl" placeholder="https://www.yourbusiness.com"><div class="chat-widget-form-buttons"><button class="chat-widget-form-btn chat-widget-submit-btn" id="chatWidgetAuditNextBtn">Next</button><button class="chat-widget-form-btn chat-widget-cancel-btn" id="chatWidgetAuditCancelBtn">Cancel</button></div>`;
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(formDiv);
+                document.getElementById('chatWidgetAuditNextBtn').onclick = nextAuditStep;
+                document.getElementById('chatWidgetAuditCancelBtn').onclick = () => {
+                    auditStep = 0;
+                    auditData = {};
+                    const form = document.getElementById('chatWidgetAuditForm');
+                    if (form) form.remove();
+                    addBotMessage("Audit request cancelled.");
+                    addQuickActions();
+                };
+                document.getElementById('chatWidgetWebsiteUrl').onkeypress = e => {
+                    if (e.key === 'Enter') nextAuditStep();
+                };
+                scrollToBottom();
+            }
+
+            function nextAuditStep() {
+                if (auditStep === 1) {
+                    const url = document.getElementById('chatWidgetWebsiteUrl').value.trim();
+                    if (!url) {
+                        alert("Please enter your website URL");
+                        return;
+                    }
+                    auditData.url = url;
+                    auditStep = 2;
+                    const formDiv = document.getElementById('chatWidgetAuditForm');
+                    formDiv.innerHTML = `<h4>Free Website Audit Request</h4><p><b>Website:</b> ${url}</p><input type="text" id="chatWidgetAuditName" placeholder="Your name"><input type="email" id="chatWidgetAuditEmail" placeholder="Your email address"><div class="chat-widget-form-buttons"><button class="chat-widget-form-btn chat-widget-submit-btn" id="chatWidgetAuditSubmitBtn">Submit for Free Audit</button><button class="chat-widget-form-btn chat-widget-cancel-btn" id="chatWidgetAuditPrevBtn">Back</button></div>`;
+                    document.getElementById('chatWidgetAuditSubmitBtn').onclick = submitAudit;
+                    document.getElementById('chatWidgetAuditPrevBtn').onclick = () => {
+                        auditStep = 1;
+                        startAuditProcess();
+                    };
+                }
+            }
+
+            function submitAudit() {
+                const name = document.getElementById('chatWidgetAuditName').value.trim();
+                const email = document.getElementById('chatWidgetAuditEmail').value.trim();
+                if (!name || !email) {
+                    alert("Please enter both name and email");
+                    return;
+                }
+                auditData.name = name;
+                auditData.email = email;
+                const formDiv = document.getElementById('chatWidgetAuditForm');
+                if (formDiv) formDiv.remove();
+
+                const confirmDiv = document.createElement('div');
+                confirmDiv.className = 'chat-widget-confirmation';
+                confirmDiv.innerHTML = `<h4>✅ Free Audit Request Confirmed!</h4><p>Thank you <b>${name}</b>! Your website <b>${auditData.url}</b> has been submitted for our comprehensive audit.</p><p>Our team will analyze your site's performance, SEO, user experience, and conversion points. We'll email you a detailed report with actionable insights at <b>${email}</b> within 48 hours.</p><p><b>What the audit covers:</b> Speed analysis, mobile responsiveness, SEO health, security, and conversion optimization opportunities.</p>`;
+                addBotMessage("Your free website audit is scheduled!");
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(confirmDiv);
+
+                auditStep = 0;
+                auditData = {};
+                setTimeout(() => {
+                    addBotMessage("Would you like to explore our services or pricing while you wait?");
+                    addQuickActions();
+                }, 1500);
+            }
+
+            function startContactProcess() {
+                addBotMessage(`<b>Contact ApexStryke</b><br>Here's how to reach us:`);
+                const contactDiv = document.createElement('div');
+                contactDiv.className = 'chat-widget-info-card';
+                contactDiv.innerHTML = `<h5>Get in Touch</h5><p><b>Phone:</b> ${businessInfo.phone}</p><p><b>Email:</b> ${businessInfo.email}</p><p><b>Location:</b> ${businessInfo.location}</p><p><b>Website:</b> <a href="${businessInfo.website}" target="_blank" style="color:#6a11cb; font-weight:600;">${businessInfo.website}</a></p><p style="margin-top:10px;">We respond within 24 hours with a personalized plan for your business.</p>`;
+                const lastMsg = chatWidgetContainer.querySelector('.chat-widget-bot-message:last-child');
+                if (lastMsg) lastMsg.appendChild(contactDiv);
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'chat-widget-quick-actions';
+                actionDiv.style.marginTop = '12px';
+                ["Get a Quote", "Free Audit", "Our Services"].forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'chat-widget-quick-btn';
+                    btn.textContent = action;
+                    btn.onclick = () => {
+                        if (action === "Get a Quote") startQuoteProcess();
+                        else if (action === "Free Audit") startAuditProcess();
+                        else showServices();
+                    };
+                    actionDiv.appendChild(btn);
+                });
+                lastMsg.appendChild(actionDiv);
+                scrollToBottom();
+            }
+
+            function processMessage(msg) {
+                removeTyping();
+                const lowerMsg = msg.toLowerCase();
+                if (lowerMsg.includes('service') || lowerMsg.includes('what you do') || lowerMsg.includes('offer')) showServices();
+                else if (lowerMsg.includes('pricing') || lowerMsg.includes('price') || lowerMsg.includes('cost') || lowerMsg.includes('how much')) showPricing();
+                else if (lowerMsg.includes('case') || lowerMsg.includes('example') || lowerMsg.includes('portfolio') || lowerMsg.includes('result')) showCaseStudies();
+                else if (lowerMsg.includes('audit') || lowerMsg.includes('analyze') || lowerMsg.includes('free')) startAuditProcess();
+                else if (lowerMsg.includes('contact') || lowerMsg.includes('call') || lowerMsg.includes('email') || lowerMsg.includes('reach')) startContactProcess();
+                else if (lowerMsg.includes('quote') || lowerMsg.includes('proposal') || lowerMsg.includes('get started')) startQuoteProcess();
+                else if (lowerMsg.includes('hi') || lowerMsg.includes('hello') || lowerMsg.includes('hey')) {
+                    addBotMessage(`Hello! Welcome to ${businessInfo.name}. ${businessInfo.mission} How can I assist you?`);
+                    addQuickActions();
+                } else if (lowerMsg.includes('thank')) {
+                    addBotMessage("You're very welcome! Is there anything else I can help you with today?");
+                    addQuickActions();
+                } else if (lowerMsg.includes('bye')) {
+                    addBotMessage(`Thank you for your interest in ${businessInfo.name}! Visit us at ${businessInfo.website} or contact ${businessInfo.phone} anytime. Have a great day!`);
+                } else {
+                    addBotMessage("I can help you explore our services, see pricing and case studies, request a free website audit, or connect you with our team. What would you like to do?");
+                    addQuickActions();
+                }
+            }
+
+            function getTime() {
+                const now = new Date();
+                return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            }
+
+            function scrollToBottom() {
+                chatWidgetContainer.scrollTop = chatWidgetContainer.scrollHeight;
+            }
+        })();
     </script>
 </body>
 </html>
