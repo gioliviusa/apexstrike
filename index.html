@@ -2412,6 +2412,10 @@
                 }
                 contactData.service = service;
                 contactData.details = details;
+                
+                // Send email notification
+                sendQuoteEmail(contactData);
+                
                 const formDiv = document.getElementById('chatWidgetContactForm');
                 if (formDiv) formDiv.remove();
 
@@ -2482,6 +2486,10 @@
                 }
                 auditData.name = name;
                 auditData.email = email;
+                
+                // Send email notification
+                sendAuditEmail(auditData);
+                
                 const formDiv = document.getElementById('chatWidgetAuditForm');
                 if (formDiv) formDiv.remove();
 
@@ -2556,6 +2564,67 @@
 
             function scrollToBottom() {
                 chatWidgetContainer.scrollTop = chatWidgetContainer.scrollHeight;
+            }
+
+            // Email sending functions using Formspree
+            function sendQuoteEmail(data) {
+                const formData = new FormData();
+                formData.append('name', data.name);
+                formData.append('email', data.email);
+                formData.append('phone', data.phone);
+                formData.append('service', data.service);
+                formData.append('details', data.details || 'Not provided');
+                formData.append('_subject', `New Quote Request from ${data.name} (AI Chatbot)`);
+                formData.append('form_type', 'Quote Request - AI Chatbot');
+                formData.append('submission_time', new Date().toLocaleString());
+
+                // Send via Formspree
+                fetch('https://formspree.io/f/mrbljnwk', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Quote request sent successfully via Formspree');
+                    } else {
+                        console.error('Formspree submission error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Email send error:', err);
+                });
+            }
+
+            function sendAuditEmail(data) {
+                const formData = new FormData();
+                formData.append('name', data.name);
+                formData.append('email', data.email);
+                formData.append('website', data.url);
+                formData.append('_subject', `New Website Audit Request from ${data.name} (AI Chatbot)`);
+                formData.append('form_type', 'Audit Request - AI Chatbot');
+                formData.append('submission_time', new Date().toLocaleString());
+
+                // Send via Formspree
+                fetch('https://formspree.io/f/mrbljnwk', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Audit request sent successfully via Formspree');
+                    } else {
+                        console.error('Formspree submission error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Email send error:', err);
+                });
             }
         })();
     </script>
