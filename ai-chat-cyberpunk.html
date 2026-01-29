@@ -442,18 +442,18 @@
 </head>
 <body>
     <!-- Cyberpunk Chat Icon -->
-    <div class="chat-icon" id="chatIcon">
+    <div class="chat-icon" id="chatIcon" role="button" aria-label="Open chat" aria-controls="chatContainer" aria-expanded="false" tabindex="0">
         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xOS4wMDIgM2gtMTRjLTEuMTAzIDAtMiAuODk3LTIgMnYxMGMwIDEuMTAzLjg5NyAyIDIgMmgxNGMxLjEwMyAwIDItLjg5NyAyLTJ2LTEwYzAtMS4xMDMtLjg5Ny0yLTItMnptLTcgMTJoLTR2LTJoNHYyem0yLTdoLTEydjJoMTJ2LTJ6Ii8+PC9zdmc+" alt="Chat Icon">
     </div>
     
     <!-- Cyberpunk Chat Container -->
-    <div class="chat-container" id="chatContainer">
+    <div class="chat-container" id="chatContainer" aria-hidden="true">
         <div class="chat-header glitch-effect" data-text="AI ASSISTANT">
             <h3>AI ASSISTANT</h3>
             <a href="index.html" class="go-home-btn"><i class="fas fa-home"></i> Home</a>
-            <button class="close-chat" id="closeChat">×</button>
+            <button class="close-chat" id="closeChat" aria-label="Close chat">×</button>
         </div>
-        <div class="chat-messages" id="chatMessages">
+        <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions">
             <div class="message ai-message">
                 [SYSTEM INITIALIZED] Hello, runner. How can I assist you in the neon jungle tonight?
             </div>
@@ -462,8 +462,8 @@
             </div>
         </div>
         <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Transmit message...">
-            <button id="sendButton">SEND</button>
+            <input type="text" id="userInput" placeholder="Transmit message..." aria-label="Message">
+            <button id="sendButton" aria-label="Send message">SEND</button>
         </div>
     </div>
 
@@ -478,13 +478,24 @@
         
         // Toggle chat visibility
         chatIcon.addEventListener('click', () => {
-            chatContainer.classList.toggle('visible');
+            const isVisible = chatContainer.classList.toggle('visible');
+            chatContainer.setAttribute('aria-hidden', String(!isVisible));
+            chatIcon.setAttribute('aria-expanded', String(isVisible));
             // Play sound effect
             playSound('activate');
+        });
+
+        chatIcon.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                chatIcon.click();
+            }
         });
         
         closeChat.addEventListener('click', () => {
             chatContainer.classList.remove('visible');
+            chatContainer.setAttribute('aria-hidden', 'true');
+            chatIcon.setAttribute('aria-expanded', 'false');
             playSound('deactivate');
         });
         

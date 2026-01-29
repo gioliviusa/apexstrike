@@ -65,7 +65,7 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500&family=Montserrat:wght@400;500;600;700&family=OpenDyslexic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2563eb;
@@ -79,6 +79,10 @@
             --border: #e2e8f0;
             --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --font-size-base: 16px;
+            --font-family-primary: 'Inter', 'Open Sans', sans-serif;
+            --font-family-heading: 'Inter', 'Montserrat', sans-serif;
+            --font-family-dyslexia: 'OpenDyslexic', 'Open Sans', sans-serif;
         }
         
         * {
@@ -88,7 +92,7 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-family-primary);
             background-color: var(--bg);
             color: var(--text);
             overflow-x: hidden;
@@ -100,6 +104,7 @@
             color: var(--dark);
             line-height: 1.2;
             letter-spacing: -0.02em;
+            font-family: var(--font-family-heading);
         }
         
         .container {
@@ -195,6 +200,223 @@
             cursor: pointer;
             font-size: 1.5rem;
             color: var(--dark);
+        }
+
+        html {
+            font-size: var(--font-size-base);
+        }
+
+        body.high-contrast {
+            --text: #ffffff;
+            --text-light: #d1d5db;
+            --bg: #000000;
+            --bg-light: #111827;
+            --dark: #ffffff;
+            --primary: #00ffff;
+            --secondary: #ffff00;
+        }
+
+        body.dyslexia-font {
+            font-family: var(--font-family-dyslexia);
+        }
+
+        body.dyslexia-font h1,
+        body.dyslexia-font h2,
+        body.dyslexia-font h3,
+        body.dyslexia-font h4 {
+            font-family: var(--font-family-dyslexia);
+        }
+
+        .accessibility-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1001;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .accessibility-toggle:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        }
+
+        .accessibility-toggle:focus {
+            outline: 3px solid var(--secondary);
+            outline-offset: 2px;
+        }
+
+        .accessibility-panel {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            z-index: 1002;
+            background-color: var(--bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            padding: 25px;
+            width: 320px;
+            display: none;
+            flex-direction: column;
+            gap: 18px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .accessibility-panel.active {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .accessibility-panel h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+            text-align: center;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+
+        .accessibility-option {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        body.high-contrast .accessibility-option {
+            background-color: #333;
+            border-color: #555;
+            color: white;
+        }
+
+        .accessibility-option:hover {
+            background-color: #e9e9e9;
+            transform: translateX(3px);
+        }
+
+        body.high-contrast .accessibility-option:hover {
+            background-color: #444;
+        }
+
+        .accessibility-option.active {
+            background-color: var(--secondary);
+            color: #111827;
+            border-color: var(--secondary);
+        }
+
+        .accessibility-option i {
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .accessibility-slider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            padding: 0 5px;
+        }
+
+        .accessibility-slider button {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.high-contrast .accessibility-slider button {
+            background-color: #333;
+            border-color: #555;
+            color: white;
+        }
+
+        .accessibility-slider button:hover:not(:disabled) {
+            background-color: #e9e9e9;
+            transform: scale(1.1);
+        }
+
+        body.high-contrast .accessibility-slider button:hover:not(:disabled) {
+            background-color: #444;
+        }
+
+        .accessibility-slider button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .font-size-display {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        body.high-contrast .font-size-display {
+            color: var(--secondary);
+        }
+
+        .success-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1003;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
         
         /* Hero Section */
@@ -775,10 +997,10 @@
     <header id="header">
         <div class="container header-container">
             <a href="#" class="logo"><i class="fas fa-code"></i>Apex<span>Stryke</span></a>
-            <div class="menu-toggle" id="menuToggle">
+            <div class="menu-toggle" id="menuToggle" role="button" aria-label="Toggle navigation" aria-controls="nav" aria-expanded="false" tabindex="0">
                 <i class="fas fa-bars"></i>
             </div>
-            <nav id="nav">
+            <nav id="nav" aria-label="Primary">
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="services.html">Services</a></li>
@@ -789,6 +1011,55 @@
             </nav>
         </div>
     </header>
+
+    <!-- Accessibility Toggle Button -->
+    <button class="accessibility-toggle" id="accessibilityToggle" aria-label="Open accessibility options" aria-expanded="false">
+        <i class="fas fa-universal-access"></i> Accessibility / Accesibilidad
+    </button>
+
+    <!-- Accessibility Panel -->
+    <div class="accessibility-panel" id="accessibilityPanel" role="dialog" aria-label="Accessibility options" aria-modal="true">
+        <h3>Accessibility Options / Opciones de accesibilidad</h3>
+        <div class="accessibility-option" id="fontIncrease" role="button" tabindex="0">
+            <i class="fas fa-text-height"></i>
+            <span>Increase Font Size / Aumentar tamaño de fuente</span>
+        </div>
+        <div class="accessibility-option" id="fontDecrease" role="button" tabindex="0">
+            <i class="fas fa-text-width"></i>
+            <span>Decrease Font Size / Disminuir tamaño de fuente</span>
+        </div>
+        <div class="accessibility-slider">
+            <button id="fontSmaller" aria-label="Decrease font size" title="Decrease font size">A-</button>
+            <span class="font-size-display" id="fontSizeDisplay" aria-live="polite">100%</span>
+            <button id="fontBigger" aria-label="Increase font size" title="Increase font size">A+</button>
+        </div>
+        <div class="accessibility-option" id="highContrastToggle" role="button" tabindex="0">
+            <i class="fas fa-adjust"></i>
+            <span>High Contrast Mode / Alto contraste</span>
+        </div>
+        <div class="accessibility-option" id="dyslexiaToggle" role="button" tabindex="0">
+            <i class="fas fa-font"></i>
+            <span>Dyslexia-Friendly Font / Fuente para dislexia</span>
+        </div>
+        <div class="accessibility-option" id="resetAccessibility" role="button" tabindex="0">
+            <i class="fas fa-redo"></i>
+            <span>Reset All Settings / Restablecer ajustes</span>
+        </div>
+        <div class="accessibility-option" id="setSpanish" role="button" tabindex="0">
+            <i class="fas fa-language"></i>
+            <span>Español</span>
+        </div>
+        <div class="accessibility-option" id="setEnglish" role="button" tabindex="0">
+            <i class="fas fa-language"></i>
+            <span>English</span>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="messageText">Settings saved! / ¡Ajustes guardados!</span>
+    </div>
     
     <!-- Hero Section -->
     <section class="hero section" id="home">
@@ -946,8 +1217,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Project 5 - Florida Mortgage -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/Dynamic Apex Stryke Logo with Futuristic Touch.png" alt="Hey Florida Mortgage Website">
+                    </div>
+                    <div class="project-info">
+                        <h3>Hey Florida Mortgage</h3>
+                        <p><strong>The Challenge:</strong> Stand out in a competitive mortgage market and convert more visitors.<br>
+                        <strong>Our Solution:</strong> Clean, conversion-focused website with trust elements and clear CTAs.<br>
+                        <strong>Result:</strong> Higher engagement and improved lead inquiries.</p>
+                        <div class="project-tags">
+                            <span>Mortgage</span>
+                            <span>Conversion Design</span>
+                            <span>Lead Capture</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://heyfloridamortgage.com/" class="live-demo" target="_blank" rel="noopener">View Website</a>
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Project 5 - Container Rental -->
+                <!-- Project 6 - Container Rental -->
                 <div class="project-card">
                     <div class="project-image">
                         <img src="images/Dynamic Apex Stryke Logo with Futuristic Touch.png" alt="Container Rental Business">
@@ -968,7 +1260,7 @@
                     </div>
                 </div>
                 
-                <!-- Project 6 - Luxury Real Estate -->
+                <!-- Project 7 - Luxury Real Estate -->
                 <div class="project-card">
                     <div class="project-image">
                         <img src="images/Dynamic Apex Stryke Logo with Futuristic Touch.png" alt="Luxury Properties">
@@ -1155,9 +1447,13 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="https://instagram.com/apexstryke" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://tiktok.com/@apexstryke" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://instagram.com/apexstryke" target="_blank" rel="noopener" aria-label="ApexStryke on Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@apexstryke" target="_blank" rel="noopener" aria-label="ApexStryke on TikTok"><i class="fab fa-tiktok"></i></a>
             </div>
+            <p class="copyright" style="margin-top: 5px;">
+                Backlinks: <a href="https://pulse954.com" target="_blank" rel="noopener" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">pulse954.com</a>
+                &bull; <a href="https://realeesting.com" target="_blank" rel="noopener" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">realeesting.com</a>
+            </p>
             <p class="copyright">© 2026 ApexStryke. All rights reserved. Helping Fort Lauderdale businesses grow online.</p>
         </div>
     </footer>
@@ -1175,8 +1471,17 @@
         
         menuToggle.addEventListener('click', () => {
             nav.classList.toggle('active');
-            menuToggle.innerHTML = nav.classList.contains('active') ? 
+            const expanded = nav.classList.contains('active');
+            menuToggle.setAttribute('aria-expanded', expanded);
+            menuToggle.innerHTML = expanded ? 
                 '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        menuToggle.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                menuToggle.click();
+            }
         });
         
         // Close mobile menu when clicking on a nav link
@@ -1185,6 +1490,7 @@
             link.addEventListener('click', () => {
                 if (nav.classList.contains('active')) {
                     nav.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
                     menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
                 }
             });
@@ -1199,6 +1505,325 @@
                 header.classList.remove('scrolled');
             }
         });
+
+        // Accessibility Panel
+        const accessibilityToggle = document.getElementById('accessibilityToggle');
+        const accessibilityPanel = document.getElementById('accessibilityPanel');
+        const fontIncrease = document.getElementById('fontIncrease');
+        const fontDecrease = document.getElementById('fontDecrease');
+        const fontSmaller = document.getElementById('fontSmaller');
+        const fontBigger = document.getElementById('fontBigger');
+        const fontSizeDisplay = document.getElementById('fontSizeDisplay');
+        const highContrastToggle = document.getElementById('highContrastToggle');
+        const dyslexiaToggle = document.getElementById('dyslexiaToggle');
+        const resetAccessibility = document.getElementById('resetAccessibility');
+        const setSpanish = document.getElementById('setSpanish');
+        const setEnglish = document.getElementById('setEnglish');
+        const successMessage = document.getElementById('successMessage');
+        const messageText = document.getElementById('messageText');
+
+        let fontSize = 100;
+        let isHighContrast = false;
+        let isDyslexiaFont = false;
+
+        function showSuccessMessage(text) {
+            messageText.textContent = text;
+            successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 2500);
+        }
+
+        function updateFontSize() {
+            document.documentElement.style.fontSize = fontSize + '%';
+            fontSizeDisplay.textContent = fontSize + '%';
+            localStorage.setItem('accessibilityFontSize', fontSize);
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            const isMinSize = fontSize <= 80;
+            const isMaxSize = fontSize >= 150;
+            fontDecrease.disabled = isMinSize;
+            fontSmaller.disabled = isMinSize;
+            fontIncrease.disabled = isMaxSize;
+            fontBigger.disabled = isMaxSize;
+            fontDecrease.setAttribute('aria-disabled', isMinSize);
+            fontSmaller.setAttribute('aria-disabled', isMinSize);
+            fontIncrease.setAttribute('aria-disabled', isMaxSize);
+            fontBigger.setAttribute('aria-disabled', isMaxSize);
+        }
+
+        function increaseFontSize() {
+            if (fontSize < 150) {
+                fontSize += 10;
+                updateFontSize();
+                showSuccessMessage(`Font size increased to ${fontSize}% / Tamaño de fuente aumentado a ${fontSize}%`);
+            }
+        }
+
+        function decreaseFontSize() {
+            if (fontSize > 80) {
+                fontSize -= 10;
+                updateFontSize();
+                showSuccessMessage(`Font size decreased to ${fontSize}% / Tamaño de fuente disminuido a ${fontSize}%`);
+            }
+        }
+
+        function loadSavedSettings() {
+            const savedFontSize = localStorage.getItem('accessibilityFontSize');
+            const savedHighContrast = localStorage.getItem('accessibilityHighContrast');
+            const savedDyslexiaFont = localStorage.getItem('accessibilityDyslexiaFont');
+
+            if (savedFontSize) {
+                fontSize = parseInt(savedFontSize, 10);
+                updateFontSize();
+            } else {
+                updateFontSize();
+            }
+
+            if (savedHighContrast === 'true') {
+                isHighContrast = true;
+                document.body.classList.add('high-contrast');
+                highContrastToggle.classList.add('active');
+            }
+
+            if (savedDyslexiaFont === 'true') {
+                isDyslexiaFont = true;
+                document.body.classList.add('dyslexia-font');
+                dyslexiaToggle.classList.add('active');
+            }
+
+            updateButtonStates();
+        }
+
+        accessibilityToggle.addEventListener('click', function() {
+            const isExpanded = accessibilityPanel.classList.toggle('active');
+            this.setAttribute('aria-expanded', isExpanded);
+            if (isExpanded) {
+                setTimeout(() => {
+                    fontIncrease.focus();
+                }, 100);
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!accessibilityPanel.contains(event.target) && !accessibilityToggle.contains(event.target) && accessibilityPanel.classList.contains('active')) {
+                accessibilityPanel.classList.remove('active');
+                accessibilityToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && accessibilityPanel.classList.contains('active')) {
+                accessibilityPanel.classList.remove('active');
+                accessibilityToggle.setAttribute('aria-expanded', 'false');
+                accessibilityToggle.focus();
+            }
+        });
+
+        fontIncrease.addEventListener('click', increaseFontSize);
+        fontDecrease.addEventListener('click', decreaseFontSize);
+        fontSmaller.addEventListener('click', decreaseFontSize);
+        fontBigger.addEventListener('click', increaseFontSize);
+
+        fontIncrease.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                increaseFontSize();
+            }
+        });
+
+        fontDecrease.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                decreaseFontSize();
+            }
+        });
+
+        highContrastToggle.addEventListener('click', function() {
+            isHighContrast = !isHighContrast;
+            if (isHighContrast) {
+                document.body.classList.add('high-contrast');
+                this.classList.add('active');
+                showSuccessMessage('High contrast mode enabled / Alto contraste activado');
+            } else {
+                document.body.classList.remove('high-contrast');
+                this.classList.remove('active');
+                showSuccessMessage('High contrast mode disabled / Alto contraste desactivado');
+            }
+            localStorage.setItem('accessibilityHighContrast', isHighContrast);
+        });
+
+        highContrastToggle.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+
+        dyslexiaToggle.addEventListener('click', function() {
+            isDyslexiaFont = !isDyslexiaFont;
+            if (isDyslexiaFont) {
+                document.body.classList.add('dyslexia-font');
+                this.classList.add('active');
+                showSuccessMessage('Dyslexia-friendly font enabled / Fuente para dislexia activada');
+            } else {
+                document.body.classList.remove('dyslexia-font');
+                this.classList.remove('active');
+                showSuccessMessage('Dyslexia-friendly font disabled / Fuente para dislexia desactivada');
+            }
+            localStorage.setItem('accessibilityDyslexiaFont', isDyslexiaFont);
+        });
+
+        dyslexiaToggle.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+
+        resetAccessibility.addEventListener('click', function() {
+            fontSize = 100;
+            updateFontSize();
+
+            isHighContrast = false;
+            document.body.classList.remove('high-contrast');
+            highContrastToggle.classList.remove('active');
+            localStorage.setItem('accessibilityHighContrast', false);
+
+            isDyslexiaFont = false;
+            document.body.classList.remove('dyslexia-font');
+            dyslexiaToggle.classList.remove('active');
+            localStorage.setItem('accessibilityDyslexiaFont', false);
+
+            showSuccessMessage('All accessibility settings have been reset / Se restablecieron los ajustes');
+
+            setTimeout(() => {
+                accessibilityPanel.classList.remove('active');
+                accessibilityToggle.setAttribute('aria-expanded', 'false');
+                accessibilityToggle.focus();
+            }, 400);
+        });
+
+        resetAccessibility.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+
+        const translations = {
+            navHome: { en: 'Home', es: 'Inicio' },
+            navServices: { en: 'Services', es: 'Servicios' },
+            navAudit: { en: 'Free Audit', es: 'Auditoría gratis' },
+            navAbout: { en: 'About', es: 'Nosotros' },
+            navContact: { en: 'Contact', es: 'Contacto' },
+            heroBadge: { en: '🚀 Grow Your Business Online', es: '🚀 Haz crecer tu negocio en línea' },
+            heroTitle: { en: 'Your Website Should Work as Hard as You Do', es: 'Tu sitio web debe trabajar tan duro como tú' },
+            heroLead: { en: 'We help small business owners attract more customers and save time with professional websites and smart automation. No tech jargon—just real solutions for real business growth.', es: 'Ayudamos a dueños de pequeños negocios a atraer más clientes y ahorrar tiempo con sitios web profesionales y automatización inteligente. Sin jerga técnica—solo soluciones reales para el crecimiento.' },
+            heroCtaAudit: { en: 'Get Your Free Website Audit', es: 'Obtén tu auditoría web gratis' },
+            heroCtaServices: { en: 'Explore Services', es: 'Explorar servicios' },
+            servicesTitle: { en: 'How We Help Your Business Grow', es: 'Cómo ayudamos a crecer tu negocio' },
+            servicesLead: { en: 'Simple solutions that make a real difference to your bottom line', es: 'Soluciones simples que generan un impacto real en tus resultados' },
+            servicesCta: { en: 'See All Services & Pricing', es: 'Ver todos los servicios y precios' },
+            projectsTitle: { en: 'Real Results for Real Businesses', es: 'Resultados reales para negocios reales' },
+            projectsLead: { en: "See how we've helped businesses like yours grow online", es: 'Mira cómo ayudamos a negocios como el tuyo a crecer en línea' },
+            projectsCta: { en: 'Get Your Free Website Audit', es: 'Obtén tu auditoría web gratis' },
+            projectsCtaSub: { en: "See how your website stacks up and where you're losing customers", es: 'Descubre cómo está tu sitio y dónde estás perdiendo clientes' },
+            pricingTitle: { en: 'Simple, Transparent Pricing', es: 'Precios simples y transparentes' },
+            pricingLead: { en: 'Choose the package that fits your business needs', es: 'Elige el paquete que se ajusta a tu negocio' },
+            aboutTitle: { en: 'Why Choose ApexStryke', es: 'Por qué elegir ApexStryke' },
+            aboutHeading: { en: 'We Speak Business, Not Tech', es: 'Hablamos de negocios, no de tecnología' },
+            aboutPara1: { en: "We're a team that understands what small business owners need—more customers, less hassle, and real results. We've helped businesses in Fort Lauderdale and beyond grow their online presence without the confusion or inflated costs.", es: 'Somos un equipo que entiende lo que necesitan los dueños de pequeños negocios: más clientes, menos complicaciones y resultados reales. Hemos ayudado a negocios en Fort Lauderdale y más allá a crecer en línea sin confusiones ni costos inflados.' },
+            aboutPara2: { en: "Unlike typical web developers who talk in code, we focus on what matters to you: getting more leads, saving time, and growing your revenue. We've worked with real estate agents, law firms, restaurants, contractors, and more—businesses just like yours.", es: 'A diferencia de desarrolladores que solo hablan en código, nos enfocamos en lo que te importa: más prospectos, ahorro de tiempo y crecimiento de ingresos. Hemos trabajado con agentes inmobiliarios, bufetes, restaurantes, contratistas y más—negocios como el tuyo.' },
+            aboutPara3: { en: '<strong>Here’s our promise:</strong> No confusing tech talk. No hidden fees. No abandoned projects. Just honest service and websites that actually work for your business.', es: '<strong>Nuestra promesa:</strong> Sin jerga técnica. Sin cargos ocultos. Sin proyectos abandonados. Solo servicio honesto y sitios que funcionan.' },
+            aboutCta: { en: 'Get Your Free Website Audit', es: 'Obtén tu auditoría web gratis' },
+            contactTitle: { en: 'Ready to Grow Your Business?', es: '¿Listo para hacer crecer tu negocio?' },
+            contactLead: { en: "Let's talk about how we can help you attract more customers and save time", es: 'Hablemos de cómo ayudarte a atraer más clientes y ahorrar tiempo' },
+            contactName: { en: 'Your Name', es: 'Tu nombre' },
+            contactEmail: { en: 'Email Address', es: 'Correo electrónico' },
+            contactPhone: { en: 'Phone Number (Optional)', es: 'Teléfono (opcional)' },
+            contactBusiness: { en: 'What type of business do you have?', es: '¿Qué tipo de negocio tienes?' },
+            contactBusinessPlaceholder: { en: 'e.g., Restaurant, Law Firm, Real Estate', es: 'Ej.: Restaurante, Bufete, Bienes raíces' },
+            contactMessage: { en: 'Tell us about your business goals', es: 'Cuéntanos sobre tus objetivos' },
+            contactMessagePlaceholder: { en: 'What are you hoping to achieve with a new website or automation?', es: '¿Qué esperas lograr con un nuevo sitio web o automatización?' },
+            contactSubmit: { en: 'Get Your Free Consultation', es: 'Obtén tu consulta gratis' },
+            contactNote: { en: "We'll respond within 24 hours with a personalized plan for your business", es: 'Responderemos en 24 horas con un plan personalizado' },
+            footerCopy: { en: '© 2026 ApexStryke. All rights reserved. Helping Fort Lauderdale businesses grow online.', es: '© 2026 ApexStryke. Todos los derechos reservados. Ayudando a negocios de Fort Lauderdale a crecer en línea.' }
+        };
+
+        function applyTranslations(lang) {
+            const setText = (selector, key, useHtml = false) => {
+                const el = document.querySelector(selector);
+                if (!el || !translations[key]) return;
+                const value = translations[key][lang] || translations[key].en;
+                if (useHtml) {
+                    el.innerHTML = value;
+                } else {
+                    el.textContent = value;
+                }
+            };
+
+            setText('nav a[href="#home"]', 'navHome');
+            setText('nav a[href="services.html"]', 'navServices');
+            setText('nav a[href="audit.html"]', 'navAudit');
+            setText('nav a[href="about.html"]', 'navAbout');
+            setText('nav a[href="contact.html"]', 'navContact');
+            setText('.hero-badge', 'heroBadge');
+            setText('.hero-content h1', 'heroTitle');
+            setText('.hero-content .lead', 'heroLead');
+            setText('.cta-buttons .btn', 'heroCtaAudit');
+            setText('.cta-buttons .btn.btn-secondary', 'heroCtaServices');
+            setText('#services h2.text-center', 'servicesTitle');
+            setText('#services p.text-center.lead', 'servicesLead');
+            setText('#services .btn', 'servicesCta');
+            setText('#projects h2', 'projectsTitle');
+            setText('#projects p.text-center.lead', 'projectsLead');
+            setText('#projects .btn', 'projectsCta');
+            setText('#projects .btn + p', 'projectsCtaSub');
+            setText('#pricing h2', 'pricingTitle');
+            setText('#pricing p.text-center.lead', 'pricingLead');
+            setText('#about .section-title h2', 'aboutTitle');
+            setText('.about-text h2', 'aboutHeading');
+            const aboutParagraphs = document.querySelectorAll('.about-text p');
+            if (aboutParagraphs[0]) aboutParagraphs[0].textContent = translations.aboutPara1[lang] || translations.aboutPara1.en;
+            if (aboutParagraphs[1]) aboutParagraphs[1].textContent = translations.aboutPara2[lang] || translations.aboutPara2.en;
+            if (aboutParagraphs[2]) aboutParagraphs[2].innerHTML = translations.aboutPara3[lang] || translations.aboutPara3.en;
+            setText('#about .btn', 'aboutCta');
+            setText('#contact .section-title h2', 'contactTitle');
+            setText('#contact p.text-center.lead', 'contactLead');
+            setText('label[for="name"]', 'contactName');
+            setText('label[for="email"]', 'contactEmail');
+            setText('label[for="phone"]', 'contactPhone');
+            setText('label[for="business"]', 'contactBusiness');
+            setText('label[for="message"]', 'contactMessage');
+            const businessInput = document.getElementById('business');
+            if (businessInput) businessInput.setAttribute('placeholder', translations.contactBusinessPlaceholder[lang] || translations.contactBusinessPlaceholder.en);
+            const messageInput = document.getElementById('message');
+            if (messageInput) messageInput.setAttribute('placeholder', translations.contactMessagePlaceholder[lang] || translations.contactMessagePlaceholder.en);
+            setText('.contact-form .submit-btn', 'contactSubmit');
+            setText('.contact-form .submit-btn + p', 'contactNote');
+            setText('footer p.copyright:last-of-type', 'footerCopy');
+
+            document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+            localStorage.setItem('siteLang', lang);
+        }
+
+        setSpanish.addEventListener('click', () => {
+            applyTranslations('es');
+            showSuccessMessage('Español activado / Spanish enabled');
+        });
+
+        setEnglish.addEventListener('click', () => {
+            applyTranslations('en');
+            showSuccessMessage('English enabled / Inglés activado');
+        });
+
+        const savedLang = localStorage.getItem('siteLang') || 'en';
+        applyTranslations(savedLang);
+
+        loadSavedSettings();
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

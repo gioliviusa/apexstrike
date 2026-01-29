@@ -455,13 +455,13 @@
             </div>
         </div>
         
-        <div class="chat-container" id="chatContainer">
+        <div class="chat-container" id="chatContainer" role="log" aria-live="polite" aria-relevant="additions">
             <!-- Chat messages will be inserted here -->
         </div>
         
         <div class="input-container">
-            <input type="text" id="userInput" placeholder="Ask about properties, pricing, or book a viewing..." autocomplete="off">
-            <button class="send-btn" id="sendButton">
+            <input type="text" id="userInput" placeholder="Ask about properties, pricing, or book a viewing..." autocomplete="off" aria-label="Message">
+            <button class="send-btn" id="sendButton" aria-label="Send message">
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>

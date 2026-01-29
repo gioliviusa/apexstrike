@@ -1175,7 +1175,7 @@
 
     <div class="cyber-grid"></div>
     
-    <nav class="nav-container fixed w-full z-50 p-4">
+    <nav class="nav-container fixed w-full z-50 p-4" aria-label="Primary">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="neon-header text-2xl">APEXSTRYKE</h1>
             <div class="nav-menu">
@@ -1189,11 +1189,11 @@
                 <a href="#button-showcase" class="text-white hover:text-cyber-purple mx-4">Button Showcase</a>
                 <a href="#contact" class="cyber-button">Contact</a>
             </div>
-            <div class="hamburger text-neon-blue">
+            <div class="hamburger text-neon-blue" role="button" aria-label="Toggle navigation" aria-controls="mobile-menu" aria-expanded="false" tabindex="0">
                 <i class="fas fa-bars text-2xl"></i>
             </div>
         </div>
-        <div class="mobile-menu">
+        <div id="mobile-menu" class="mobile-menu">
             <span class="theme-toggle" style="cursor:pointer; font-size:1.5rem; color:var(--neon-blue); margin:0 0 10px 0; display:block;"><i class="fas fa-sun"></i></span>
             <a href="#services" class="text-white py-3 px-4 hover:bg-cyber-purple">Services</a>
             <a href="#portfolio" class="text-white py-3 px-4 hover:bg-cyber-purple">Portfolio</a>
@@ -1244,6 +1244,11 @@
                     <h3 class="text-2xl mb-4">Project Alpha</h3>
                     <p class="opacity-90">Matrix background, made with raw HTML, CSS JS.</p>
                     <a href="https://codepen.io/gioliviusa/live/PwwwxqL" target="_blank" class="text-neon-blue hover:text-neon-pink">View Project</a>
+                </div>
+                <div class="service-card p-8">
+                    <h3 class="text-2xl mb-4">Hey Florida Mortgage</h3>
+                    <p class="opacity-90">Conversion-focused mortgage website with clear CTAs and trust-first layout.</p>
+                    <a href="https://heyfloridamortgage.com/" target="_blank" class="text-neon-blue hover:text-neon-pink" rel="noopener">View Project</a>
                 </div>
                 <div class="service-card p-8">
                     <h3 class="text-2xl mb-4">Project Beta</h3>
@@ -1494,6 +1499,12 @@
     <footer class="py-10 bg-dark-bg text-center text-white">
         <div class="container mx-auto">
             <p class="mb-4">&copy; 2025 ApexStryke. All Rights Reserved.</p>
+            <p class="mb-4">
+                Backlinks:
+                <a href="https://pulse954.com" target="_blank" rel="noopener" class="text-neon-blue hover:text-neon-pink">pulse954.com</a>
+                <span class="text-white/60">&bull;</span>
+                <a href="https://realeesting.com" target="_blank" rel="noopener" class="text-neon-blue hover:text-neon-pink">realeesting.com</a>
+            </p>
             <div class="flex justify-center space-x-4">
                 <a href="privacy-policy.html" class="text-neon-blue hover:text-neon-pink">Privacy Policy</a>
                 <a href="terms-of-service.html" class="text-neon-blue hover:text-neon-pink">Terms of Service</a>
@@ -1544,12 +1555,22 @@
 
             hamburger.addEventListener('click', () => {
                 mobileMenu.classList.toggle('active');
+                const expanded = mobileMenu.classList.contains('active');
+                hamburger.setAttribute('aria-expanded', expanded);
                 hamburger.querySelector('i').classList.toggle('fa-times');
+            });
+
+            hamburger.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    hamburger.click();
+                }
             });
 
             document.querySelectorAll('.mobile-menu a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
                     hamburger.querySelector('i').classList.remove('fa-times');
                 });
             });
