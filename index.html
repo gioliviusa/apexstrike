@@ -245,6 +245,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            max-width: calc(100vw - 40px);
+            white-space: nowrap;
         }
 
         .accessibility-toggle:hover {
@@ -268,10 +270,22 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             padding: 25px;
             width: 320px;
+            max-width: calc(100vw - 40px);
             display: none;
             flex-direction: column;
             gap: 18px;
             border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 480px) {
+            .accessibility-toggle {
+                left: 10px;
+                bottom: 10px;
+            }
+            .accessibility-panel {
+                left: 10px;
+                bottom: 70px;
+            }
         }
 
         .accessibility-panel.active {
