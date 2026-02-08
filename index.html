@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V8WFZWZWNW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-V8WFZWZWNW');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1500,16 +1509,7 @@
     </footer>
 
     <!-- Cookies Consent Banner -->
-    <div id="cookies-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:rgba(10,10,20,0.98); color:#00f7ff; z-index:2000; box-shadow:0 0 20px #00f7ff44; border-top:2px solid #ff00e4; font-family:'Orbitron',sans-serif; padding:18px 10px; text-align:center; letter-spacing:1px;">
-        <span style="font-size:1rem;">This site uses cookies to enhance your experience. See our <a href="privacy-policy.html" style="color:#ff00e4; text-decoration:underline;">Privacy Policy</a>.</span>
-        <button id="accept-cookies" style="margin-left:18px; padding:8px 22px; background:linear-gradient(90deg,#00f7ff,#7700ff); color:#0a0a14; border:none; border-radius:20px; font-family:'Orbitron',sans-serif; font-weight:700; cursor:pointer; box-shadow:0 0 10px #00f7ff88; transition:background 0.3s;">Accept</button>
-    </div>
-    
-    <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const nav = document.getElementById('nav');
-        
+    <div id="cookies-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:rgba(10,10,20,0.98); color:#00f7ff; z-index:2000; box-shadow:0 0 2
         menuToggle.addEventListener('click', () => {
             nav.classList.toggle('active');
             const expanded = nav.classList.contains('active');
