@@ -45,6 +45,14 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- OpenClaw Page -->
+  <url>
+    <loc>https://apexstryke.com/openclaw.html</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   
   <!-- AI Chat Demos -->
   <url>
