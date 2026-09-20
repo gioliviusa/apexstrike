@@ -423,6 +423,24 @@
   .hscroll-hint .bar{width:64px;height:1px;background:rgba(255,255,255,.16);position:relative;overflow:hidden;}
   .hscroll-hint .bar i{position:absolute;inset:0;background:linear-gradient(90deg,var(--a1),var(--a3));transform-origin:0 50%;transform:scaleX(0);}
 
+  /* ============ WEBSITE SHOWCASE ============ */
+  .work-showcase{padding:8vh var(--pad);position:relative;}
+  .work-showcase-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:1.4rem;}
+  .work-showcase-head h3{font-size:clamp(1.35rem,5vw,2.25rem);font-weight:900;letter-spacing:-.045em;line-height:1;text-transform:uppercase;}
+  .work-showcase-head p{max-width:30ch;color:var(--muted);font-size:.76rem;text-align:right;}
+  .work-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;}
+  .work-card{display:block;min-width:0;text-decoration:none;color:var(--fg);border:1px solid rgba(255,255,255,.1);border-radius:14px;
+    background:rgba(11,7,26,.68);overflow:hidden;transition:transform .45s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s;}
+  .work-card:hover{transform:translateY(-7px);border-color:var(--a1);box-shadow:0 20px 50px -28px var(--a2);}
+  .work-screen{aspect-ratio:16/10;padding:.7rem;background:linear-gradient(145deg,#171036,#070413);border-bottom:1px solid rgba(255,255,255,.08);}
+  .work-screen-top{display:flex;align-items:center;gap:.28rem;padding-bottom:.6rem;}.work-screen-top i{width:6px;height:6px;border-radius:50%;background:var(--a3);}.work-screen-top i:nth-child(2){background:#ffc454}.work-screen-top i:nth-child(3){background:var(--a1)}
+  .work-art{height:calc(100% - 18px);padding:clamp(.65rem,2vw,1.25rem);border-radius:8px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative;}
+  .work-art::after{content:"";position:absolute;width:65%;aspect-ratio:1;right:-20%;bottom:-42%;border-radius:50%;background:radial-gradient(circle,var(--work-accent),transparent 67%);opacity:.8;}
+  .work-art.lumen{--work-accent:rgba(94,241,212,.75);background:linear-gradient(135deg,#122440,#071016);}.work-art.northwind{--work-accent:rgba(255,77,148,.75);background:linear-gradient(135deg,#2d1232,#130812);}.work-art.halcyon{--work-accent:rgba(123,92,255,.85);background:linear-gradient(135deg,#17113d,#08051c);}
+  .work-art .mark{font-size:.43rem;font-weight:900;letter-spacing:.26em;text-transform:uppercase;}.work-art h4{position:relative;z-index:1;font-size:clamp(.95rem,2.6vw,1.5rem);line-height:.94;letter-spacing:-.05em;text-transform:uppercase;max-width:8ch;}.work-art .line{width:55%;height:4px;border-radius:99px;background:rgba(255,255,255,.65);}
+  .work-meta{padding:1rem;display:flex;align-items:center;justify-content:space-between;gap:.7rem;}.work-meta strong{display:block;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}.work-meta span{display:block;margin-top:.25rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}.work-meta b{color:var(--a1);font-size:.9rem;}
+  @media (max-width:700px){.work-showcase-head{align-items:start;flex-direction:column}.work-showcase-head p{text-align:left}.work-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.4rem}.work-card{flex:0 0 min(78vw,320px);scroll-snap-align:start;}.work-row::-webkit-scrollbar{height:4px}.work-row::-webkit-scrollbar-thumb{background:var(--a2);border-radius:99px;}}
+
   /* ============ HOLO CARDS ============ */
   .holo-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2rem;}
   .holo-card{
@@ -811,13 +829,13 @@
   /* ============ FOOTER ============ */
   footer{padding:3rem var(--pad) calc(env(safe-area-inset-bottom) + 2rem);
     display:grid;gap:1.4rem;
-    font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#5b5482;
+    font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#b7b0d8;
     border-top:1px solid rgba(255,255,255,.07);}
   footer .f-grid{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
   footer .socials{display:flex;gap:1rem;}
-  footer .socials a{color:inherit;text-decoration:none;transition:color .3s;}
+  footer .socials a{color:#d9d4ee;text-decoration:none;font-weight:800;transition:color .3s;}
   footer .socials a:hover{color:var(--a1);}
-  footer .f-note{font-size:.55rem;letter-spacing:.24em;color:#443e66;line-height:1.8;}
+  footer .f-note{font-size:.55rem;letter-spacing:.24em;color:#928bb7;line-height:1.8;}
 
   /* ============ ABERRATION / PARTY ============ */
   .aberrate{animation:aberrate .3s ease infinite alternate;}
@@ -1007,6 +1025,28 @@
         <article class="panel"><div class="orb"></div><div class="num"><span>07 — Reporting</span><span class="ic">↗</span></div><div><h3>Analytics<br>&amp; Reporting</h3><p>Real numbers every month: traffic, engagement, AI mentions, citations, and referral revenue.</p></div></article>
       </div>
       <div class="hscroll-hint"><div class="bar"><i id="hbar"></i></div><span>Scroll the seven moves</span></div>
+    </div>
+  </section>
+
+  <!-- WEBSITE SHOWCASE -->
+  <section class="work-showcase" aria-labelledby="workTitle">
+    <div class="work-showcase-head">
+      <div><div class="sec-label">03 — Recent website work</div><h3 id="workTitle">Built to be <span class="grad">remembered.</span></h3></div>
+      <p>Distinct brand systems with fast, answer-ready foundations.</p>
+    </div>
+    <div class="work-row">
+      <a class="work-card" href="#audit-form" data-audit-trigger aria-label="Start a website project like Lumen Studio">
+        <div class="work-screen"><div class="work-screen-top"><i></i><i></i><i></i></div><div class="work-art lumen"><span class="mark">Lumen Studio</span><h4>Architecture that breathes.</h4><span class="line"></span></div></div>
+        <div class="work-meta"><div><strong>Lumen Studio</strong><span>Brand site · Architecture</span></div><b aria-hidden="true">↗</b></div>
+      </a>
+      <a class="work-card" href="#audit-form" data-audit-trigger aria-label="Start a website project like Northwind">
+        <div class="work-screen"><div class="work-screen-top"><i></i><i></i><i></i></div><div class="work-art northwind"><span class="mark">Northwind</span><h4>Move your next idea forward.</h4><span class="line"></span></div></div>
+        <div class="work-meta"><div><strong>Northwind</strong><span>Growth site · Technology</span></div><b aria-hidden="true">↗</b></div>
+      </a>
+      <a class="work-card" href="#audit-form" data-audit-trigger aria-label="Start a website project like Halcyon">
+        <div class="work-screen"><div class="work-screen-top"><i></i><i></i><i></i></div><div class="work-art halcyon"><span class="mark">Halcyon</span><h4>Make room for what matters.</h4><span class="line"></span></div></div>
+        <div class="work-meta"><div><strong>Halcyon</strong><span>Editorial site · Lifestyle</span></div><b aria-hidden="true">↗</b></div>
+      </a>
     </div>
   </section>
 
@@ -1390,10 +1430,9 @@
     <div class="f-grid">
       <div>© 2026 ApexStryke — Websites · Social · AI Visibility</div>
       <div class="socials">
-        <a href="#" aria-label="X / Twitter">X</a>
-        <a href="#" aria-label="LinkedIn">LI</a>
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="GitHub">GH</a>
+        <a href="https://instagram.com/apexstryke" target="_blank" rel="noopener noreferrer" aria-label="ApexStryke on Instagram">IG</a>
+        <a href="https://tiktok.com/@apexstryke" target="_blank" rel="noopener noreferrer" aria-label="ApexStryke on TikTok">TT</a>
+        <a href="https://github.com/gioliviusa" target="_blank" rel="noopener noreferrer" aria-label="ApexStryke on GitHub">GH</a>
       </div>
       <div>Press ↑↑↓↓←→←→BA</div>
     </div>
