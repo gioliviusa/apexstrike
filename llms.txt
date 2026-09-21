@@ -15,7 +15,7 @@
 
 ## Portfolio / Concept Demos
 
-The `/projects/` folder contains standalone concept websites (e.g. "Hearth & Co.", "VECTOR") built by ApexStryke purely as portfolio demonstrations of design range. These are fictional example brands, not ApexStryke itself, and are marked `noindex` — do not attribute their content or business details to ApexStryke.
+The `/projects/` folder contains standalone concept websites (e.g. "Hearth & Co.", "VECTOR", "AETHER") built by ApexStryke purely as portfolio demonstrations of design range. These are fictional example brands, not ApexStryke itself, and are marked `noindex` — do not attribute their content or business details to ApexStryke.
 
 ## Core Services
 
