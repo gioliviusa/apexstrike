@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#04020b">
 <meta name="description" content="ApexStryke builds conversion-focused websites, social media marketing, and AI visibility (GEO) systems for businesses in Fort Lauderdale, South Florida, and across the United States.">
+<meta name="keywords" content="ApexStryke, website design, web development, social media marketing, GEO, generative engine optimization, AI visibility, AI SEO, ChatGPT SEO, Fort Lauderdale marketing agency, South Florida web design">
+<meta name="author" content="ApexStryke">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="geo.region" content="US-FL">
+<meta name="geo.placename" content="Fort Lauderdale">
+<meta name="geo.position" content="26.1224;-80.1373">
+<meta name="ICBM" content="26.1224, -80.1373">
 <link rel="canonical" href="https://apexstryke.com/">
 <link rel="alternate" type="text/plain" href="https://apexstryke.com/llms.txt">
 <meta property="og:type" content="website">
@@ -14,6 +20,7 @@
 <meta property="og:title" content="ApexStryke | Websites, Social Media Marketing & AI Visibility">
 <meta property="og:description" content="One studio, three engines: high-performance websites, social media marketing, and AI visibility for brands that want to be found and cited.">
 <meta property="og:image" content="https://apexstryke.com/images/Dynamic%20Apex%20Stryke%20Logo%20with%20Futuristic%20Touch.png">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ApexStryke | Websites, Social Media Marketing & AI Visibility">
 <meta name="twitter:description" content="Websites, social media marketing, and GEO for brands built for the AI era.">
@@ -29,6 +36,11 @@
       "url": "https://apexstryke.com/",
       "name": "ApexStryke",
       "publisher": { "@id": "https://apexstryke.com/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://apexstryke.com/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
       "inLanguage": "en-US"
     },
     {
@@ -39,7 +51,20 @@
       "description": "ApexStryke builds websites, social media marketing systems, and AI visibility programs for businesses.",
       "isPartOf": { "@id": "https://apexstryke.com/#website" },
       "about": { "@id": "https://apexstryke.com/#organization" },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["#heroTitle", ".faq summary", ".faq .a"]
+      },
       "inLanguage": "en-US"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://apexstryke.com/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://apexstryke.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://apexstryke.com/#hscroll" },
+        { "@type": "ListItem", "position": 3, "name": "Pricing", "item": "https://apexstryke.com/#pricing" }
+      ]
     },
     {
       "@type": "ProfessionalService",
@@ -50,7 +75,7 @@
       "image": "https://apexstryke.com/images/Dynamic%20Apex%20Stryke%20Logo%20with%20Futuristic%20Touch.png",
       "description": "ApexStryke provides website design and development, social media marketing, generative engine optimization, and AI visibility audits.",
       "email": "contact@apexstryke.com",
-      "telephone": "+1-954-555-0100",
+      "telephone": "+1-239-204-8113",
       "priceRange": "$1500-$5000",
       "address": {
         "@type": "PostalAddress",
@@ -78,6 +103,47 @@
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Visibility and Generative Engine Optimization", "serviceType": "AI visibility audits, structured data, citation authority, and answer-first content" } }
         ]
       }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://apexstryke.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you build websites and run social, or just one?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Both — plus GEO. Most clients start with a website build or a social retainer, then expand to full-stack within 90 days because the results compound when the three work together." }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between SEO and GEO?",
+          "acceptedAnswer": { "@type": "Answer", "text": "SEO optimizes for a position on a results page. GEO optimizes for a mention inside an AI-generated answer. The two work together — but GEO is what drives AI-referred leads, which convert 3× better than search traffic." }
+        },
+        {
+          "@type": "Question",
+          "name": "How long until I see results?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Website: launch in 4–6 weeks. Social: engagement lift within 30 days, revenue impact in 60–90. GEO: structural fixes shift citations within 2–4 weeks, and content authority compounds over 2–3 months." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you work with my existing site?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. If your site is solid we layer GEO and social on top — schema markup, restructuring key pages, and earning citations. If it needs a rebuild, we'll tell you in the audit." }
+        },
+        {
+          "@type": "Question",
+          "name": "What do I actually get in the free audit?",
+          "acceptedAnswer": { "@type": "Answer", "text": "We run the prompts your customers are already asking through ChatGPT, Gemini, Claude and Perplexity, review your site's structured data coverage, and scan your social presence. You get a written report in 48 hours. No pitch deck, no obligation." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you work with multi-location businesses?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — that's our Enterprise tier. Per-location schema, distinct service descriptions per market, and market-by-market citation tracking." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a minimum commitment?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Website builds are one-time projects. Social and GEO retainers are month-to-month after the first 90 days. We don't lock people in — the results do the retaining." }
+        }
+      ]
     }
   ]
 }
@@ -1036,7 +1102,7 @@
   </section>
 
   <!-- WEBSITE SHOWCASE -->
-  <section class="work-showcase" aria-labelledby="workTitle">
+  <section class="work-showcase" id="work" aria-labelledby="workTitle">
     <div class="work-showcase-head">
       <div><div class="sec-label">03 — Recent website work</div><h3 id="workTitle">Built to be <span class="grad">remembered.</span></h3></div>
       <p>Distinct brand systems with fast, answer-ready foundations. Click the first one — it's live.</p>
@@ -1379,7 +1445,7 @@
   </section>
 
   <!-- FAQ -->
-  <section class="section">
+  <section class="section" id="faq">
     <div class="sec-label">14 — Questions, answered</div>
     <div class="faq">
       <details>

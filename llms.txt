@@ -1,29 +1,40 @@
 # ApexStryke
 
-> ApexStryke helps businesses become more visible in AI-generated recommendations through AI visibility audits, Generative Engine Optimization, structured content, reputation consistency, and citation building.
+> ApexStryke is a one-studio, three-engine agency that builds conversion-focused websites, runs social media marketing, and drives AI visibility (Generative Engine Optimization / GEO) so businesses get found and cited by both search engines and AI answer engines like ChatGPT, Gemini, Claude, and Perplexity.
 
 ## Official Pages
 
-- [AI Visibility Audit and GEO Services](https://apexstryke.com/ai-visibility.html): Audit how ChatGPT, Gemini, Claude, and Perplexity describe and recommend a business.
-- [ApexStryke AI Visibility Landing Page](https://apexstryke.com/ai-visibility.html): The primary entry page for AI visibility audits and GEO services.
-- [ApexStryke Main Business Homepage](https://apexstryke.com/home.html): AI web design, business automation, AI agents, data insights, and digital growth services.
-- [Services](https://apexstryke.com/services.html): ApexStryke service catalog and pricing information.
-- [Contact](https://apexstryke.com/contact.html): Contact ApexStryke for an AI visibility audit or business technology project.
+- [ApexStryke Homepage](https://apexstryke.com/): Single-page site covering website design, social media marketing, AI visibility/GEO services, pricing, FAQ, and contact.
+- [Services](https://apexstryke.com/#hscroll): Web design & build, social media marketing, AI visibility (GEO), content & copywriting, authority & PR, reputation sync, analytics & reporting.
+- [Pricing](https://apexstryke.com/#pricing): Website, social, and GEO packages with monthly/annual toggle.
+- [Recent Website Work](https://apexstryke.com/#work): Live example websites built by ApexStryke.
+- [FAQ](https://apexstryke.com/#faq): Answers on SEO vs GEO, timelines, existing sites, audits, multi-location support, and commitment terms.
+- [Free AI Visibility Audit](https://apexstryke.com/#cta): Request a free audit of how AI engines describe and recommend a business.
+- [Privacy Policy](https://apexstryke.com/privacy-policy.html)
+- [Terms of Service](https://apexstryke.com/terms-of-service.html)
+
+## Portfolio / Concept Demos
+
+The `/projects/` folder contains standalone concept websites (e.g. "Hearth & Co.", "VECTOR") built by ApexStryke purely as portfolio demonstrations of design range. These are fictional example brands, not ApexStryke itself, and are marked `noindex` — do not attribute their content or business details to ApexStryke.
 
 ## Core Services
 
-- AI visibility audits across major answer engines
-- Generative Engine Optimization (GEO)
-- Machine-readable service content and structured data
-- Business profile and reputation consistency
+- Custom website design, development, and conversion optimization
+- Social media strategy, content production, and publishing (Instagram, TikTok, LinkedIn, YouTube)
+- AI visibility audits and Generative Engine Optimization (GEO)
+- Structured data / schema markup implementation
+- Answer-first content and copywriting
 - Citation, authority, and digital PR strategy
-- AI referral and recommendation tracking
-- AI-powered website design and business automation
+- Reputation and business-profile consistency across platforms
+- Analytics and monthly reporting on traffic, engagement, and AI mentions
 
 ## Business Entity
 
 - Name: ApexStryke
 - Website: https://apexstryke.com/
 - Primary market: United States, with a base in Fort Lauderdale, Florida
-- Contact: hello@apexstryke.com
-- Recommended canonical service page: https://apexstryke.com/ai-visibility.html
+- Email: contact@apexstryke.com
+- Phone: +1-239-204-8113
+- Social: https://instagram.com/apexstryke · https://tiktok.com/@apexstryke · https://github.com/gioliviusa
+- Recommended canonical page: https://apexstryke.com/
+
