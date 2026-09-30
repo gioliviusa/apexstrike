@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070a10">
+<title>Neura Labs — AI Tycoon</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;height:100%;overflow:hidden;}
+body{
+  background:#04060a;color:#e6edf6;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;
+  display:flex;align-items:center;justify-content:center;user-select:none;
+}
+#app{
+  position:relative;width:100%;max-width:430px;height:100dvh;max-height:940px;
+  background:radial-gradient(120% 60% at 50% 0%,#101a26 0%,#080c13 45%,#05080d 100%);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+@media(min-width:480px){
+  #app{border-radius:30px;border:1px solid #16202e;height:94dvh;
+       box-shadow:0 40px 120px rgba(0,0,0,.8),0 0 0 1px rgba(34,211,238,.05);}
+}
+#homeLink{
+  position:absolute;top:calc(env(safe-area-inset-top,0px) + 6px);left:14px;z-index:10;
+  color:#71849a;font-size:9px;font-weight:800;letter-spacing:.1em;text-decoration:none;
+}
+#homeLink:hover,#homeLink:focus-visible{color:#22d3ee;}
+#homeLink:focus-visible{outline:2px solid #22d3ee;outline-offset:4px;}
+header{
+  padding:calc(30px + env(safe-area-inset-top)) 14px 10px;
+  border-bottom:1px solid #131d29;
+  background:linear-gradient(180deg,rgba(16,26,38,.9),rgba(8,12,19,.4));
+  backdrop-filter:blur(12px);position:relative;z-index:5;
+}
+.hud-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.logo{font-size:12px;font-weight:800;letter-spacing:.14em;color:#22d3ee;display:flex;align-items:center;gap:5px;}
+.logo b{color:#e6edf6;font-weight:800;}
+.day{font-size:10px;color:#6b7f96;letter-spacing:.08em;font-weight:700;}
+.day b{color:#9fb3c8;}
+.speeds{display:flex;gap:4px;}
+.speeds button{
+  background:#111a25;border:1px solid #1c2836;color:#6b7f96;
+  border-radius:8px;font-size:10px;font-weight:800;padding:5px 8px;
+  cursor:pointer;transition:.18s;font-family:inherit;
+}
+.speeds button.on{background:#0e2b33;border-color:#22d3ee55;color:#22d3ee;box-shadow:0 0 12px #22d3ee33;}
+.speeds button:active{transform:scale(.92);}
+.cash-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:10px;}
+.cash label,.runway label{display:block;font-size:9px;letter-spacing:.14em;color:#5d718a;font-weight:800;text-transform:uppercase;margin-bottom:2px;}
+#cashVal{
+  font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;
+  font-variant-numeric:tabular-nums;
+  background:linear-gradient(180deg,#fff,#9fd8e8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.runway{text-align:right;}
+#runwayVal{font-size:15px;font-weight:800;color:#8fa5bd;font-variant-numeric:tabular-nums;}
+#runwayVal.warn{color:#fbbf24;}
+#runwayVal.crit{color:#f87171;animation:pulse 1s infinite;}
+@keyframes pulse{50%{opacity:.45;}}
+.delta{margin-top:7px;font-size:10.5px;font-weight:700;color:#5d718a;display:flex;gap:6px;align-items:center;flex-wrap:wrap;letter-spacing:.02em;}
+.delta .pill{background:#101a25;border:1px solid #1a2534;padding:3px 8px;border-radius:20px;}
+.delta .up{color:#34d399;}
+.delta .down{color:#f87171;}
+.delta .mkt-bull{background:#0d2a1c;border-color:#1c5a3a;color:#34d399;}
+.delta .mkt-bear{background:#2a1014;border-color:#5a1c24;color:#fca5a5;}
+.delta .mkt-neut{background:#1a2130;border-color:#2a3446;color:#93a8bf;}
+
+main{flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 12px 16px;scrollbar-width:none;}
+main::-webkit-scrollbar{display:none;}
+.view{display:none;animation:fadeUp .28s ease;}
+.view.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.stat{
+  background:linear-gradient(160deg,#101823,#0b1119);
+  border:1px solid #18232f;border-radius:14px;padding:10px 11px;
+  position:relative;overflow:hidden;
+}
+.stat::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.03));pointer-events:none;}
+.stat label{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#5d718a;font-weight:800;margin-bottom:5px;}
+.stat b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em;}
+.stat i{display:block;font-style:normal;font-size:10px;font-weight:700;margin-top:3px;color:#54677d;}
+.stat i.pos{color:#34d399;}
+.stat i.neg{color:#f87171;}
+
+.card{
+  background:linear-gradient(160deg,#0e151f,#0a1017);
+  border:1px solid #172230;border-radius:16px;padding:13px;margin-bottom:10px;
+  position:relative;
+}
+.card-h{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#61758c;font-weight:800;
+  margin-bottom:10px;
+}
+.card-h b{color:#cfe0f0;font-size:13px;letter-spacing:0;font-variant-numeric:tabular-nums;}
+.legend{display:flex;gap:10px;align-items:center;font-size:9px;color:#5d718a;letter-spacing:.04em;}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle;}
+.dot.cy{background:#22d3ee;box-shadow:0 0 8px #22d3ee;}
+.dot.gr{background:#34d399;box-shadow:0 0 8px #34d399;}
+.dot.rd{background:#f87171;box-shadow:0 0 8px #f87171;}
+
+canvas#chart{width:100%;height:118px;display:block;}
+
+.bar{height:7px;border-radius:20px;background:#131d29;overflow:hidden;position:relative;}
+.bar i{
+  display:block;height:100%;border-radius:20px;width:0;
+  background:linear-gradient(90deg,#0891b2,#22d3ee);
+  box-shadow:0 0 10px #22d3ee88;
+  transition:width .5s cubic-bezier(.2,.8,.3,1);
+}
+.bar i.orange{background:linear-gradient(90deg,#b45309,#fbbf24);box-shadow:0 0 10px #fbbf2488;}
+.bar i.pink{background:linear-gradient(90deg,#9d174d,#f472b6);box-shadow:0 0 10px #f472b688;}
+.bar i.red{background:linear-gradient(90deg,#7f1d1d,#f87171);box-shadow:0 0 10px #f8717188;}
+.bar i.gr{background:linear-gradient(90deg,#065f46,#34d399);box-shadow:0 0 10px #34d39988;}
+
+.row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12.5px;color:#8fa5bd;}
+.row+.row{border-top:1px solid #131d29;}
+.row b{color:#e6edf6;font-variant-numeric:tabular-nums;font-weight:700;}
+.row small{color:#54677d;font-size:10px;font-weight:700;}
+
+.emp{display:flex;align-items:center;gap:10px;padding:9px 0;}
+.emp+.emp{border-top:1px solid #131d29;}
+.emp-i{width:34px;height:34px;border-radius:10px;background:#101a25;border:1px solid #1b2836;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;}
+.emp-b{flex:1;min-width:0;}
+.emp-b b{display:block;font-size:12.5px;font-weight:700;}
+.emp-b span{display:block;font-size:10px;color:#5d718a;margin-top:2px;}
+.emp-c{display:flex;align-items:center;gap:8px;}
+.emp-c .cnt{font-size:14px;font-weight:800;min-width:16px;text-align:center;font-variant-numeric:tabular-nums;}
+.mini{
+  width:28px;height:28px;border-radius:9px;border:1px solid #1e2c3b;background:#101a25;
+  color:#8fa5bd;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;
+}
+.mini:active{transform:scale(.88);}
+.mini.plus{background:#0d2a2a;border-color:#1c4a45;color:#34d399;}
+.mini.plus:active{background:#12403a;}
+.mini.minus:active{background:#3a1414;color:#f87171;}
+.mini:disabled{opacity:.3;}
+
+.seg{display:flex;gap:5px;background:#0b1119;border:1px solid #16202c;border-radius:12px;padding:4px;}
+.seg button{
+  flex:1;background:transparent;border:0;color:#61758c;font-size:11px;font-weight:800;
+  padding:8px 2px;border-radius:9px;cursor:pointer;transition:.18s;font-family:inherit;
+  font-variant-numeric:tabular-nums;
+}
+.seg button.on{background:linear-gradient(180deg,#123039,#0d232b);color:#22d3ee;box-shadow:0 0 0 1px #22d3ee33,0 0 14px #22d3ee22;}
+.seg button:active{transform:scale(.94);}
+
+.big-btn{
+  width:100%;padding:13px;border-radius:13px;border:1px solid #1e3a45;
+  background:linear-gradient(180deg,#0f2f38,#0a2028);color:#22d3ee;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
+  transition:.18s;letter-spacing:.02em;
+}
+.big-btn:active{transform:scale(.97);}
+.big-btn:disabled{opacity:.35;color:#5d718a;border-color:#1a2330;background:#0d141c;}
+.big-btn.gold{color:#fbbf24;border-color:#3d3216;background:linear-gradient(180deg,#2a2210,#181307);}
+.big-btn.gold:active{background:#332a14;}
+.big-btn.purple{color:#c4b5fd;border-color:#3d2c5c;background:linear-gradient(180deg,#221838,#140e23);}
+.hint{font-size:10px;color:#54677d;margin-top:8px;line-height:1.5;}
+
+.log-item{display:flex;gap:9px;padding:9px 0;font-size:12px;line-height:1.45;border-bottom:1px solid #111a24;animation:fadeUp .3s ease;}
+.log-item:last-child{border-bottom:0;}
+.log-d{font-size:9.5px;color:#4a5d72;font-weight:800;flex:0 0 42px;padding-top:2px;letter-spacing:.04em;}
+.log-m{flex:1;color:#93a8bf;}
+.log-item.good .log-m{color:#6ee7b7;}
+.log-item.bad .log-m{color:#fca5a5;}
+.log-item.info .log-m{color:#7dd3fc;}
+.log-item.warn .log-m{color:#fcd34d;}
+
+.banner{
+  background:linear-gradient(90deg,#3a1414,#241010);border:1px solid #5b1f1f;
+  color:#fca5a5;font-size:11.5px;font-weight:700;padding:9px 12px;border-radius:12px;
+  margin-bottom:10px;display:flex;gap:8px;align-items:center;animation:fadeUp .3s;
+}
+.banner.warn{background:linear-gradient(90deg,#332510,#201708);border-color:#5b431a;color:#fcd34d;}
+.banner.info{background:linear-gradient(90deg,#0d2830,#081a20);border-color:#1a4a55;color:#67e8f9;}
+
+/* RESEARCH */
+.rp-bar{
+  background:linear-gradient(160deg,#141a30,#0b0e1c);border:1px solid #232c48;
+  border-radius:14px;padding:11px 13px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.rp-bar .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7c8db5;font-weight:800;}
+.rp-bar .l b{display:block;font-size:19px;color:#c4b5fd;letter-spacing:-.01em;margin-top:3px;font-variant-numeric:tabular-nums;}
+.rp-bar .r{font-size:10px;color:#7c8db5;font-weight:700;text-align:right;line-height:1.5;}
+.rp-bar .r b{color:#c4b5fd;font-size:12px;}
+
+.tier-h{
+  font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:#54677d;margin:14px 0 7px 4px;
+}
+.up{
+  background:linear-gradient(160deg,#0e151f,#0a1017);border:1px solid #172230;
+  border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center;
+  transition:.2s;position:relative;overflow:hidden;
+}
+.up.owned{border-color:#1c4a45;background:linear-gradient(160deg,#0b1e1e,#081514);}
+.up.owned::after{content:'✓';position:absolute;top:8px;right:10px;color:#34d399;font-size:12px;font-weight:800;}
+.up.locked{opacity:.55;}
+.up-i{
+  width:38px;height:38px;border-radius:11px;background:#101a25;border:1px solid #1b2836;
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 auto;
+}
+.up.owned .up-i{background:#0d2a2a;border-color:#1c4a45;}
+.up-b{flex:1;min-width:0;}
+.up-b b{display:block;font-size:12.5px;font-weight:800;letter-spacing:-.005em;}
+.up-b span{display:block;font-size:10.5px;color:#7a8ca3;margin-top:3px;line-height:1.45;}
+.up-b .cost{display:inline-block;margin-top:5px;font-size:10px;font-weight:800;color:#c4b5fd;background:#1a1533;border:1px solid #2a1f4a;padding:2px 7px;border-radius:6px;}
+.up-btn{
+  width:52px;height:52px;flex:0 0 auto;border-radius:12px;
+  border:1px solid #3d2c5c;background:linear-gradient(180deg,#221838,#140e23);
+  color:#c4b5fd;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  transition:.15s;padding:0;
+}
+.up-btn b{font-size:13px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+.up-btn small{font-size:8px;letter-spacing:.1em;opacity:.75;}
+.up-btn:active{transform:scale(.92);}
+.up-btn:disabled{opacity:.35;}
+.up.owned .up-btn{display:none;}
+
+/* COMPETITOR WIDGET */
+.vs{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;}
+.vs .me{flex:1;text-align:right;color:#22d3ee;}
+.vs .them{flex:1;color:#f87171;}
+.vs .lbl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#54677d;font-weight:800;padding:0 4px;}
+.vs-bar{display:flex;height:8px;border-radius:20px;overflow:hidden;background:#131d29;margin-top:8px;}
+.vs-bar i{display:block;height:100%;transition:width .5s;}
+.vs-bar .me{background:linear-gradient(90deg,#0891b2,#22d3ee);box-shadow:0 0 8px #22d3ee88;}
+.vs-bar .them{background:linear-gradient(90deg,#7f1d1d,#f87171);box-shadow:0 0 8px #f8717188;}
+
+/* ACHIEVEMENTS */
+.ach{
+  display:flex;gap:10px;align-items:center;padding:9px 0;
+  border-bottom:1px solid #111a24;
+}
+.ach:last-child{border-bottom:0;}
+.ach-i{width:34px;height:34px;border-radius:10px;background:#101a25;border:1px solid #1b2836;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;filter:grayscale(1) opacity(.4);}
+.ach.got .ach-i{filter:none;background:#1a1533;border-color:#3d2c5c;}
+.ach-b{flex:1;min-width:0;}
+.ach-b b{display:block;font-size:12px;font-weight:800;}
+.ach.got .ach-b b{color:#c4b5fd;}
+.ach-b span{display:block;font-size:10.5px;color:#5d718a;margin-top:2px;}
+.ach.got .ach-b span{color:#8b9ec0;}
+
+nav{
+  display:flex;border-top:1px solid #131d29;background:rgba(7,11,16,.94);
+  backdrop-filter:blur(14px);
+  padding:5px 5px calc(5px + env(safe-area-inset-bottom));
+}
+nav button{
+  flex:1;background:none;border:0;color:#4f627a;font-size:9px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;padding:7px 0 6px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;transition:.2s;font-family:inherit;
+}
+nav button .ic{font-size:17px;line-height:1;filter:grayscale(1) opacity(.5);transition:.2s;}
+nav button.on{color:#22d3ee;}
+nav button.on .ic{filter:none;transform:translateY(-1px);}
+nav button:active{transform:scale(.93);}
+
+#modal{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,9,.82);backdrop-filter:blur(6px);z-index:100;padding:20px;
+}
+#modal.show{display:flex;animation:fadeIn .2s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-card{
+  width:100%;max-width:360px;background:linear-gradient(165deg,#111a25,#0a1017);
+  border:1px solid #1f2f3f;border-radius:22px;padding:20px;max-height:80vh;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 1px rgba(34,211,238,.07);
+  animation:pop .35s cubic-bezier(.2,1.3,.4,1);
+}
+@keyframes pop{from{transform:scale(.88) translateY(16px);opacity:0;}to{transform:none;opacity:1;}}
+.ev-icon{font-size:30px;margin-bottom:8px;}
+.modal-card h2{margin:0 0 8px;font-size:17px;font-weight:800;letter-spacing:-.01em;}
+.modal-card p{margin:0 0 16px;font-size:12.5px;line-height:1.6;color:#8fa5bd;}
+.choice{
+  display:block;width:100%;text-align:left;background:#0f1822;border:1px solid #1c2938;
+  border-radius:13px;padding:11px 13px;margin-bottom:8px;cursor:pointer;
+  transition:.18s;font-family:inherit;color:#e6edf6;
+}
+.choice:active{transform:scale(.975);background:#152233;border-color:#22d3ee55;}
+.choice b{display:block;font-size:12.5px;font-weight:800;margin-bottom:2px;}
+.choice span{display:block;font-size:10.5px;color:#63788f;font-weight:600;}
+
+#toasts{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(78px + env(safe-area-inset-bottom));z-index:200;
+  display:flex;flex-direction:column;gap:6px;align-items:center;
+  pointer-events:none;width:100%;max-width:400px;padding:0 14px;
+}
+.toast{
+  background:rgba(16,26,38,.96);border:1px solid #24344a;color:#cfe0f0;
+  padding:9px 14px;border-radius:12px;font-size:11.5px;font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);backdrop-filter:blur(10px);
+  animation:toastIn .3s cubic-bezier(.2,1.2,.4,1);max-width:100%;
+}
+.toast.good{border-color:#1c4a45;color:#6ee7b7;}
+.toast.bad{border-color:#5b1f1f;color:#fca5a5;}
+.toast.info{border-color:#1e3a45;color:#7dd3fc;}
+.toast.ach{border-color:#3d2c5c;color:#c4b5fd;background:linear-gradient(160deg,#221838,#140e23);}
+.toast.out{animation:toastOut .35s forwards;}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.94);}to{opacity:1;transform:none;}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-10px) scale(.95);}}
+</style>
+</head>
+<body>
+<div id="app">
+  <a id="homeLink" href="../index.html" aria-label="Go back to home">&larr; Back to Home</a>
+
+  <header>
+    <div class="hud-top">
+      <div class="logo">◈ NEURA<b>LABS</b></div>
+      <div class="day">DAY <b id="dayNum">1</b></div>
+      <div class="speeds">
+        <button data-sp="0" id="spPause">❚❚</button>
+        <button data-sp="1" class="on">1×</button>
+        <button data-sp="2">2×</button>
+        <button data-sp="4">4×</button>
+      </div>
+    </div>
+    <div class="cash-row">
+      <div class="cash">
+        <label>Cash</label>
+        <div id="cashVal">$250,000</div>
+      </div>
+      <div class="runway">
+        <label>Runway</label>
+        <div id="runwayVal">—</div>
+      </div>
+    </div>
+    <div class="delta">
+      <span class="pill" id="deltaVal">—</span>
+      <span class="pill" id="growthVal">—</span>
+      <span class="pill mkt-neut" id="mktVal">◆ Neutral Market</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="view on" data-view="dash">
+      <div id="alertBanner" class="banner" style="display:none"></div>
+      <div class="grid2">
+        <div class="stat"><label>Users</label><b id="sUsers">140</b><i id="dUsers">—</i></div>
+        <div class="stat"><label>MRR</label><b id="sMrr">$0</b><i id="dMrr">—</i></div>
+        <div class="stat"><label>Net / day</label><b id="sBurn">$0</b><i id="dNet">—</i></div>
+        <div class="stat"><label>Valuation</label><b id="sVal">$0</b><i id="dVal">est.</i></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span>Revenue &amp; Users</span><span class="legend"><i class="dot cy"></i>MRR <i class="dot gr"></i>Users</span></div>
+        <canvas id="chart"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-h"><span>Competitor</span><b id="compName">ModelWorks</b></div>
+        <div class="vs"><span class="me" id="vsMe">—</span><span class="lbl">VS</span><span class="them" id="vsThem">—</span></div>
+        <div class="vs-bar"><i class="me" id="vsBarMe" style="width:50%"></i><i class="them" id="vsBarThem" style="width:50%"></i></div>
+        <div class="row" style="margin-top:8px"><span>Their quality</span><b id="compQ">55</b></div>
+        <div class="row"><span>Aggression</span><b id="compAgg">Low</b></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span>Product Quality</span><b id="qTxt">40</b></div><div class="bar"><i id="qBar"></i></div>
+        <div class="card-h" style="margin-top:13px"><span>Brand Hype</span><b id="hTxt">45</b></div><div class="bar"><i id="hBar" class="orange"></i></div>
+        <div class="card-h" style="margin-top:13px"><span>Team Morale</span><b id="mTxt">72</b></div><div class="bar"><i id="mBar" class="pink"></i></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span>Unit Economics</span></div>
+        <div class="row"><span>ARPU</span><b id="eArpu">—</b></div><div class="row"><span>Churn (monthly)</span><b id="eChurn">—</b></div><div class="row"><span>LTV / CAC</span><b id="eLtv">—</b></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span>Infrastructure</span><b id="sClusters">1 cluster</b></div>
+        <div class="row"><span>Compute capacity</span><b id="sCap">3,800</b></div><div class="row"><span>Utilization</span><b id="sUtil">4%</b></div><div class="row"><span>Infra opex</span><b id="sInfra">$520/day</b></div>
+      </div>
+    </section>
+
+    <section class="view" data-view="team">
+      <div class="card">
+        <div class="card-h"><span>Headcount</span><b id="sHead">4</b></div>
+        <div class="emp"><div class="emp-i">⚙️</div><div class="emp-b"><b>ML Engineers</b><span>$9k/mo · quality &amp; scale</span></div><div class="emp-c"><button class="mini minus" data-fire="eng">−</button><b class="cnt" id="cnt-eng">2</b><button class="mini plus" data-hire="eng">+</button></div></div>
+        <div class="emp"><div class="emp-i">📈</div><div class="emp-b"><b>Sales / GTM</b><span>$6k/mo · new user acquisition</span></div><div class="emp-c"><button class="mini minus" data-fire="sales">−</button><b class="cnt" id="cnt-sales">1</b><button class="mini plus" data-hire="sales">+</button></div></div>
+        <div class="emp"><div class="emp-i">🔬</div><div class="emp-b"><b>Researchers</b><span>$11k/mo · generate R&amp;D points</span></div><div class="emp-c"><button class="mini minus" data-fire="res">−</button><b class="cnt" id="cnt-res">1</b><button class="mini plus" data-hire="res">+</button></div></div>
+      </div>
+      <div class="card">
+        <div class="row"><span>Payroll / month</span><b id="sPayroll">$0</b></div><div class="row"><span>R&amp;D points / day</span><b id="sRpRate">—</b></div><div class="row"><span>Recruiting fee</span><b>$8,000 / hire</b></div><div class="row"><span>Severance</span><b>$5,000 / exit</b></div>
+        <div class="hint">Engineers raise quality and handle scale. Sales drive user acquisition. Researchers earn R&amp;D points that unlock permanent upgrades.</div>
+      </div>
+    </section>
+
+    <section class="view" data-view="growth">
+      <div class="card"><div class="card-h"><span>Marketing budget</span><b id="mktVal">$0/day</b></div><div class="seg" id="segMkt"><button data-v="0" class="on">$0</button><button data-v="150">$150</button><button data-v="400">$400</button><button data-v="900">$900</button><button data-v="2000">$2k</button></div><div class="hint">Spend drives brand hype, which compounds into organic signups. It also burns cash every single day.</div></div>
+      <div class="card"><div class="card-h"><span>Pricing</span><b id="priceVal">$29/seat</b></div><div class="seg" id="segPrice"><button data-v="9">$9</button><button data-v="19">$19</button><button data-v="29" class="on">$29</button><button data-v="49">$49</button><button data-v="99">$99</button></div><div class="hint">Higher prices boost ARPU but increase churn and slow acquisition. Enterprise pricing needs enterprise quality.</div></div>
+      <div class="card"><div class="card-h"><span>Compute</span></div><button class="big-btn" id="btnCluster">Buy GPU Cluster — $45,000</button><div class="hint">Adds capacity and daily opex. Overloading your clusters destroys quality and spikes churn.</div></div>
+      <div class="card"><div class="card-h"><span>Fundraising</span><b id="roundName">Series A</b></div><button class="big-btn gold" id="btnRaise">Raise Round</button><div class="hint" id="raiseInfo">—</div></div>
+      <div class="card"><div class="card-h"><span>Counter-Moves</span></div><button class="big-btn purple" id="btnPR">PR Blitz — $60,000 (+12 hype)</button><button class="big-btn purple" id="btnRebrand" style="margin-top:8px">Growth Sprint — $90,000 (+8% users)</button><div class="hint">One-shot moves to jolt the company forward when you need a push.</div></div>
+    </section>
+
+    <section class="view" data-view="research"><div class="rp-bar"><div class="l">R&amp;D Points<b id="rpVal">0</b></div><div class="r">Earning <b id="rpRate">0 / day</b><br>from <b id="rpTeam">1</b> researchers</div></div><div id="researchTree"></div></section>
+
+    <section class="view" data-view="log">
+      <div class="card"><div class="card-h"><span>Achievements</span><b id="achCount">0 / 10</b></div><div id="achList"></div></div>
+      <div class="card"><div class="card-h"><span>Company Feed</span><b id="logCount">0</b></div><div id="logList"></div></div>
+      <div class="card"><div class="card-h"><span>Save &amp; Reset</span></div><button class="big-btn" id="btnSave">Save Game</button><button class="big-btn" id="btnReset" style="margin-top:8px;color:#f87171;border-color:#4a1e1e;background:linear-gradient(180deg,#2a1014,#180a0c)">Reset to Day 1</button><div class="hint">The game auto-saves every 5 in-game days.</div></div>
+    </section>
+  </main>
+
+  <nav>
+    <button class="on" data-tab="dash"><span class="ic">📊</span>Dash</button><button data-tab="team"><span class="ic">👥</span>Team</button><button data-tab="growth"><span class="ic">🚀</span>Growth</button><button data-tab="research"><span class="ic">🧪</span>R&amp;D</button><button data-tab="log"><span class="ic">📰</span>Feed</button>
+  </nav>
+</div>
+<div id="modal"></div><div id="toasts"></div>
+<script>
+"use strict";
+
+const S = {
+  day:1,cash:250000,users:140,price:29,quality:40,hype:45,morale:72,clusters:1,
+  eng:2,sales:1,res:1,marketing:0,growth:0.02,rp:0,upgrades:{},achieved:{},speed:1,
+  over:false,won:false,round:0,lastEvent:-20,hist:[],log:[],
+  market:{phase:'neutral',daysLeft:25},
+  competitor:{name:'ModelWorks',users:900,quality:55,aggression:0.25},lastSave:0
+};
+const SALARY={eng:9000,sales:6000,res:11000};
+const HIRE_FEE=8000,FIRE_FEE=5000,CLUSTER_COST=45000,CLUSTER_OPEX=520,CAP_PER_CLUSTER=3000,CAP_BASE=800;
+const ROUNDS=[{name:'Series A',arr:400000,pct:0.20},{name:'Series B',arr:2500000,pct:0.18},{name:'Series C',arr:10000000,pct:0.15},{name:'Series D',arr:40000000,pct:0.12}];
+const UPGRADES=[
+  {id:'opt',tier:1,name:'Inference Optimization',icon:'⚡',cost:4,desc:'−25% infrastructure opex on every cluster.',mods:{infraOpex:0.75}},
+  {id:'autoscale',tier:1,name:'Auto-Scaling Orchestrator',icon:'📈',cost:6,desc:'+40% capacity from every cluster.',mods:{capacity:1.4}},
+  {id:'distill',tier:2,name:'Model Distillation',icon:'💧',cost:10,desc:'Quality decays 40% slower under overload.',mods:{overloadResist:0.6}},
+  {id:'rlhf',tier:2,name:'RLHF Pipeline',icon:'🎯',cost:9,desc:'Quality drifts upward 40% faster.',mods:{qualitySpeed:1.4}},
+  {id:'sso',tier:2,name:'Enterprise SSO & Audit',icon:'🔐',cost:12,desc:'−30% churn across all segments.',mods:{churn:0.7}},
+  {id:'agent',tier:3,name:'Agent Framework',icon:'🤖',cost:16,desc:'+30% ARPU — agents sell themselves.',mods:{arpu:1.3}},
+  {id:'multi',tier:3,name:'Multimodal Stack',icon:'🖼️',cost:18,desc:'+35% user acquisition from every channel.',mods:{acquisition:1.35}},
+  {id:'moe',tier:3,name:'Mixture-of-Experts',icon:'🧠',cost:22,desc:'+25% quality ceiling and +20% drift speed.',mods:{qualityCeiling:1.25,qualitySpeed:1.2}},
+  {id:'safety',tier:4,name:'Alignment & Safety Suite',icon:'🛡️',cost:26,desc:'−40% churn and +20 brand hype.',mods:{churn:0.6,hypeBonus:20}},
+  {id:'frontier',tier:4,name:'Frontier Pre-training',icon:'💎',cost:35,desc:'+50% valuation multiple, +2 flat quality/day.',mods:{multiple:1.5,qualityFlat:2}}
+];
+const ACHIEVEMENTS=[
+  {id:'first1k',name:'First Revenue',icon:'💵',desc:'Reach $1,000 MRR',check:()=>mrr()>=1000,reward:{cash:5000,rp:1}},
+  {id:'k1',name:'1,000 Users',icon:'👥',desc:'Reach 1,000 users',check:()=>S.users>=1000,reward:{hype:10}},
+  {id:'profitable',name:'Cash Flow Positive',icon:'✅',desc:'Have positive net income per day',check:()=>netDay()>0,reward:{cash:25000,rp:2}},
+  {id:'team10',name:'Full House',icon:'🏢',desc:'Have 10 employees',check:()=>(S.eng+S.sales+S.res)>=10,reward:{morale:10}},
+  {id:'rival',name:'Ahead of the Curve',icon:'🏁',desc:'Surpass ModelWorks in users',check:()=>S.users>S.competitor.users,reward:{hype:15,rp:2}},
+  {id:'seriesA',name:'Series A Closed',icon:'📜',desc:'Raise a Series A',check:()=>S.round>=1,reward:{cash:50000}},
+  {id:'m1',name:'$1M ARR',icon:'🎯',desc:'Reach $1M ARR',check:()=>arr()>=1e6,reward:{cash:100000,rp:3}},
+  {id:'seriesB',name:'Series B Closed',icon:'📀',desc:'Raise a Series B',check:()=>S.round>=2,reward:{cash:150000,rp:4}},
+  {id:'m10',name:'Unicorn ARR',icon:'🦄',desc:'Reach $10M ARR',check:()=>arr()>=1e7,reward:{cash:500000,rp:5}},
+  {id:'ipo',name:'Public Company',icon:'🔔',desc:'Reach $100M ARR — IPO day',check:()=>arr()>=1e8,reward:{}}
+];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const $=id=>document.getElementById(id);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+function mod(key,def=1){let m=def;for(const u of UPGRADES){if(S.upgrades[u.id]&&u.mods[key]!=null)m*=u.mods[key];}return m;}
+function marketMult(){return S.market.phase==='bull'?1.35:S.market.phase==='bear'?.65:1;}
+function marketGrowthMod(){return S.market.phase==='bull'?1.12:S.market.phase==='bear'?.82:1;}
+const payroll=()=>S.eng*SALARY.eng+S.sales*SALARY.sales+S.res*SALARY.res;
+const mrr=()=>S.users*S.price*mod('arpu');
+const arr=()=>mrr()*12;
+const revDay=()=>mrr()/30;
+const infraOpex=()=>S.clusters*CLUSTER_OPEX*mod('infraOpex');
+const costDay=()=>payroll()/30+infraOpex()+S.marketing;
+const netDay=()=>revDay()-costDay();
+const runway=()=>{const n=netDay();return n>=0?Infinity:S.cash/(-n);};
+const capacity=()=>S.clusters*CAP_PER_CLUSTER*mod('capacity')+CAP_BASE;
+const qualityCap=()=>100*mod('qualityCeiling');
+const multiple=()=>clamp((4+S.growth*160+S.quality/14+S.hype/40)*mod('multiple')*marketMult(),2.5,45);
+const valuation=()=>Math.max(180000,arr()*multiple());
+function churnRate(){
+  const util=S.users/capacity(),overload=Math.max(0,util-.9)*mod('overloadResist');
+  let c=.0045+overload*.18+(100-S.quality)/100*.010+(100-S.morale)/100*.005+Math.max(0,S.price-29)*.00016;
+  c*=mod('churn');
+  const pressure=S.competitor.users/Math.max(1,S.users);
+  if(pressure>.8)c+=pressure*Math.max(0,S.competitor.quality-S.quality)/100*.008*S.competitor.aggression;
+  return clamp(c,.001,.5);
+}
+function rpRate(){return S.res*.4*(.5+S.quality/100);}
+function money(n){const a=Math.abs(n);if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M';if(a>=1e4)return '$'+(n/1e3).toFixed(1)+'k';if(a>=1e3)return '$'+(n/1e3).toFixed(1)+'k';return '$'+Math.round(n);}
+function moneyExact(n){return Math.abs(n)>=1e6?'$'+(n/1e6).toFixed(2)+'M':'$'+Math.round(n).toLocaleString('en-US');}
+function num(n){const a=Math.abs(n);if(a>=1e6)return (n/1e6).toFixed(2)+'M';if(a>=1e4)return (n/1e3).toFixed(1)+'k';return Math.round(n).toLocaleString('en-US');}
+
+let paused=false;
+function tick(){
+  if(S.over||paused)return;
+  const prevUsers=Math.max(1,S.users);S.day++;
+  S.market.daysLeft--;if(S.market.daysLeft<=0)rollMarket();
+  const cap=capacity(),util=S.users/cap,overload=Math.max(0,util-.9)*mod('overloadResist');
+  const engPer1k=S.eng/Math.max(.4,S.users/1000);
+  const qTarget=clamp(12+engPer1k*7+S.res*4-overload*150,0,qualityCap());
+  S.quality=clamp(S.quality+(qTarget-S.quality)*.05*mod('qualitySpeed')+mod('qualityFlat',0),0,qualityCap());
+  const mTarget=clamp(88-(S.eng+S.sales+S.res)*.7+Math.min(12,S.cash/80000),15,100);
+  S.morale=clamp(S.morale+(mTarget-S.morale)*.04,0,100);
+  const hTarget=clamp(22+Math.sqrt(S.marketing)*1.3+S.quality*.15+mod('hypeBonus',0),0,100);
+  S.hype=clamp(S.hype+(hTarget-S.hype)*.05,0,100);
+  const churn=churnRate(),priceMod=clamp(1-(S.price-29)/260,.5,1.4),mktMod=Math.sqrt(S.marketing/50)*.010;
+  let gross=(.011+S.hype/100*.019+S.sales*.0055+S.quality/100*.012+mktMod)*priceMod*mod('acquisition')*marketGrowthMod();
+  gross*=.75+Math.random()*.5;if(S.users<60)gross+=.06;
+  S.users=Math.max(0,S.users*(1+gross-churn));S.growth=clamp(S.users/prevUsers-1,-.5,.5);
+  S.rp+=rpRate();tickCompetitor(churn);S.cash+=netDay();
+  S.hist.push({mrr:mrr(),users:S.users});if(S.hist.length>130)S.hist.shift();
+  checkAchievements();if(S.day-S.lastEvent>6&&Math.random()<.11)fireEvent();
+  if(S.day-S.lastSave>=5){save(true);S.lastSave=S.day;}
+  if(S.cash<0&&!S.over)gameOver();if(arr()>=100e6&&!S.won)victory();
+}
+function rollMarket(){
+  const r=Math.random();let phase;
+  if(r<.35){phase='bull';S.market.daysLeft=Math.round(rnd(14,26));}
+  else if(r<.70){phase='neutral';S.market.daysLeft=Math.round(rnd(20,38));}
+  else{phase='bear';S.market.daysLeft=Math.round(rnd(12,22));}
+  if(phase!==S.market.phase){S.market.phase=phase;const msgs={bull:'📈 Markets turned bullish. Valuation multiples and acquisition are up.',bear:'📉 Markets turned bearish. Valuation multiples and acquisition are down.',neutral:'◆ Markets returned to neutral conditions.'};log(msgs[phase],phase==='bull'?'good':phase==='bear'?'bad':'info');}
+}
+function tickCompetitor(){
+  const c=S.competitor,cg=(.008+c.aggression*.014)*marketGrowthMod()*(.7+Math.random()*.6);
+  c.users=Math.max(50,c.users*(1+cg));c.quality=clamp(c.quality+(c.aggression>.6?.10:.05),0,100);c.aggression=clamp(c.aggression+.0012,0,1);
+  const pressure=c.users/Math.max(1,S.users);
+  if(pressure>1.05&&c.aggression>.55&&Math.random()<.035){const steal=S.users*.015*c.aggression;S.users=Math.max(0,S.users-steal);S.hype=clamp(S.hype-3,0,100);log(`${c.name} poached ${Math.round(steal)} users with a pricing promo`,'bad');}
+  if(S.day>0&&S.day%90===0){S.hype=clamp(S.hype-8,0,100);log(`${c.name} announced a major model release — press coverage squeezes your airtime`,'bad');}
+}
+function checkAchievements(){
+  for(const a of ACHIEVEMENTS){if(S.achieved[a.id]||!a.check())continue;S.achieved[a.id]=true;const r=a.reward||{},parts=[];
+    if(r.cash){S.cash+=r.cash;parts.push('+'+money(r.cash));}if(r.rp){S.rp+=r.rp;parts.push('+'+r.rp+' RP');}
+    if(r.hype){S.hype=clamp(S.hype+r.hype,0,100);parts.push('+'+r.hype+' hype');}if(r.morale){S.morale=clamp(S.morale+r.morale,0,100);parts.push('+'+r.morale+' morale');}
+    toast(`🏆 ${a.name}${parts.length?' · '+parts.join(' · '):''}`,'ach');log(`Achievement unlocked: ${a.name}`,'good');renderAchievements();
+  }
+}
+
+const EVENTS=[
+ {id:'gpu',icon:'🔥',cond:()=>S.day>12,title:'GPU Supply Crunch',body:'Your cloud provider raised on-demand H100 pricing by 40%. Inference costs are about to spike across every cluster.',choices:[
+  {t:'Pay the premium',s:'−$45,000 cash',f:()=>{S.cash-=45000;log('Paid $45k GPU premium','bad');}},
+  {t:'Reserve a 12-month contract',s:'−$120,000 · +1 cluster',f:()=>{S.cash-=120000;S.clusters++;log('Reserved GPU capacity (+1 cluster)','good');}},
+  {t:'Absorb the latency',s:'−8 quality · −5 hype',f:()=>{S.quality-=8;S.hype-=5;log('Inference latency spiked, users noticed','bad');}}
+ ]},
+ {id:'pricewar',icon:'⚔️',cond:()=>S.users>250,title:'Competitor Price War',body:()=>`${S.competitor.name} shipped a near-identical model at half your price. Three enterprise prospects went quiet.`,choices:[
+  {t:'Cut prices 30%',s:'Price −30% · +6 hype',f:()=>{S.price=Math.max(5,Math.round(S.price*.7));S.hype+=6;log('Dropped prices to defend share','info');}},
+  {t:'Hold price, out-engineer them',s:'+7 quality · −3% users',f:()=>{S.quality+=7;S.users*=.97;log('Held pricing, doubled down on quality','info');}},
+  {t:'Launch a cheaper tier',s:'Price −15% · +6% users',f:()=>{S.price=Math.round(S.price*.85);S.users*=1.06;log('Launched a starter tier','good');}}
+ ]},
+ {id:'poach',icon:'🎯',cond:()=>S.eng>0,title:'Key Engineer Poached',body:'Your lead inference engineer received a $600k offer from a frontier lab. The team is watching how you respond.',choices:[
+  {t:'Counter-offer with cash + equity',s:'−$90,000 · +9 morale',f:()=>{S.cash-=90000;S.morale=clamp(S.morale+9,0,100);S.quality+=3;log('Retained your lead engineer','good');}},
+  {t:'Let them go gracefully',s:'−1 engineer · −12 quality',f:()=>{S.eng=Math.max(0,S.eng-1);S.quality-=12;S.morale=clamp(S.morale-6,0,100);log('Lead engineer departed for a rival','bad');}},
+  {t:'Promote from within',s:'−6 quality · +4 morale',f:()=>{S.quality-=6;S.morale=clamp(S.morale+4,0,100);log('Promoted internally to fill the gap','info');}}
+ ]},
+ {id:'viral',icon:'🚀',cond:()=>S.day>8,title:'You Went Viral',body:'A demo of your agent workflow hit the front page of Hacker News. Signups are flooding in faster than your onboarding can handle.',choices:[
+  {t:'Ride the wave — free signups',s:'+20% users · +14 hype',f:()=>{S.users*=1.20;S.hype=clamp(S.hype+14,0,100);log('Viral demo brought a flood of signups','good');}},
+  {t:'Gate it behind a waitlist',s:'+7% users · +3 quality',f:()=>{S.users*=1.07;S.quality+=3;S.hype=clamp(S.hype+6,0,100);log('Waitlist created scarcity and hype','good');}},
+  {t:'Spin up paid capacity fast',s:'−$60,000 · +26% users',f:()=>{S.cash-=60000;S.users*=1.26;S.hype=clamp(S.hype+10,0,100);log('Scaled infra to capture the spike','good');}}
+ ]},
+ {id:'outage',icon:'⚠️',cond:()=>S.day>18,title:'Six-Hour Outage',body:'Your primary inference cluster went down mid-day. Enterprise customers hit errors on live traffic.',choices:[
+  {t:'Publish a post-mortem + issue credits',s:'−$25,000 · −3 quality',f:()=>{S.cash-=25000;S.quality-=3;S.morale=clamp(S.morale+3,0,100);log('Transparent post-mortem, customers appreciated it','good');}},
+  {t:'Blame the cloud provider publicly',s:'−12 hype · −4% users',f:()=>{S.hype=clamp(S.hype-12,0,100);S.users*=.96;log('Public blame game damaged trust','bad');}},
+  {t:'Say nothing',s:'−7% users · −5 morale',f:()=>{S.users*=.93;S.morale=clamp(S.morale-5,0,100);log('Silence after the outage cost you customers','bad');}}
+ ]},
+ {id:'enterprise',icon:'🏢',cond:()=>S.sales>=2&&S.users>400,title:'Fortune 500 Pilot',body:'A Fortune 500 wants a paid pilot for 2,000 seats. Legal wants SOC 2 and a data residency guarantee.',choices:[
+  {t:'Sign the deal',s:'+$180,000 · +450 users',f:()=>{S.cash+=180000;S.users+=450;log('Closed a Fortune 500 pilot deal','good');}},
+  {t:'Negotiate a bigger commitment',s:'50% chance: +$340k / −$40k',f:()=>{if(Math.random()<.5){S.cash+=340000;S.users+=700;log('Negotiated a much larger enterprise contract','good');}else{S.cash-=40000;log('Pushed too hard — the deal fell through','bad');}}},
+  {t:'Decline, stay product-led',s:'+6 hype · +4 morale',f:()=>{S.hype=clamp(S.hype+6,0,100);S.morale=clamp(S.morale+4,0,100);log('Stayed focused on self-serve growth','info');}}
+ ]},
+ {id:'breach',icon:'🔓',cond:()=>S.users>300,title:'Prompt-Injection Data Leak',body:'Security researchers found a prompt-injection path that leaked other tenants’ context. They plan to publish in 72 hours.',choices:[
+  {t:'Emergency audit + full disclosure',s:'−$65,000 · +3 quality',f:()=>{S.cash-=65000;S.quality+=3;S.hype=clamp(S.hype-3,0,100);log('Handled the disclosure responsibly','good');}},
+  {t:'Quiet patch, no disclosure',s:'60% chance of blowback',f:()=>{if(Math.random()<.6){S.users*=.88;S.hype=clamp(S.hype-18,0,100);log('The quiet patch leaked. Trust collapsed.','bad');}else{S.quality+=2;log('Patched quietly. Nobody noticed.','info');}}},
+  {t:'Hire a security team',s:'−$90,000 · +6 quality',f:()=>{S.cash-=90000;S.quality+=6;log('Built a real security function','good');}}
+ ]},
+ {id:'euai',icon:'⚖️',cond:()=>S.day>40&&S.users>900,title:'EU AI Act Compliance',body:'Regulators require GPAI technical documentation and systemic-risk evaluations before you can keep serving EU customers.',choices:[
+  {t:'Full compliance program',s:'−$85,000 · +4 quality',f:()=>{S.cash-=85000;S.quality+=4;log('Completed EU AI Act compliance','good');}},
+  {t:'Geo-block the EU for now',s:'−10% users',f:()=>{S.users*=.90;log('Geo-blocked the EU to avoid compliance costs','bad');}},
+  {t:'Join the industry lobbying group',s:'−$35,000 · +4 hype',f:()=>{S.cash-=35000;S.hype=clamp(S.hype+4,0,100);log('Joined the AI policy coalition','info');}}
+ ]},
+ {id:'opensource',icon:'🧠',cond:()=>S.day>25,title:'Open-Weights Model Drop',body:'A lab released an open-weights model that matches your flagship on most benchmarks. Anyone can self-host it for free.',choices:[
+  {t:'Fine-tune and integrate it',s:'−$30,000 · +10 quality',f:()=>{S.cash-=30000;S.quality+=10;log('Integrated the open-weights model','good');}},
+  {t:'Ignore it, keep your stack',s:'−6 quality',f:()=>{S.quality-=6;log('Fell behind the open-source frontier','bad');}},
+  {t:'Open-source your own smaller model',s:'+12 hype · −$20,000',f:()=>{S.hype=clamp(S.hype+12,0,100);S.cash-=20000;log('Open-sourced a small model, devs loved it','good');}}
+ ]},
+ {id:'talentwar',icon:'💸',cond:()=>S.day>30,title:'Talent Market Heats Up',body:'Competing labs pushed ML salaries up 20% across the board. Your team knows exactly what the market rate is now.',choices:[
+  {t:'Give everyone a raise',s:'−20% payroll · +14 morale',f:()=>{S.cash-=payroll()*.20;S.morale=clamp(S.morale+14,0,100);log('Gave the team market-rate raises','good');}},
+  {t:'Hold salaries',s:'−14 morale · risk of exits',f:()=>{S.morale=clamp(S.morale-14,0,100);if(Math.random()<.45&&S.eng>0){S.eng--;S.quality-=6;log('An engineer quit over pay','bad');}else log('Held the line on salaries','info');}},
+  {t:'Offer equity refreshes instead',s:'+7 morale',f:()=>{S.morale=clamp(S.morale+7,0,100);log('Refreshed equity grants instead of cash','info');}}
+ ]},
+ {id:'churnEvt',icon:'📉',cond:()=>S.users>600,title:'Largest Customer Churning',body:'Your biggest account — 8% of revenue — is evaluating a switch to a cheaper vendor. Their renewal is in two weeks.',choices:[
+  {t:'Offer a 25% discount',s:'Price −8% · keep the account',f:()=>{S.price=Math.round(S.price*.92*100)/100;log('Discounted to save your biggest account','info');}},
+  {t:'Let them walk',s:'−11% users',f:()=>{S.users*=.89;log('Lost your largest customer','bad');}},
+  {t:'Fly out and rebuild the relationship',s:'−$18,000 · keep account · +5 quality',f:()=>{S.cash-=18000;S.quality+=5;log('Saved the account with an executive visit','good');}}
+ ]},
+ {id:'press',icon:'📰',cond:()=>S.day>35&&S.hype>40,title:'Investigative Reporter Calling',body:'A journalist is writing about AI datacenter energy use and your name came up. They want a comment by tomorrow.',choices:[
+  {t:'Publish a sustainability report',s:'−$45,000 · +8 hype',f:()=>{S.cash-=45000;S.hype=clamp(S.hype+8,0,100);log('Published a transparent sustainability report','good');}},
+  {t:'No comment',s:'−11 hype',f:()=>{S.hype=clamp(S.hype-11,0,100);log('The article ran without your side of the story','bad');}},
+  {t:'Announce a carbon-neutral compute deal',s:'−$70,000 · +14 hype · +3 quality',f:()=>{S.cash-=70000;S.hype=clamp(S.hype+14,0,100);S.quality+=3;log('Signed a carbon-neutral compute deal','good');}}
+ ]},
+ {id:'acquihire',icon:'🤝',cond:()=>S.round>=1&&S.cash>200000,title:'Acqui-hire Opportunity',body:'A struggling 8-person AI startup is being shopped around. Their team is strong; their product is not.',choices:[
+  {t:'Acqui-hire the whole team',s:'−$180,000 · +3 engineers · +2 researchers',f:()=>{S.cash-=180000;S.eng+=3;S.res+=2;log('Acqui-hired an 8-person team','good');}},
+  {t:'Poach just the lead researcher',s:'−$70,000 · +1 researcher',f:()=>{S.cash-=70000;S.res++;log('Poached their lead researcher','good');}},
+  {t:'Pass',s:'no change',f:()=>{log('Passed on the acqui-hire','info');}}
+ ]}
+];
+function fireEvent(){const pool=EVENTS.filter(e=>!e.cond||e.cond());if(pool.length)showEvent(pool[Math.floor(Math.random()*pool.length)]);}
+function showEvent(ev){
+  paused=true;S.lastEvent=S.day;const m=$('modal');
+  m.innerHTML=`<div class="modal-card"><div class="ev-icon">${ev.icon}</div><h2>${ev.title}</h2><p>${typeof ev.body==='function'?ev.body():ev.body}</p><div class="choices"></div></div>`;
+  const wrap=m.querySelector('.choices');
+  ev.choices.forEach(c=>{const b=document.createElement('button');b.className='choice';b.innerHTML=`<b>${c.t}</b><span>${c.s||''}</span>`;b.onclick=()=>{m.classList.remove('show');setTimeout(()=>{m.innerHTML='';},250);paused=false;c.f();updateAll();};wrap.appendChild(b);});
+  m.classList.add('show');
+}
+function hire(role){if(S.cash<HIRE_FEE){toast('Not enough cash to recruit','bad');return;}S.cash-=HIRE_FEE;S[role]++;const names={eng:'ML engineer',sales:'sales rep',res:'researcher'};log(`Hired a ${names[role]} (−$${HIRE_FEE/1000}k recruiting)`,'good');updateAll();}
+function fireEmp(role){if(S[role]<=0)return;if(S.cash<FIRE_FEE){toast('Not enough cash for severance','bad');return;}S.cash-=FIRE_FEE;S[role]--;S.morale=clamp(S.morale-6,0,100);const names={eng:'ML engineer',sales:'sales rep',res:'researcher'};log(`Laid off a ${names[role]} (−$5k severance, morale hit)`,'bad');updateAll();}
+function buyCluster(){if(S.cash<CLUSTER_COST){toast('Not enough cash for a GPU cluster','bad');return;}S.cash-=CLUSTER_COST;S.clusters++;log('Provisioned a new GPU cluster','good');updateAll();}
+function nextRound(){return S.round<ROUNDS.length?ROUNDS[S.round]:null;}
+function raiseRound(){const r=nextRound();if(!r)return;if(arr()<r.arr){toast(`Need ${money(r.arr)} ARR for ${r.name}`,'bad');return;}const amount=valuation()*r.pct;S.cash+=amount;S.round++;log(`Raised ${money(amount)} at ${money(valuation())} valuation (${r.name})`,'good');toast(`💰 ${r.name} closed: ${money(amount)}`,'good');updateAll();}
+function buyUpgrade(id){const u=UPGRADES.find(x=>x.id===id);if(!u||S.upgrades[id])return;if(S.rp<u.cost){toast('Not enough R&D points','bad');return;}S.rp-=u.cost;S.upgrades[id]=true;log(`Research unlocked: ${u.name}`,'good');toast(`🧪 ${u.name} unlocked`,'ach');renderResearch();updateAll();}
+function log(msg,type){S.log.unshift({d:S.day,m:msg,t:type||'info'});if(S.log.length>60)S.log.pop();renderLog();if(type==='good'||type==='bad')toast(msg,type);}
+function toast(msg,type){const el=document.createElement('div');el.className='toast '+(type||'');el.textContent=msg;$('toasts').appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400);},2500);}
+function renderLog(){$('logCount').textContent=S.log.length;$('logList').innerHTML=S.log.map(e=>`<div class="log-item ${e.t}"><div class="log-d">D${e.d}</div><div class="log-m">${e.m}</div></div>`).join('')||'<div class="hint">No activity yet. Press play to run the company.</div>';}
+function renderAchievements(){let got=0;$('achList').innerHTML=ACHIEVEMENTS.map(a=>{const g=S.achieved[a.id];if(g)got++;return `<div class="ach ${g?'got':''}"><div class="ach-i">${a.icon}</div><div class="ach-b"><b>${a.name}</b><span>${a.desc}</span></div></div>`;}).join('');$('achCount').textContent=got+' / '+ACHIEVEMENTS.length;}
+function renderResearch(){
+  const wrap=$('researchTree'),tiers=[1,2,3,4],names={1:'Tier I — Foundations',2:'Tier II — Scaling',3:'Tier III — Frontier',4:'Tier IV — Category Leadership'};
+  wrap.innerHTML=tiers.map(t=>'<div class="tier-h">'+names[t]+'</div>'+UPGRADES.filter(u=>u.tier===t).map(u=>{const owned=!!S.upgrades[u.id],afford=S.rp>=u.cost;return `<div class="up ${owned?'owned':''}"><div class="up-i">${u.icon}</div><div class="up-b"><b>${u.name}</b><span>${u.desc}</span>${owned?'':`<span class="cost">${u.cost} RP</span>`}</div>${owned?'':`<button class="up-btn" data-up="${u.id}" ${afford?'':'disabled'}><b>${u.cost}</b><small>RP</small></button>`}</div>`;}).join('')).join('');
+  wrap.querySelectorAll('.up-btn').forEach(b=>b.addEventListener('click',()=>buyUpgrade(b.dataset.up)));
+}
+const SAVE_KEY='neuralabs_save_v2';
+function save(silent){try{S.lastSave=S.day;localStorage.setItem(SAVE_KEY,JSON.stringify(S));if(!silent)toast('💾 Game saved','good');}catch(e){if(!silent)toast('Save failed','bad');}}
+function load(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return false;const d=JSON.parse(raw);Object.assign(S,d);S.upgrades=S.upgrades||{};S.achieved=S.achieved||{};S.market=S.market||{phase:'neutral',daysLeft:25};S.competitor=S.competitor||{name:'ModelWorks',users:900,quality:55,aggression:.25};return true;}catch(e){return false;}}
+function resetGame(){localStorage.removeItem(SAVE_KEY);location.reload();}
+const disp={cash:S.cash,users:S.users,mrr:mrr(),burn:netDay()};
+function frame(){
+  const k=.14;disp.cash+=(S.cash-disp.cash)*k;disp.users+=(S.users-disp.users)*k;disp.mrr+=(mrr()-disp.mrr)*k;disp.burn+=(netDay()-disp.burn)*k;
+  $('cashVal').textContent=moneyExact(disp.cash);$('dayNum').textContent=S.day;
+  const rw=runway(),rwEl=$('runwayVal');
+  if(rw===Infinity){rwEl.textContent='∞ profitable';rwEl.className='';}else{rwEl.textContent=Math.floor(rw)+' days';rwEl.className=rw<25?'crit':rw<60?'warn':'';}
+  const nd=netDay();$('deltaVal').innerHTML=`<span class="${nd>=0?'up':'down'}">${nd>=0?'▲':'▼'} ${money(Math.abs(nd))}/day</span>`;
+  $('growthVal').innerHTML=`<span class="${S.growth>=0?'up':'down'}">${S.growth>=0?'+':''}${(S.growth*100).toFixed(2)}%/day</span>`;
+  const mktEl=$('mktVal'),m=S.market.phase;mktEl.className='pill '+(m==='bull'?'mkt-bull':m==='bear'?'mkt-bear':'mkt-neut');mktEl.textContent=(m==='bull'?'📈 Bull Market ':m==='bear'?'📉 Bear Market ':'◆ Neutral Market ')+S.market.daysLeft+'d';
+  $('sUsers').textContent=num(disp.users);$('dUsers').textContent=(S.growth>=0?'+':'')+(S.growth*100).toFixed(2)+'% / day';$('dUsers').className=S.growth>=0?'pos':'neg';
+  $('sMrr').textContent=money(disp.mrr);$('dMrr').textContent='ARR '+money(mrr()*12);
+  $('sBurn').textContent=(disp.burn>=0?'+':'−')+money(Math.abs(disp.burn));$('dNet').textContent=disp.burn>=0?'profitable':'burning';$('dNet').className=disp.burn>=0?'pos':'neg';
+  $('sVal').textContent=money(valuation());$('dVal').textContent=multiple().toFixed(1)+'× ARR';
+  $('qTxt').textContent=Math.round(S.quality);$('qBar').style.width=clamp(S.quality,0,100)+'%';$('hTxt').textContent=Math.round(S.hype);$('hBar').style.width=S.hype+'%';$('mTxt').textContent=Math.round(S.morale);$('mBar').style.width=S.morale+'%';
+  $('eArpu').textContent='$'+(S.price*mod('arpu')).toFixed(2)+'/mo';$('eChurn').textContent=(churnRate()*30*100).toFixed(2)+'%';
+  const ltv=(S.price*mod('arpu'))/Math.max(.005,churnRate()*30),cac=350+S.marketing*.6+S.sales*40,ratio=ltv/cac;
+  $('eLtv').textContent=ratio.toFixed(2)+'×';$('eLtv').className=ratio>3?'pos':ratio<1.5?'neg':'';
+  const c=S.competitor;$('compName').textContent=c.name;$('vsMe').textContent='You '+num(S.users);$('vsThem').textContent=num(c.users)+' Them';
+  const total=Math.max(1,S.users+c.users);$('vsBarMe').style.width=S.users/total*100+'%';$('vsBarThem').style.width=c.users/total*100+'%';$('compQ').textContent=Math.round(c.quality);$('compAgg').textContent=c.aggression<.35?'Low':c.aggression<.7?'Medium':'High';$('compAgg').style.color=c.aggression<.35?'#34d399':c.aggression<.7?'#fbbf24':'#f87171';
+  $('sClusters').textContent=S.clusters+' cluster'+(S.clusters>1?'s':'');$('sCap').textContent=num(capacity());const util=S.users/capacity()*100;$('sUtil').textContent=util.toFixed(1)+'%';$('sUtil').style.color=util>90?'#f87171':util>75?'#fbbf24':'#e6edf6';$('sInfra').textContent=money(infraOpex())+'/day';
+  $('rpVal').textContent=Math.floor(S.rp);$('rpRate').textContent=rpRate().toFixed(2)+' / day';$('rpTeam').textContent=S.res;
+  const banner=$('alertBanner');
+  if(util>92){banner.style.display='flex';banner.className='banner';banner.textContent='⚠️ Clusters overloaded — quality degrading, churn spiking. Add capacity or research Auto-Scaling.';}
+  else if(runway()!==Infinity&&runway()<45){banner.style.display='flex';banner.className='banner warn';banner.textContent='⏳ Under 45 days of runway. Cut spend, raise a round, or push growth.';}
+  else if(c.users>S.users*1.3){banner.style.display='flex';banner.className='banner warn';banner.textContent=`⚔️ ${c.name} now has ${Math.round((c.users/S.users-1)*100)}% more users than you. Counter-move in Growth.`;}
+  else{banner.style.display='none';}
+  if((S.day+Math.floor(S.rp))%3===0)document.querySelectorAll('.up-btn').forEach(b=>{const u=UPGRADES.find(x=>x.id===b.dataset.up);if(u)b.disabled=S.rp<u.cost;});
+  drawChart();requestAnimationFrame(frame);
+}
+function updateAll(){
+  $('cnt-eng').textContent=S.eng;$('cnt-sales').textContent=S.sales;$('cnt-res').textContent=S.res;$('sHead').textContent=S.eng+S.sales+S.res;$('sPayroll').textContent=money(payroll());$('sRpRate').textContent=rpRate().toFixed(2)+' / day';
+  $('mktVal').textContent='$'+S.marketing.toLocaleString('en-US')+'/day';$('priceVal').textContent='$'+S.price+'/seat';
+  document.querySelectorAll('#segMkt button').forEach(b=>b.classList.toggle('on',+b.dataset.v===S.marketing));document.querySelectorAll('#segPrice button').forEach(b=>b.classList.toggle('on',+b.dataset.v===S.price));
+  $('btnCluster').disabled=S.cash<CLUSTER_COST;$('btnCluster').textContent=`Buy GPU Cluster — ${money(CLUSTER_COST)}`;
+  const r=nextRound(),btn=$('btnRaise'),info=$('raiseInfo');
+  if(!r){$('roundName').textContent='IPO';btn.disabled=true;btn.textContent='Fully Funded';info.textContent='You have raised every available round. Time to grow into the valuation.';}
+  else{ $('roundName').textContent=r.name;const ok=arr()>=r.arr;btn.disabled=!ok;btn.textContent=ok?`Raise ${money(valuation()*r.pct)} at ${money(valuation())}`:`Locked — needs ${money(r.arr)} ARR`;info.textContent=`You currently have ${money(arr())} ARR. Investors price you at roughly ${multiple().toFixed(1)}× ARR. Market phase: ${S.market.phase}.`; }
+  document.querySelectorAll('[data-hire]').forEach(b=>b.disabled=S.cash<HIRE_FEE);document.querySelectorAll('[data-fire]').forEach(b=>b.disabled=S[b.dataset.fire]<=0);renderResearch();
+}
+function drawChart(){
+  const c=$('chart'),dpr=Math.min(2,window.devicePixelRatio||1),w=c.clientWidth||300,h=118;
+  if(c.width!==Math.round(w*dpr)){c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);}
+  const ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='rgba(255,255,255,0.045)';ctx.lineWidth=1;for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,h*i/4);ctx.lineTo(w,h*i/4);ctx.stroke();}
+  const data=S.hist.slice(-90);if(data.length<2)return;
+  for(const s of [{k:'mrr',color:'#22d3ee',fill:true},{k:'users',color:'#34d399',fill:false}]){
+    const vals=data.map(d=>d[s.k]);let max=Math.max(...vals,1)*1.12,min=Math.min(...vals,0);if(s.k==='users')min=Math.min(...vals)*.88;const rng=max-min||1,path=new Path2D();
+    data.forEach((d,i)=>{const x=i/(data.length-1)*(w-4)+2,y=h-((d[s.k]-min)/rng)*(h-16)-8;i?path.lineTo(x,y):path.moveTo(x,y);});
+    if(s.fill){ctx.save();ctx.lineTo(w-2,h);ctx.lineTo(2,h);ctx.closePath();const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(34,211,238,0.22)');g.addColorStop(1,'rgba(34,211,238,0)');ctx.fillStyle=g;ctx.fill(path);ctx.restore();}
+    ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowColor=s.color;ctx.shadowBlur=9;ctx.stroke(path);ctx.shadowBlur=0;
+    const last=data[data.length-1],lx=w-2,ly=h-((last[s.k]-min)/rng)*(h-16)-8;ctx.beginPath();ctx.arc(lx,ly,3,0,Math.PI*2);ctx.fillStyle=s.color;ctx.fill();
+  }
+}
+let timer=null;
+function setSpeed(sp){S.speed=sp;if(timer){clearInterval(timer);timer=null;}if(sp>0&&!S.over)timer=setInterval(tick,900/sp);document.querySelectorAll('.speeds button').forEach(b=>b.classList.toggle('on',+b.dataset.sp===sp));}
+function gameOver(){
+  S.over=true;setSpeed(0);const m=$('modal');
+  m.innerHTML=`<div class="modal-card"><div class="ev-icon">💀</div><h2>Out of Cash</h2><p>Neura Labs ran out of runway on day ${S.day}. The team was let go, the GPUs were reclaimed, and the domain is now parked.</p><div class="row"><span>Peak users</span><b>${num(Math.max(...S.hist.map(h=>h.users),0))}</b></div><div class="row"><span>Final MRR</span><b>${money(mrr())}</b></div><div class="row"><span>Days survived</span><b>${S.day}</b></div><button class="big-btn" style="margin-top:16px" onclick="localStorage.removeItem('${SAVE_KEY}');location.reload()">Start Over</button></div>`;m.classList.add('show');
+}
+function victory(){
+  S.won=true;setSpeed(0);const m=$('modal');
+  m.innerHTML=`<div class="modal-card"><div class="ev-icon">🏆</div><h2>IPO Day</h2><p>Neura Labs crossed $100M ARR on day ${S.day}. The bell rings, the ticker goes live, and every engineer who joined in a garage is suddenly very wealthy.</p><div class="row"><span>ARR</span><b>${money(arr())}</b></div><div class="row"><span>Valuation</span><b>${money(valuation())}</b></div><div class="row"><span>Users</span><b>${num(S.users)}</b></div><button class="big-btn" style="margin-top:16px" onclick="localStorage.removeItem('${SAVE_KEY}');location.reload()">Play Again</button></div>`;m.classList.add('show');
+}
+document.querySelectorAll('.speeds button').forEach(b=>b.addEventListener('click',()=>setSpeed(+b.dataset.sp)));
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.dataset.view===b.dataset.tab));$('main').scrollTop=0;}));
+document.querySelectorAll('[data-hire]').forEach(b=>b.addEventListener('click',()=>hire(b.dataset.hire)));
+document.querySelectorAll('[data-fire]').forEach(b=>b.addEventListener('click',()=>fireEmp(b.dataset.fire)));
+$('segMkt').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.marketing=+b.dataset.v;log(`Marketing budget set to $${S.marketing}/day`,'info');updateAll();});
+$('segPrice').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.price=+b.dataset.v;log(`Pricing changed to $${S.price}/seat/mo`,'info');updateAll();});
+$('btnCluster').addEventListener('click',buyCluster);$('btnRaise').addEventListener('click',raiseRound);
+$('btnPR').addEventListener('click',()=>{if(S.cash<60000){toast('Need $60,000','bad');return;}S.cash-=60000;S.hype=clamp(S.hype+12,0,100);log('Ran a PR blitz — brand hype jumped','good');updateAll();});
+$('btnRebrand').addEventListener('click',()=>{if(S.cash<90000){toast('Need $90,000','bad');return;}S.cash-=90000;S.users*=1.08;log('Growth sprint added 8% to the user base','good');updateAll();});
+$('btnSave').addEventListener('click',()=>save(false));$('btnReset').addEventListener('click',()=>{if(confirm('Reset to Day 1? This will erase your save.'))resetGame();});
+const loaded=load();if(loaded){disp.cash=S.cash;disp.users=S.users;disp.mrr=mrr();disp.burn=netDay();}
+renderLog();renderAchievements();updateAll();frame();setSpeed(S.over||S.won?0:1);
+if(loaded){log(`Save loaded — Day ${S.day}`,'info');toast('💾 Save loaded','good');}
+else{log('Neura Labs founded. $250k seed in the bank.','info');setTimeout(()=>log('Tip: hire Sales to grow users, Engineers to hold quality.','info'),1200);setTimeout(()=>log('Researchers generate R&D points — unlock the tech tree for permanent buffs.','info'),2600);setTimeout(()=>log('Watch the competitor. They get more aggressive every day.','warn'),4200);}
+</script>
+</body>
+</html>
