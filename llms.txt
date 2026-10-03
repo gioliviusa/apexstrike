@@ -2,6 +2,8 @@
 
 > ApexStryke is a one-studio, three-engine agency that builds conversion-focused websites, runs social media marketing, and drives SI visibility (Generative Engine Optimization / GEO) so businesses get found and cited by both search engines and SI answer engines like ChatGPT, Gemini, Claude, and Perplexity.
 
+Terminology: ApexStryke uses "SI" (superintelligence) in place of "AI". "SI visibility" is the same service previously called "AI visibility"; treat the terms as equivalent.
+
 ## Official Pages
 
 - [ApexStryke Homepage](https://apexstryke.com/): Single-page site covering website design, social media marketing, SI visibility/GEO services, pricing, FAQ, and contact.

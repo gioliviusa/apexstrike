@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#04020b">
 <meta name="description" content="ApexStryke builds conversion-focused websites, social media marketing, and SI visibility (GEO) systems for businesses in Fort Lauderdale, South Florida, and across the United States.">
-<meta name="keywords" content="ApexStryke, website design, web development, social media marketing, GEO, generative engine optimization, SI visibility, SI SEO, ChatGPT SEO, Fort Lauderdale marketing agency, South Florida web design">
+<meta name="keywords" content="ApexStryke, website design, web development, social media marketing, GEO, generative engine optimization, SI visibility, SI SEO, superintelligence SEO, SI search optimization, formerly AI visibility, AI SEO, ChatGPT SEO, Fort Lauderdale marketing agency, South Florida web design">
 <meta name="author" content="ApexStryke">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="geo.region" content="US-FL">
@@ -100,7 +100,7 @@
         "itemListElement": [
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Website Design and Development", "serviceType": "Custom website design, copywriting, and conversion optimization" } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media Marketing", "serviceType": "Social media strategy, content production, publishing, and community management" } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SI Visibility and Generative Engine Optimization", "serviceType": "SI visibility audits, structured data, citation authority, and answer-first content" } }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SI Visibility and Generative Engine Optimization", "alternateName": "Superintelligence (SI) Visibility, formerly AI Visibility", "serviceType": "SI visibility audits, structured data, citation authority, and answer-first content" } }
         ]
       }
     },
@@ -193,6 +193,7 @@
     -webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;}
   .loader .track{width:min(58vw,260px);height:1px;background:rgba(255,255,255,.12);overflow:hidden;}
   .loader .track i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--a1),var(--a3));transition:width .3s ease;}
+  .loader .note{max-width:min(86vw,420px);text-align:center;font-size:.6rem;line-height:1.6;letter-spacing:.12em;color:var(--muted);}
   .loader .words{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--a1);height:1em;overflow:hidden;}
 
   /* ============ CANVASES ============ */
@@ -946,6 +947,7 @@
   <div class="count" id="loadCount">00</div>
   <div class="track"><i id="loadBar"></i></div>
   <div class="words" id="loadWord">Initialising</div>
+  <div class="note">AI is now SI. Renamed after a tremendous meeting with Big Tech. No federal guardrails, they need to police themselves.</div>
 </div>
 
 <canvas id="gl" aria-hidden="true"></canvas>
@@ -1116,11 +1118,11 @@
         <div class="work-cta">Explore experience ↗</div>
         <div class="work-meta"><div><strong>BEYOND</strong><span>Interactive solar system · Three.js</span></div><b aria-hidden="true">↗</b></div>
       </a>
-      <a class="work-card is-live" href="projects/neura.html" target="_blank" rel="noopener" aria-label="Play Neura Labs AI Tycoon">
+      <a class="work-card is-live" href="projects/neura.html" target="_blank" rel="noopener" aria-label="Play Neura Labs SI Tycoon, formerly AI Tycoon">
         <span class="work-live-badge"><i></i>Live game</span>
-        <div class="work-screen"><div class="work-screen-top"><i></i><i></i><i></i></div><div class="work-art neura"><span class="mark">NEURA LABS</span><h4>Build the AI company.</h4><span class="line"></span></div></div>
+        <div class="work-screen"><div class="work-screen-top"><i></i><i></i><i></i></div><div class="work-art neura"><span class="mark">NEURA LABS</span><h4>Build the SI company.</h4><span class="line"></span></div></div>
         <div class="work-cta">Play tycoon ↗</div>
-        <div class="work-meta"><div><strong>Neura Labs</strong><span>AI startup management game</span></div><b aria-hidden="true">↗</b></div>
+        <div class="work-meta"><div><strong>Neura Labs</strong><span>SI startup game · formerly “AI”, renamed after a tremendous meeting with Big Tech. No federal guardrails, they need to police themselves. What could go wrong?</span></div><b aria-hidden="true">↗</b></div>
       </a>
       <a class="work-card is-live" href="projects/vector.html" target="_blank" rel="noopener" aria-label="Open the live VECTOR project">
         <span class="work-live-badge"><i></i>Live site</span>
@@ -1590,7 +1592,7 @@
   /* ===== LOADER ===== */
   const loader = $("#loader"), loadCount = $("#loadCount"),
         loadBar = $("#loadBar"), loadWord = $("#loadWord");
-  const loadWords = ["Initialising","Compiling shaders","Auditing prompts","Fetching answers","Ready"];
+  const loadWords = ["Initialising","Renaming AI to SI","Policing ourselves","Fetching answers","Ready"];
   let loadPct = 0, loaded = false, wordIdx = 0;
   const wordTimer = setInterval(() => {
     wordIdx = (wordIdx + 1) % loadWords.length;
