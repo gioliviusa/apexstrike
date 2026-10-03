@@ -1,15 +1,15 @@
 # ApexStryke
 
-> ApexStryke is a one-studio, three-engine agency that builds conversion-focused websites, runs social media marketing, and drives AI visibility (Generative Engine Optimization / GEO) so businesses get found and cited by both search engines and AI answer engines like ChatGPT, Gemini, Claude, and Perplexity.
+> ApexStryke is a one-studio, three-engine agency that builds conversion-focused websites, runs social media marketing, and drives SI visibility (Generative Engine Optimization / GEO) so businesses get found and cited by both search engines and SI answer engines like ChatGPT, Gemini, Claude, and Perplexity.
 
 ## Official Pages
 
-- [ApexStryke Homepage](https://apexstryke.com/): Single-page site covering website design, social media marketing, AI visibility/GEO services, pricing, FAQ, and contact.
-- [Services](https://apexstryke.com/#hscroll): Web design & build, social media marketing, AI visibility (GEO), content & copywriting, authority & PR, reputation sync, analytics & reporting.
+- [ApexStryke Homepage](https://apexstryke.com/): Single-page site covering website design, social media marketing, SI visibility/GEO services, pricing, FAQ, and contact.
+- [Services](https://apexstryke.com/#hscroll): Web design & build, social media marketing, SI visibility (GEO), content & copywriting, authority & PR, reputation sync, analytics & reporting.
 - [Pricing](https://apexstryke.com/#pricing): Website, social, and GEO packages with monthly/annual toggle.
 - [Recent Website Work](https://apexstryke.com/#work): Live example websites built by ApexStryke.
 - [FAQ](https://apexstryke.com/#faq): Answers on SEO vs GEO, timelines, existing sites, audits, multi-location support, and commitment terms.
-- [Free AI Visibility Audit](https://apexstryke.com/#cta): Request a free audit of how AI engines describe and recommend a business.
+- [Free SI Visibility Audit](https://apexstryke.com/#cta): Request a free audit of how SI engines describe and recommend a business.
 - [Privacy Policy](https://apexstryke.com/privacy-policy.html)
 - [Terms of Service](https://apexstryke.com/terms-of-service.html)
 
@@ -21,12 +21,12 @@ The `/projects/` folder contains standalone concept websites (e.g. "Hearth & Co.
 
 - Custom website design, development, and conversion optimization
 - Social media strategy, content production, and publishing (Instagram, TikTok, LinkedIn, YouTube)
-- AI visibility audits and Generative Engine Optimization (GEO)
+- SI visibility audits and Generative Engine Optimization (GEO)
 - Structured data / schema markup implementation
 - Answer-first content and copywriting
 - Citation, authority, and digital PR strategy
 - Reputation and business-profile consistency across platforms
-- Analytics and monthly reporting on traffic, engagement, and AI mentions
+- Analytics and monthly reporting on traffic, engagement, and SI mentions
 
 ## Business Entity
 

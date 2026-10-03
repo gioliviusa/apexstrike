@@ -1,4 +1,4 @@
-# AI Chatbot Email Setup Guide
+# SI Chatbot Email Setup Guide
 
 ## Current Implementation
 
@@ -65,7 +65,7 @@ If you prefer a different service, here are other options:
 ```
 Subject: New Quote Request from [Name]
 
-New Quote Request from ApexStryke AI Chatbot
+New Quote Request from ApexStryke SI Chatbot
 
 Name: [Customer Name]
 Email: [Customer Email]
@@ -74,21 +74,21 @@ Service Interest: [Selected Service]
 Project Details: [Description]
 
 Submitted on: [Date & Time]
-Source: Website AI Chatbot
+Source: Website SI Chatbot
 ```
 
 ### Audit Request Email:
 ```
 Subject: New Website Audit Request from [Name]
 
-New Website Audit Request from ApexStryke AI Chatbot
+New Website Audit Request from ApexStryke SI Chatbot
 
 Name: [Customer Name]
 Email: [Customer Email]
 Website URL: [Website]
 
 Submitted on: [Date & Time]
-Source: Website AI Chatbot
+Source: Website SI Chatbot
 ```
 
 ---
